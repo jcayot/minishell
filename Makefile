@@ -9,8 +9,11 @@ HEADERS			:= -I ./include -I $(LIBFT_DIR) -I ~/.brew/opt/readline/include
 READLINE		:= -lreadline -L ~/.brew/opt/readline/lib
 
 SRCS_DIR		:= srcs
+PARSING_DIR		:= $(SRCS_DIR)/parsing
 
-SRCS			:= $(SRCS_DIR)/minishell.c
+SRCS			:= $(SRCS_DIR)/minishell.c \
+					$(PARSING_DIR)/parse_input.c \
+					$(PARSING_DIR)/get_command_inout.c
 
 OBJS			:= ${SRCS:.c=.o}
 

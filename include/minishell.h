@@ -13,26 +13,34 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <libft.h>
 
+typedef struct	s_input
+{
+	char	*file;
+	char	*delimiter;
+}	t_input;
+
+typedef struct	s_output
+{
+	char	*file;
+	int		mode;
+}	t_output;
+
 typedef struct	s_shell_command
 {
+	t_list	**inputs;
+	t_list	**outputs;
 	char	*command_path;
-	char	*splitted_command;
-	char	**env;
+	char	**splitted_command;
+	int 	error;
 }	t_shell_command;
 
-typedef struct	s_shell_input
-{
-	char 			*input;
-	char 			*delimiter;
-	char			*output;
-	int 			output_mode;
-	t_shell_command	*commands;
-}	t_shell_input;
+int	get_command_inout(t_shell_command *command, char *command_to_parse);
 
 #endif //MINISHELL_H
