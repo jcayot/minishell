@@ -41,6 +41,6 @@ typedef struct	s_shell_command
 	int 	error;
 }	t_shell_command;
 
-int	get_command_inout(t_shell_command *command, char *command_to_parse);
+char	*get_command_path(char *command);
 
 #endif //MINISHELL_H

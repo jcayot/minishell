@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include <minishell_parsing.h>
 
 void	*free_commands(t_shell_command *commands, int n)
 {
@@ -29,9 +29,26 @@ void	*free_commands(t_shell_command *commands, int n)
 	return (NULL);
 }
 
+char	*get_command_path(char *command)
+{
+	return (command);
+}
+
 int get_command_exec(t_shell_command *command, char *command_to_parse)
 {
+	char	**splitted_command;
 
+	splitted_command = ft_split(command_to_parse, ' ');
+	if (!splitted_command)
+		return (0);
+	command -> splitted_command = splitted_command;
+	command -> command_path = get_command_path(command->splitted_command[0]);
+	if (!command -> command_path)
+	{
+		ft_strarray_free(splitted_command);
+		return (0);
+	}
+	return (1);
 }
 
 t_shell_command	make_command(char *command_to_parse)
@@ -43,8 +60,8 @@ t_shell_command	make_command(char *command_to_parse)
 		return (command);
 	if (!get_command_exec(&command, command_to_parse))
 	{
-		ft_lstclear(command.inputs, &free);
-		ft_lstclear(command.outputs, &free);
+		ft_lstclear(command.inputs, &free_input);
+		ft_lstclear(command.outputs, &free_output);
 		return (command);
 	}
 	command.error = 0;
