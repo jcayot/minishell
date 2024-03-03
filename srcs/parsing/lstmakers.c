@@ -4,12 +4,12 @@
 
 #include <minishell_parsing.h>
 
-t_list	*make_in_file(char *file)
+t_list	*make_inout_file(char *file)
 {
 	t_list	*item;
-	t_input	*data;
+	t_inout	*data;
 
-	data = malloc(sizeof (t_input));
+	data = malloc(sizeof (t_inout));
 	if (!data)
 		return (NULL);
 	data -> file = file;
@@ -23,9 +23,9 @@ t_list	*make_in_file(char *file)
 t_list	*make_in_delimiter(char *delimiter)
 {
 	t_list	*item;
-	t_input	*data;
+	t_inout	*data;
 
-	data = malloc(sizeof (t_input));
+	data = malloc(sizeof (t_inout));
 	if (!data)
 		return (NULL);
 	data -> file = NULL;
@@ -36,37 +36,14 @@ t_list	*make_in_delimiter(char *delimiter)
 	return (item);
 }
 
-t_list	*make_out_file(char *file)
+void	free_inout(void *data)
 {
-	t_list		*item;
-	t_output	*data;
+	t_inout	*input;
 
-	data = malloc(sizeof (t_output));
-	if (!data)
-		return (NULL);
-	data -> file = file;
-	item = ft_lstnew(data);
-	if (!item)
-		free(data);
-	return (item);
-}
-
-void	free_input(void *data)
-{
-	t_input	*input;
-
-	input = (t_input *) data;
+	input = (t_inout *) data;
 	if (input -> file)
 		free(input -> file);
 	if (input -> delimiter)
 		free(input -> delimiter);
 }
 
-void	free_output(void *data)
-{
-	t_output	*output;
-
-	output = (t_output *) data;
-	if (output -> file)
-		free(output -> file);
-}

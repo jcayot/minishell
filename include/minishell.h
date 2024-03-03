@@ -20,27 +20,22 @@
 # include <readline/history.h>
 # include <libft.h>
 
-typedef struct	s_input
+typedef struct	s_inout
 {
 	char	*file;
 	char	*delimiter;
-}	t_input;
-
-typedef struct	s_output
-{
-	char	*file;
 	int		mode;
-}	t_output;
+}	t_inout;
 
 typedef struct	s_shell_command
 {
 	t_list	**inputs;
 	t_list	**outputs;
-	char	*command_path;
 	char	**splitted_command;
 	int 	error;
 }	t_shell_command;
 
-char	*get_command_path(char *command);
+t_shell_command	*parse_input(char *input);
+void *free_commands(t_shell_command *commands);
 
 #endif //MINISHELL_H

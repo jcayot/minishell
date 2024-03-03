@@ -85,12 +85,14 @@ t_list	**extract_symbols(char *command_to_parse, char **symbols, t_list  *(*item
 				if (!item)
 				{
 					ft_lstclear(extracted, del);
+					free(extracted);
 					return (NULL);
 				}
 				ft_lstadd_back(extracted, item);
 			}
 			i++;
 		}
+		command_to_parse++;
 	}
 	return (extracted);
 }
@@ -103,20 +105,21 @@ int	get_command_inout(t_shell_command *command, char *command_to_parse)
 	symbols[0] = "<<";
 	symbols[1] = "<";
 	item_makers[0] = &make_in_delimiter;
-	item_makers[1] = &make_in_file;
+	item_makers[1] = &make_inout_file;
 	item_makers[2] = NULL;
 	symbols[2] = NULL;
-	command -> inputs = extract_symbols(command_to_parse, symbols, item_makers, &free_input);
+	command -> inputs = extract_symbols(command_to_parse, symbols, item_makers, &free_inout);
 	if (!command -> inputs)
 		return (0);
 	symbols[0] = ">>";
 	symbols[1] = ">";
-	item_makers[0] = &make_out_file;
-	item_makers[1] = NULL;
-	command -> outputs = extract_symbols(command_to_parse, symbols, item_makers, &free_output);
+	item_makers[0] = &make_in_delimiter;
+	item_makers[1] = &make_inout_file;
+	command -> outputs = extract_symbols(command_to_parse, symbols, item_makers, &free_inout);
 	if (!command -> outputs)
 	{
-		ft_lstclear(command -> inputs, &free_input);
+		ft_lstclear(command -> inputs, &free_inout);
+		free(command -> inputs);
 		return (0);
 	}
 	return (1);

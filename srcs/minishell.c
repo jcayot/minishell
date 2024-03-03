@@ -14,7 +14,8 @@
 
 int	minishell(void)
 {
-	char	*input;
+	char			*input;
+	t_shell_command	*commands;
 
 	rl_bind_key('\t', rl_complete);
 	using_history();
@@ -24,8 +25,8 @@ int	minishell(void)
 		if (!input)
 			break ;
 		add_history(input);
-		ft_putstr_fd("minishell: command not found: ", 1);
-		ft_putendl_fd(input, 1);
+		commands = parse_input(input);
+		free_commands(commands);
 		free(input);
 	}
 	return (EXIT_SUCCESS);

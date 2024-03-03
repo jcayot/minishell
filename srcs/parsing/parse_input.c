@@ -12,43 +12,22 @@
 
 #include <minishell_parsing.h>
 
-void	*free_commands(t_shell_command *commands, int n)
+void *free_commands(t_shell_command *commands)
 {
 	int	i;
 
 	i = 0;
-	while (i < n)
+	while (!commands[i].error)
 	{
-		ft_lstclear(commands[i].inputs, &free);
-		ft_lstclear(commands[i].outputs, &free);
-		free(commands[i].command_path);
+		ft_lstclear(commands[i].inputs, &free_inout);
+		ft_lstclear(commands[i].outputs, &free_inout);
+		free(commands[i].inputs);
+		free(commands[i].outputs);
 		ft_strarray_free(commands[i].splitted_command);
 		i++;
 	}
 	free(commands);
 	return (NULL);
-}
-
-char	*get_command_path(char *command)
-{
-	return (command);
-}
-
-int get_command_exec(t_shell_command *command, char *command_to_parse)
-{
-	char	**splitted_command;
-
-	splitted_command = ft_split(command_to_parse, ' ');
-	if (!splitted_command)
-		return (0);
-	command -> splitted_command = splitted_command;
-	command -> command_path = get_command_path(command->splitted_command[0]);
-	if (!command -> command_path)
-	{
-		ft_strarray_free(splitted_command);
-		return (0);
-	}
-	return (1);
 }
 
 t_shell_command	make_command(char *command_to_parse)
@@ -58,10 +37,11 @@ t_shell_command	make_command(char *command_to_parse)
 	command.error = 1;
 	if (!get_command_inout(&command, command_to_parse))
 		return (command);
-	if (!get_command_exec(&command, command_to_parse))
+	command.splitted_command = ft_split(command_to_parse, ' ');
+	if (!command.splitted_command)
 	{
-		ft_lstclear(command.inputs, &free_input);
-		ft_lstclear(command.outputs, &free_output);
+		ft_lstclear(command.inputs, &free_inout);
+		ft_lstclear(command.outputs, &free_inout);
 		return (command);
 	}
 	command.error = 0;
@@ -79,18 +59,19 @@ t_shell_command	*parse_input(char *input)
 	if (!commands_to_parse)
 		return (NULL);
 	commands_number = ft_strarray_len(commands_to_parse);
-	commands = malloc(commands_number * sizeof (t_shell_command));
+	commands = malloc((commands_number + 1) * sizeof (t_shell_command));
 	i = 0;
 	while (commands && i < commands_number)
 	{
 		commands[i] = make_command(commands_to_parse[i]);
 		if (commands[i].error)
 		{
-			free_commands(commands, i);
+			free_commands(commands);
 			commands = NULL;
 		}
 		i++;
 	}
+	commands[i].error = 1;
 	ft_strarray_free(commands_to_parse);
 	return (commands);
 }

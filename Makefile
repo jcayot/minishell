@@ -27,7 +27,7 @@ $(NAME): $(LIBFT) $(OBJS)
 	@$(CC) $(READLINE) $(OBJS) $(LIBFT) $(HEADERS) -o $(NAME)
 
 $(LIBFT) :	$(LIBFT_DIR)
-			@$(MAKE) -C $(LIBFT_DIR)
+			@$(MAKE) bonus -C $(LIBFT_DIR)
 
 clean:
 	@rm -rf $(OBJS)
