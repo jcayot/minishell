@@ -61,7 +61,7 @@ t_list	*extract_symbol(char *command_to_parse, char *symbol, t_list *(*item_make
 		free(data);
 		return (NULL);
 	}
-	ft_memmove(command_to_parse, command_to_parse + l, ft_strlen(command_to_parse + l));
+	ft_memmove(command_to_parse, command_to_parse + l + i, ft_strlen(command_to_parse + l));
 	command_to_parse[l] = 0;
 	return (item);
 }
@@ -113,8 +113,6 @@ int	get_command_inout(t_shell_command *command, char *command_to_parse)
 		return (0);
 	symbols[0] = ">>";
 	symbols[1] = ">";
-	item_makers[0] = &make_in_delimiter;
-	item_makers[1] = &make_inout_file;
 	command -> outputs = extract_symbols(command_to_parse, symbols, item_makers, &free_inout);
 	if (!command -> outputs)
 	{
