@@ -12,6 +12,7 @@ SRCS_DIR		:= srcs
 PARSING_DIR		:= $(SRCS_DIR)/parsing
 
 SRCS			:= $(SRCS_DIR)/minishell.c \
+					$(SRCS_DIR)/run_cmds.c \
 					$(PARSING_DIR)/parse_input.c \
 					$(PARSING_DIR)/get_command_inout.c \
 					$(PARSING_DIR)/lstmakers.c \

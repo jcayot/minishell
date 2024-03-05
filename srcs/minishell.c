@@ -28,7 +28,7 @@ int	minishell(void)
 		commands = parse_input(input);
 		if (commands)
 		{
-			print_all(commands);
+			run_cmds(commands);
 			free_cmds(commands);
 		}
 		free(input);
