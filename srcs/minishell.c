@@ -40,5 +40,3 @@ int	main(void)
 {
 	return (minishell());
 }
-
-// grep "pattern" < inut.txt | sort | uniq > output.txt: cat << EOL, funny testline
