@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lstmakers.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:34:59 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/05 16:35:02 by jcayot           ###   ########.fr       */
+/*   Updated: 2024/03/05 18:29:38 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,11 @@ void	free_inout(void *data)
 		free(input -> file);
 	if (input -> delimiter)
 		free(input -> delimiter);
+}
+
+void	*free_list(t_list **extracted)
+{
+	ft_lstclear(extracted, &free_inout);
+	free(extracted);
+	return (NULL);
 }

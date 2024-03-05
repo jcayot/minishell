@@ -10,6 +10,7 @@ READLINE		:= -lreadline -L ~/.brew/opt/readline/lib
 
 SRCS_DIR		:= srcs
 PARSING_DIR		:= $(SRCS_DIR)/parsing
+TESTS_DIR		:= tests
 
 SRCS			:= $(SRCS_DIR)/minishell.c \
 					$(SRCS_DIR)/run_cmds.c \
@@ -17,7 +18,7 @@ SRCS			:= $(SRCS_DIR)/minishell.c \
 					$(PARSING_DIR)/get_command_inout.c \
 					$(PARSING_DIR)/lstmakers.c \
 					$(PARSING_DIR)/ft_wordlen.c \
-					$(SRCS_DIR)/tests/tools.c
+					$(TESTS_DIR)/tools.c
 
 OBJS			:= ${SRCS:.c=.o}
 

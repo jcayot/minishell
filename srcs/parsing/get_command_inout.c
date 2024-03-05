@@ -59,7 +59,7 @@ t_list	**get_symbols(char *cmd_str, char **symbols, t_list *(**maker)(char *))
 			{
 				item = get_symbol(cmd_str, symbols[i], maker[i]);
 				if (!item)
-					return (ft_lstclear(extracted, &free_inout), free(extracted), NULL);
+					return (free_list(extracted));
 				ft_lstadd_back(extracted, item);
 			}
 			i++;
