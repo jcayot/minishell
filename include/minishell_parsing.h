@@ -15,7 +15,7 @@
 
 # include <minishell.h>
 
-int		get_command_inout(t_shell_command *command, char *command_to_parse);
+int		get_cmd_inout(t_shell_cmd *cmd, char *cmd_str);
 t_list	*make_inout_file(char *file);
 t_list	*make_in_delimiter(char *delimiter);
 void	free_inout(void *data);

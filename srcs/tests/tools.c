@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	print_all(t_shell_command *commands)
+void	print_all(t_shell_cmd *commands)
 {
 	size_t	i;
 	size_t	j;

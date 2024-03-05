@@ -14,8 +14,8 @@
 
 int	minishell(void)
 {
-	char			*input;
-	t_shell_command	*commands;
+	char		*input;
+	t_shell_cmd	*commands;
 
 	rl_bind_key('\t', rl_complete);
 	using_history();
@@ -29,7 +29,7 @@ int	minishell(void)
 		if (commands)
 		{
 			print_all(commands);
-			free_commands(commands);
+			free_cmds(commands);
 		}
 		free(input);
 	}

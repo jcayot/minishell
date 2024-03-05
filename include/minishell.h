@@ -33,10 +33,10 @@ typedef struct s_shell_command
 	t_list	**outputs;
 	char	**splitted_command;
 	int		error;
-}	t_shell_command;
+}	t_shell_cmd;
 
-t_shell_command	*parse_input(char *input);
-void			*free_commands(t_shell_command *commands);
-void			print_all(t_shell_command *commands);
+t_shell_cmd	*parse_input(char *input);
+void			*free_cmds(t_shell_cmd *cmds);
+void			print_all(t_shell_cmd *commands);
 
 #endif //MINISHELL_H

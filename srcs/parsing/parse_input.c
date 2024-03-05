@@ -12,66 +12,66 @@
 
 #include <minishell_parsing.h>
 
-void	*free_commands(t_shell_command *commands)
+void	*free_cmds(t_shell_cmd *cmds)
 {
 	int	i;
 
 	i = 0;
-	while (!commands[i].error)
+	while (!cmds[i].error)
 	{
-		ft_lstclear(commands[i].inputs, &free_inout);
-		ft_lstclear(commands[i].outputs, &free_inout);
-		free(commands[i].inputs);
-		free(commands[i].outputs);
-		ft_strarray_free(commands[i].splitted_command);
+		ft_lstclear(cmds[i].inputs, &free_inout);
+		ft_lstclear(cmds[i].outputs, &free_inout);
+		free(cmds[i].inputs);
+		free(cmds[i].outputs);
+		ft_strarray_free(cmds[i].splitted_command);
 		i++;
 	}
-	free(commands);
+	free(cmds);
 	return (NULL);
 }
 
-t_shell_command	make_command(char *command_to_parse)
+t_shell_cmd	make_cmd(char *cmd_str)
 {
-	t_shell_command	command;
+	t_shell_cmd	cmd;
 
-	command.error = 1;
-	if (!get_command_inout(&command, command_to_parse))
-		return (command);
-	command.splitted_command = ft_split(command_to_parse, ' ');
-	if (!command.splitted_command)
+	cmd.error = 1;
+	if (!get_cmd_inout(&cmd, cmd_str))
+		return (cmd);
+	cmd.splitted_command = ft_split(cmd_str, ' ');
+	if (!cmd.splitted_command)
 	{
-		ft_lstclear(command.inputs, &free_inout);
-		ft_lstclear(command.outputs, &free_inout);
-		return (command);
+		ft_lstclear(cmd.inputs, &free_inout);
+		ft_lstclear(cmd.outputs, &free_inout);
+		return (cmd);
 	}
-	command.error = 0;
-	return (command);
+	cmd.error = 0;
+	return (cmd);
 }
 
-t_shell_command	*parse_input(char *input)
+t_shell_cmd	*parse_input(char *input)
 {
-	t_shell_command	*commands;
-	char			**commands_to_parse;
-	int				commands_number;
-	int				i;
+	t_shell_cmd	*cmds;
+	char		**cmds_str;
+	int			n_cmd;
+	int			i;
 
-	commands_to_parse = ft_split(input, '|');
-	if (!commands_to_parse)
+	cmds_str = ft_split(input, '|');
+	if (!cmds_str)
 		return (NULL);
-	commands_number = (int) ft_strarray_len(commands_to_parse);
-	commands = malloc((commands_number + 1) * sizeof (t_shell_command));
+	n_cmd = (int) ft_strarray_len(cmds_str);
+	cmds = malloc((n_cmd + 1) * sizeof (t_shell_cmd));
 	i = 0;
-	while (commands && i < commands_number)
+	while (cmds && i < n_cmd)
 	{
-		commands[i] = make_command(commands_to_parse[i]);
-		if (commands[i].error)
+		cmds[i] = make_cmd(cmds_str[i]);
+		if (cmds[i].error)
 		{
-			free_commands(commands);
+			free_cmds(cmds);
 			return (NULL);
 		}
 		i++;
 	}
-	commands[i].error = 1;
-	ft_strarray_free(commands_to_parse);
-	return (commands);
+	cmds[i].error = 1;
+	ft_strarray_free(cmds_str);
+	return (cmds);
 }
