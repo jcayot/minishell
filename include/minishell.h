@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:24:24 by jcayot            #+#    #+#             */
-/*   Updated: 2024/02/27 14:24:26 by jcayot           ###   ########.fr       */
+/*   Updated: 2024/03/04 18:17:47 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ typedef struct	s_shell_command
 
 t_shell_command	*parse_input(char *input);
 void *free_commands(t_shell_command *commands);
+void    print_all(t_shell_command *commands);
 
 #endif //MINISHELL_H

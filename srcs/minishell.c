@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:24:05 by jcayot            #+#    #+#             */
-/*   Updated: 2024/02/27 14:24:08 by jcayot           ###   ########.fr       */
+/*   Updated: 2024/03/05 15:36:16 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,11 @@ int	minishell(void)
 			break ;
 		add_history(input);
 		commands = parse_input(input);
-		free_commands(commands);
+		if (commands)
+		{
+			print_all(commands);
+			free_commands(commands);
+		}
 		free(input);
 	}
 	return (EXIT_SUCCESS);
@@ -36,3 +40,5 @@ int	main(void)
 {
 	return (minishell());
 }
+
+// grep "pattern" < inut.txt | sort | uniq > output.txt: cat << EOL, funny testline
