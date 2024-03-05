@@ -12,47 +12,21 @@
 
 #include <minishell_parsing.h>
 
-size_t	wordlen(char *str, char separator)
-{
-	size_t	i;
-	char	quote;
-
-	i = 0;
-	quote = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'' || str[i] == '"')
-		{
-			quote = str[i];
-			while (str[i] && str[i] != quote)
-				i++;
-			quote = 0;
-		}
-		else if (str[i] == separator)
-			break ;
-		else if (ft_strchr("<>", str[i]))
-			return (0);
-		else
-			i++;
-	}
-	return (i);
-}
-
-t_list	*extract_symbol(char *command_to_parse, char *symbol, t_list *(*item_maker)(char *))
+t_list	*extract_symbol(char *command_str, char *symbol, t_list *(*item_maker)(char *))
 {
 	t_list	*item;
 	char	*data;
-	int 	i;
-	int 	l;
+	int		i;
+	int		l;
 
 	i = 0;
-	i += ft_strlen(symbol);
-	while (ft_isspace(command_to_parse[i]))
+	i += (int) ft_strlen(symbol);
+	while (ft_isspace(command_str[i]))
 		i++;
-	l = wordlen(command_to_parse + i, ' ');
+	l = (int) ft_wordlen(command_str + i, ' ');
 	if (l == 0)
 		return (NULL);
-	data = ft_substr(command_to_parse + i, 0, l);
+	data = ft_substr(command_str + i, 0, l);
 	if (!data)
 		return (NULL);
 	item = item_maker(data);
@@ -61,30 +35,32 @@ t_list	*extract_symbol(char *command_to_parse, char *symbol, t_list *(*item_make
 		free(data);
 		return (NULL);
 	}
-	ft_memmove(command_to_parse, command_to_parse + l + i, ft_strlen(command_to_parse + l));
-	command_to_parse[l] = 0;
+	ft_memmove(command_str, command_str + l + i, ft_strlen(command_str + l));
+	command_str[l] = 0;
 	return (item);
 }
 
-t_list	**extract_symbols(char *command_to_parse, char **symbols, t_list  *(*item_maker[2]) (char *), void (*del)(void*))
+t_list	**extract_symbols(char *command_str, char **symbols, t_list *(**item_maker)(char *))
 {
 	t_list	**extracted;
 	t_list	*item;
-	int 	i;
+	int		i;
 
 	extracted = malloc(sizeof (t_list *));
+	if (!extracted)
+		return (NULL);
 	*extracted = NULL;
-	while (*command_to_parse)
+	while (*command_str)
 	{
 		i = 0;
-		while (i < 2)
+		while (symbols[i])
 		{
-			if (ft_strncmp(command_to_parse, symbols[i], ft_strlen(symbols[i])) == 0)
+			if (ft_strncmp(command_str, symbols[i], ft_strlen(symbols[i])) == 0)
 			{
-				item = extract_symbol(command_to_parse, symbols[i], item_maker[i]);
+				item = extract_symbol(command_str, symbols[i], item_maker[i]);
 				if (!item)
 				{
-					ft_lstclear(extracted, del);
+					ft_lstclear(extracted, &free_inout);
 					free(extracted);
 					return (NULL);
 				}
@@ -92,7 +68,7 @@ t_list	**extract_symbols(char *command_to_parse, char **symbols, t_list  *(*item
 			}
 			i++;
 		}
-		command_to_parse++;
+		command_str++;
 	}
 	return (extracted);
 }
@@ -100,7 +76,7 @@ t_list	**extract_symbols(char *command_to_parse, char **symbols, t_list  *(*item
 int	get_command_inout(t_shell_command *command, char *command_to_parse)
 {
 	char	*symbols[3];
-	t_list	*(*item_makers[3]) (char *);
+	t_list	*(*item_makers[3])(char *);
 
 	symbols[0] = "<<";
 	symbols[1] = "<";
@@ -108,12 +84,12 @@ int	get_command_inout(t_shell_command *command, char *command_to_parse)
 	item_makers[1] = &make_inout_file;
 	item_makers[2] = NULL;
 	symbols[2] = NULL;
-	command -> inputs = extract_symbols(command_to_parse, symbols, item_makers, &free_inout);
+	command -> inputs = extract_symbols(command_to_parse, symbols, item_makers);
 	if (!command -> inputs)
 		return (0);
 	symbols[0] = ">>";
 	symbols[1] = ">";
-	command -> outputs = extract_symbols(command_to_parse, symbols, item_makers, &free_inout);
+	command -> outputs = extract_symbols(command_to_parse, symbols, item_makers);
 	if (!command -> outputs)
 	{
 		ft_lstclear(command -> inputs, &free_inout);

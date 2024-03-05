@@ -1,6 +1,14 @@
-//
-// Created by Jules Cayot on 3/2/24.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lstmakers.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/05 16:34:59 by jcayot            #+#    #+#             */
+/*   Updated: 2024/03/05 16:35:02 by jcayot           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <minishell_parsing.h>
 
@@ -46,4 +54,3 @@ void	free_inout(void *data)
 	if (input -> delimiter)
 		free(input -> delimiter);
 }
-

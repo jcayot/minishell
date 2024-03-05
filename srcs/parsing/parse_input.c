@@ -6,13 +6,13 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:57:56 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/05 14:38:40 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/05 16:35:54 by jcayot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell_parsing.h>
 
-void *free_commands(t_shell_command *commands)
+void	*free_commands(t_shell_command *commands)
 {
 	int	i;
 
@@ -58,7 +58,7 @@ t_shell_command	*parse_input(char *input)
 	commands_to_parse = ft_split(input, '|');
 	if (!commands_to_parse)
 		return (NULL);
-	commands_number = ft_strarray_len(commands_to_parse);
+	commands_number = (int) ft_strarray_len(commands_to_parse);
 	commands = malloc((commands_number + 1) * sizeof (t_shell_command));
 	i = 0;
 	while (commands && i < commands_number)
