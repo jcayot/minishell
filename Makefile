@@ -14,7 +14,8 @@ PARSING_DIR		:= $(SRCS_DIR)/parsing
 SRCS			:= $(SRCS_DIR)/minishell.c \
 					$(PARSING_DIR)/parse_input.c \
 					$(PARSING_DIR)/get_command_inout.c \
-					$(PARSING_DIR)/lstmakers.c
+					$(PARSING_DIR)/lstmakers.c \
+					$(SRCS_DIR)/tests/tools.c
 
 OBJS			:= ${SRCS:.c=.o}
 
