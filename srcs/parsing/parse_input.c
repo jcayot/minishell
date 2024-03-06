@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:57:56 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/05 16:35:54 by jcayot           ###   ########.fr       */
+/*   Updated: 2024/03/06 14:53:43 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_shell_cmd	make_cmd(char *cmd_str)
 	cmd.error = 1;
 	if (!get_cmd_inout(&cmd, cmd_str))
 		return (cmd);
-	cmd.splitted_command = ft_split(cmd_str, ' ');
+	cmd.splitted_command = ft_modsplit(cmd_str, ' ');
 	if (!cmd.splitted_command)
 	{
 		ft_lstclear(cmd.inputs, &free_inout);
@@ -55,7 +55,7 @@ t_shell_cmd	*parse_input(char *input)
 	int			n_cmd;
 	int			i;
 
-	cmds_str = ft_split(input, '|');
+	cmds_str = ft_modsplit(input, '|');
 	if (!cmds_str)
 		return (NULL);
 	n_cmd = (int) ft_strarray_len(cmds_str);

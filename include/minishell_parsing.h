@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:33:20 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/05 18:21:28 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/06 14:52:05 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@ t_list	*make_in_delimiter(char *delimiter);
 void	free_inout(void *data);
 size_t	ft_wordlen(char *str, char end);
 void	*free_list(t_list **extracted);
+char	**ft_modsplit(char const *s, char c);
 
 #endif //MINISHELL_PARSING_H
