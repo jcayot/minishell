@@ -16,18 +16,18 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <libft.h>
 
-typedef struct s_inout
+typedef struct s_duck
 {
-	char	*file;
-	char	*delimiter;
-	int		mode;
-}	t_inout;
+	char	*duck_name;
+	int		beak_flag;
+}	t_duck;
 
-typedef struct s_shell_command
+typedef struct s_shell_cmd
 {
 	t_list	**inputs;
 	t_list	**outputs;

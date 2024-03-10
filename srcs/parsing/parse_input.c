@@ -19,8 +19,8 @@ void	*free_cmds(t_shell_cmd *cmds)
 	i = 0;
 	while (!cmds[i].error)
 	{
-		ft_lstclear(cmds[i].inputs, &free_inout);
-		ft_lstclear(cmds[i].outputs, &free_inout);
+		ft_lstclear(cmds[i].inputs, &free_duck);
+		ft_lstclear(cmds[i].outputs, &free_duck);
 		free(cmds[i].inputs);
 		free(cmds[i].outputs);
 		ft_strarray_free(cmds[i].splitted_command);
@@ -40,8 +40,8 @@ t_shell_cmd	make_cmd(char *cmd_str)
 	cmd.splitted_command = ft_modsplit(cmd_str, ' ');
 	if (!cmd.splitted_command)
 	{
-		ft_lstclear(cmd.inputs, &free_inout);
-		ft_lstclear(cmd.outputs, &free_inout);
+		ft_lstclear(cmd.inputs, &free_duck);
+		ft_lstclear(cmd.outputs, &free_duck);
 		return (cmd);
 	}
 	cmd.error = 0;
@@ -71,7 +71,8 @@ t_shell_cmd	*parse_input(char *input)
 		}
 		i++;
 	}
-	cmds[i].error = 1;
+	if (cmds)
+		cmds[i].error = 1;
 	ft_strarray_free(cmds_str);
 	return (cmds);
 }

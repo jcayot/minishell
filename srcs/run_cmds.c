@@ -17,14 +17,82 @@ int run_cmd(t_shell_cmd cmd, int in, int out)
 
 }
 
+int put_file_error(char *file, int error)
+{
+	ft_putstr_fd("-minishell: ", 2);
+	ft_putstr_fd(file, 2);
+	ft_putstr_fd(": ", 2);
+	if (error == F_OK)
+		ft_putstr_fd("No such file or directory\n", 2);
+	else if (error == R_OK)
+		ft_putstr_fd("Permission denied\n", 2);
+	else if (error == W_OK)
+		ft_putstr_fd("Permission denied\n", 2);
+	else
+		ft_putstr_fd("Unexpected error opening file\n", 2);
+	return (-1);
+}
+
+int open_put_error(char *file, int oflag) //GROS G
+{
+	int fd;
+
+	fd = open(file, oflag);
+	if (fd != -1)
+		return (fd);
+	if ((oflag & O_RDONLY) != 0)
+	{
+		if (access(file, F_OK) == -1)
+			return (put_file_error(file, F_OK));
+		else if (access(file, R_OK) == -1)
+			return (put_file_error(file, R_OK));
+	}
+	if ((oflag & O_WRONLY) != 0)
+		return (put_file_error(file, W_OK));
+	else
+		return (put_file_error(file, INT_MAX));
+}
+
+int open_ducks(t_list **ducks)
+{
+	t_duck	duck_item;
+	int		fd;
+
+	fd = -1;
+	while ((*ducks))
+	{
+		duck_item = *((t_duck *) (*ducks) -> content);
+		if (fd != -1)
+			close(fd);
+		if (((t_duck *) (*ducks) -> content) -> beak_flag != O_APPEND)
+			fd = open_put_error(duck_item.duck_name, duck_item.beak_flag);
+		else
+		{
+			//GROS G
+		}
+		if (fd == -1)
+			return (-1);
+		*ducks = (*ducks) -> next;
+	}
+	return (fd);
+}
+
 int run_cmds(t_shell_cmd *cmds)
 {
 	int i;
+	int in;
+	int out;
 
 	i= 0;
 	while (!cmds[i].error)
 	{
-		run_cmd(cmds[i]);
+		in = open_ducks(cmds[i].inputs);
+		if (in == -1)
+			return (0);
+		out = open_ducks(cmds[i].outputs);
+		if (out == -1)
+			return (close(in) == 1);
+		run_cmd(cmds[i], in, out);
 		i++;
 	}
 	return (1);

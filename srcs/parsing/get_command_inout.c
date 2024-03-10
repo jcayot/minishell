@@ -12,7 +12,44 @@
 
 #include <minishell_parsing.h>
 
-t_list	*get_symbol(char *cmd_str, char *symbol, t_list *(*maker)(char *))
+void	free_duck(void *data)
+{
+	t_duck	*input;
+
+	input = (t_duck *) data;
+	if (input -> duck_name)
+		free(input -> duck_name);
+}
+
+t_list	*make_duck(char *file, char *symbol)
+{
+	t_list	*item;
+	t_duck	*data;
+
+	data = malloc(sizeof (t_duck));
+	if (!data)
+		return (NULL);
+	data -> duck_name = file;
+	if (ft_strncmp(symbol, "<<", 2) == 0)
+		data -> beak_flag = O_APPEND;
+	else if (ft_strncmp(symbol, ">>", 2) == 0)
+		data -> beak_flag = O_APPEND | O_WRONLY;
+	else if (ft_strncmp(symbol, "<", 1) == 0)
+		data -> beak_flag = O_RDONLY;
+	else if (ft_strncmp(symbol, ">", 1) == 0)
+		data -> beak_flag = O_CREAT | O_WRONLY;
+	else
+	{
+		free(data);
+		return (NULL);
+	}
+	item = ft_lstnew(data);
+	if (!item)
+		free(data);
+	return (item);
+}
+
+t_list	*get_symbol(char *cmd_str, char *symbol)
 {
 	t_list	*item;
 	char	*data;
@@ -23,13 +60,13 @@ t_list	*get_symbol(char *cmd_str, char *symbol, t_list *(*maker)(char *))
 	i += (int) ft_strlen(symbol);
 	while (ft_isspace(cmd_str[i]))
 		i++;
-	l = (int) ft_wordlen(cmd_str + i, ' ');
-	if (l == 0)
+	l = (int) sub_strlen(cmd_str + i, ' ');
+	if (l == 0) //TO DO CHECK NEXT DUCK
 		return (NULL);
 	data = ft_substr(cmd_str + i, 0, l);
 	if (!data)
 		return (NULL);
-	item = maker(data);
+	item = make_duck(data, symbol);
 	if (!item)
 	{
 		free(data);
@@ -40,7 +77,7 @@ t_list	*get_symbol(char *cmd_str, char *symbol, t_list *(*maker)(char *))
 	return (item);
 }
 
-t_list	**get_symbols(char *cmd_str, char **symbols, t_list *(**maker)(char *))
+t_list	**get_symbols(char *cmd_str, char **symbols)
 {
 	t_list	**extracted;
 	t_list	*item;
@@ -57,7 +94,7 @@ t_list	**get_symbols(char *cmd_str, char **symbols, t_list *(**maker)(char *))
 		{
 			if (ft_strncmp(cmd_str, symbols[i], ft_strlen(symbols[i])) == 0)
 			{
-				item = get_symbol(cmd_str, symbols[i], maker[i]);
+				item = get_symbol(cmd_str, symbols[i]);
 				if (!item)
 					return (free_list(extracted));
 				ft_lstadd_back(extracted, item);
@@ -72,23 +109,19 @@ t_list	**get_symbols(char *cmd_str, char **symbols, t_list *(**maker)(char *))
 int	get_cmd_inout(t_shell_cmd *cmd, char *cmd_str)
 {
 	char	*symbols[3];
-	t_list	*(*item_makers[3])(char *);
 
 	symbols[0] = "<<";
 	symbols[1] = "<";
-	item_makers[0] = &make_in_delimiter;
-	item_makers[1] = &make_inout_file;
-	item_makers[2] = NULL;
 	symbols[2] = NULL;
-	cmd -> inputs = get_symbols(cmd_str, symbols, item_makers);
+	cmd -> inputs = get_symbols(cmd_str, symbols);
 	if (!cmd -> inputs)
 		return (0);
 	symbols[0] = ">>";
 	symbols[1] = ">";
-	cmd -> outputs = get_symbols(cmd_str, symbols, item_makers);
+	cmd -> outputs = get_symbols(cmd_str, symbols);
 	if (!cmd -> outputs)
 	{
-		ft_lstclear(cmd -> inputs, &free_inout);
+		ft_lstclear(cmd -> inputs, &free_duck);
 		free(cmd -> inputs);
 		return (0);
 	}

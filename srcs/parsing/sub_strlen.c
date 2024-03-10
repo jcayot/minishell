@@ -12,26 +12,25 @@
 
 #include <minishell_parsing.h>
 
-size_t	ft_wordlen(char *str, char end)
+int	sub_strlen(const char *s, char separator)
 {
-	size_t	i;
-	char	quote;
+	int	i;
+	int	flag;
 
+	flag = 0;
 	i = 0;
-	while (str[i])
+	while (s[i] && s[i] != separator)
 	{
-		if (str[i] == '\'' || str[i] == '"')
+		if ((s[i] == 39 || s[i] == 34) && !flag)
 		{
-			quote = str[i];
-			while (str[i] && str[i] != quote)
-				i++;
-		}
-		else if (str[i] == end)
-			break ;
-		else if (ft_strchr("<>", str[i]))
-			return (0);
-		else
+			flag = s[i];
 			i++;
+			while (s[i] != flag && s[i])
+				i++;
+			if (!s[i] || s[i] == separator)
+				break ;
+		}
+		i++;
 	}
 	return (i);
 }

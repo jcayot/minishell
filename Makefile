@@ -18,7 +18,7 @@ SRCS			:= $(SRCS_DIR)/minishell.c \
 					$(PARSING_DIR)/get_command_inout.c \
 					$(PARSING_DIR)/lstmakers.c \
 					$(PARSING_DIR)/ft_mod_split.c \
-					$(PARSING_DIR)/ft_wordlen.c \
+					$(PARSING_DIR)/sub_strlen.c \
 					$(TESTS_DIR)/tools.c
 
 OBJS			:= ${SRCS:.c=.o}

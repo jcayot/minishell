@@ -17,7 +17,7 @@ void	print_all(t_shell_cmd *commands)
 	size_t	i;
 	size_t	j;
 	t_list	**node;
-	t_inout	*data;
+	t_duck	*data;
 	
 	i = 0;
 	j = 0;
@@ -31,10 +31,10 @@ void	print_all(t_shell_cmd *commands)
 		while (*node)
 		{
 			printf("Input number : %d\n", (int)j);
-			data = (t_inout *)((*node)->content);
-			printf("\tFile : %s\n", data->file);
+			data = (t_duck *)((*node)->content);
+			printf("\tFile : %s\n", data->duck_name);
 			printf("\tDelimiter : %s\n", data->delimiter);
-			printf("\tMode : %d\n", data->mode);
+			printf("\tMode : %d\n", data->beak_flag);
 			*node = (*node)->next;
 			j++;
 		}
@@ -43,10 +43,10 @@ void	print_all(t_shell_cmd *commands)
 		while (*node)
 		{
 			printf("Output number : %d\n", (int)j);
-			data = (t_inout *)((*node)->content);
-			printf("\tFile : %s\n", data->file);
+			data = (t_duck *)((*node)->content);
+			printf("\tFile : %s\n", data->duck_name);
 			printf("\tDelimiter : %s\n", data->delimiter);
-			printf("\tMode : %d\n", data->mode);
+			printf("\tMode : %d\n", data->beak_flag);
 			*node = (*node)->next;
 			j++;
 		}
