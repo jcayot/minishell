@@ -12,11 +12,6 @@
 
 #include <minishell.h>
 
-int run_cmd(t_shell_cmd cmd, int in, int out)
-{
-
-}
-
 int put_file_error(char *file, int error)
 {
 	ft_putstr_fd("-minishell: ", 2);
@@ -75,17 +70,22 @@ int open_ducks(t_list **ducks, int fd)
 	return (fd);
 }
 
+int run_cmd(t_shell_cmd cmd, int in, int out)
+{
+	static int pipe_fd[2];
+}
+
 int run_cmds(t_shell_cmd *cmds)
 {
-	int i;
-	int in;
-	int out;
+	int	i;
+	int	in;
+	int	out;
 
-	i= 0;
+	i = 0;
 	in = 0;
-	out = 1;
 	while (!cmds[i].error)
 	{
+		out = 1;
 		in = open_ducks(cmds[i].inputs, in);
 		if (in == -1)
 			return (0);
@@ -93,6 +93,7 @@ int run_cmds(t_shell_cmd *cmds)
 		if (out == -1)
 			return (close(in) == 1);
 		run_cmd(cmds[i], in, out);
+		in = out;
 		i++;
 	}
 	return (1);
