@@ -53,16 +53,14 @@ int open_put_error(char *file, int oflag) //GROS G
 		return (put_file_error(file, INT_MAX));
 }
 
-int open_ducks(t_list **ducks)
+int open_ducks(t_list **ducks, int fd)
 {
 	t_duck	duck_item;
-	int		fd;
 
-	fd = -1;
 	while ((*ducks))
 	{
 		duck_item = *((t_duck *) (*ducks) -> content);
-		if (fd != -1)
+		if (fd != 0 && fd != 1)
 			close(fd);
 		if (((t_duck *) (*ducks) -> content) -> beak_flag != O_APPEND)
 			fd = open_put_error(duck_item.duck_name, duck_item.beak_flag);
@@ -84,12 +82,14 @@ int run_cmds(t_shell_cmd *cmds)
 	int out;
 
 	i= 0;
+	in = 0;
+	out = 1;
 	while (!cmds[i].error)
 	{
-		in = open_ducks(cmds[i].inputs);
+		in = open_ducks(cmds[i].inputs, in);
 		if (in == -1)
 			return (0);
-		out = open_ducks(cmds[i].outputs);
+		out = open_ducks(cmds[i].outputs, out);
 		if (out == -1)
 			return (close(in) == 1);
 		run_cmd(cmds[i], in, out);
