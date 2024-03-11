@@ -96,7 +96,7 @@ t_list	**get_symbols(char *cmd_str, char **symbols)
 			{
 				item = get_symbol(cmd_str, symbols[i]);
 				if (!item)
-					return (free_list(extracted));
+					return (free_list(extracted, &free_duck));
 				ft_lstadd_back(extracted, item);
 			}
 			i++;

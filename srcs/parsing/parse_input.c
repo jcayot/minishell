@@ -12,6 +12,13 @@
 
 #include <minishell_parsing.h>
 
+void	*free_list(t_list **lst, void (*del)(void*))
+{
+	ft_lstclear(lst, del);
+	free(lst);
+	return (NULL);
+}
+
 void	*free_cmds(t_shell_cmd *cmds)
 {
 	int	i;
@@ -19,10 +26,8 @@ void	*free_cmds(t_shell_cmd *cmds)
 	i = 0;
 	while (!cmds[i].error)
 	{
-		ft_lstclear(cmds[i].inputs, &free_duck);
-		ft_lstclear(cmds[i].outputs, &free_duck);
-		free(cmds[i].inputs);
-		free(cmds[i].outputs);
+		free_list(cmds[i].inputs, &free_duck);
+		free_list(cmds[i].outputs, &free_duck);
 		ft_strarray_free(cmds[i].splitted_command);
 		i++;
 	}
@@ -40,8 +45,8 @@ t_shell_cmd	make_cmd(char *cmd_str)
 	cmd.splitted_command = ft_modsplit(cmd_str, ' ');
 	if (!cmd.splitted_command)
 	{
-		ft_lstclear(cmd.inputs, &free_duck);
-		ft_lstclear(cmd.outputs, &free_duck);
+		free_list(cmd.inputs, &free_duck);
+		free_list(cmd.outputs, &free_duck);
 		return (cmd);
 	}
 	cmd.error = 0;
