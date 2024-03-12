@@ -70,9 +70,26 @@ int open_ducks(t_list **ducks, int fd)
 	return (fd);
 }
 
-int run_cmd(t_shell_cmd cmd, int in, int out)
+int pipe_and_run(t_shell_cmd cmd, int in, int out)
 {
-	static int pipe_fd[2];
+	int	pipe_fd[2] = {0, 0};
+	pid_t		pid;
+
+	pid = fork();
+	if (out == 1)
+	{
+		pipe(pipe_fd);
+		out = pipe_fd[1];
+	}
+	if (pid == 0)
+	{
+		dup2(in, 0);
+		dup2(out, 1);
+		close(out);
+		execve();
+	}
+	close(out);
+	close()
 }
 
 int run_cmds(t_shell_cmd *cmds)
@@ -92,7 +109,7 @@ int run_cmds(t_shell_cmd *cmds)
 		out = open_ducks(cmds[i].outputs, out);
 		if (out == -1)
 			return (close(in) == 1);
-		run_cmd(cmds[i], in, out);
+		pipe_and_run(cmds[i], in, out);
 		in = out;
 		i++;
 	}
