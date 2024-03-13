@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_parsing.h                                :+:      :+:    :+:   */
+/*   parsing_error.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/05 16:33:20 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/13 18:06:02 by svesa            ###   ########.fr       */
+/*   Created: 2024/03/13 17:42:26 by svesa             #+#    #+#             */
+/*   Updated: 2024/03/13 18:03:21 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_PARSING_H
-# define MINISHELL_PARSING_H
+#include <minishell.h>
 
-# include <minishell.h>
-
-int		get_cmd_inout(t_shell_cmd *cmd, char *cmd_str);
-t_list	*make_duck(char *file, char *symbol);
-void	free_duck(void *data);
-void	*free_list(t_list **lst, void (*del)(void*));
-char	**ft_modsplit(char const *s, char c);
-void    *bad_duck(char saku);
-
-#endif //MINISHELL_PARSING_H
+void    *bad_duck(char saku)
+{
+	ft_putstr_fd("minishell: parse error near: '", 2);
+	ft_putchar_fd(saku, 2); //CHANGE TO PRINT SYMBOL OF SPECIAL CHAR
+	ft_putchar_fd('\'', 2);
+	ft_putendl_fd("", 2);
+	return (NULL);
+}

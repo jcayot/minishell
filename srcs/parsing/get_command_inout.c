@@ -48,6 +48,29 @@ t_list	*make_duck(char *file, char *symbol)
 		free(data);
 	return (item);
 }
+int	check_duck_again(char *cmd_str, int *len)
+{
+	int	i;
+	int flag;
+	
+	i = 0;
+	while (i < *len)
+	{
+		if (cmd_str[i] == 39 || cmd_str[i] == 34)
+		{
+			flag = cmd_str[i++];
+			while (i < *len && cmd_str[i] != flag)
+				i++;
+		}
+		if (cmd_str[i] == '<' || cmd_str[i] == '>')
+		{
+			*len = i;
+			return (0);
+		}
+		i++;	
+	}
+	return (1);
+}
 
 t_list	*get_symbol(char *cmd_str, char *symbol)
 {
@@ -56,22 +79,18 @@ t_list	*get_symbol(char *cmd_str, char *symbol)
 	int		i;
 	int		l;
 
-	i = 0;
-	i += (int) ft_strlen(symbol);
+	i = (int) ft_strlen(symbol);
 	while (ft_isspace(cmd_str[i]))
 		i++;
 	l = (int) sub_strlen(cmd_str + i, ' ');
-	if (l == 0) //TO DO CHECK NEXT DUCK
-		return (NULL);
+	if (l == 0 || check_duck_again(cmd_str + i, &l))
+		return (bad_duck(cmd_str[i + l]));
 	data = ft_substr(cmd_str + i, 0, l);
 	if (!data)
 		return (NULL);
 	item = make_duck(data, symbol);
 	if (!item)
-	{
-		free(data);
-		return (NULL);
-	}
+		return (free(data), NULL);
 	ft_memmove(cmd_str, cmd_str + l + i, ft_strlen(cmd_str + l));
 	cmd_str[l] = 0;
 	return (item);
