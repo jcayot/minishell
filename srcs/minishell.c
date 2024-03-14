@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:24:05 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/05 15:36:16 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/13 18:32:41 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	minishell(void)
 		commands = parse_input(input);
 		if (commands)
 		{
-			run_cmds(commands);
+			print_all(commands);
+			// run_cmds(commands);
 			free_cmds(commands);
 		}
 		free(input);

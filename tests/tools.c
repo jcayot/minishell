@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 17:59:23 by svesa             #+#    #+#             */
-/*   Updated: 2024/03/05 15:36:20 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/12 16:30:36 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	print_all(t_shell_cmd *commands)
 			printf("Input number : %d\n", (int)j);
 			data = (t_duck *)((*node)->content);
 			printf("\tFile : %s\n", data->duck_name);
-			printf("\tDelimiter : %s\n", data->delimiter);
 			printf("\tMode : %d\n", data->beak_flag);
 			*node = (*node)->next;
 			j++;
@@ -45,7 +44,6 @@ void	print_all(t_shell_cmd *commands)
 			printf("Output number : %d\n", (int)j);
 			data = (t_duck *)((*node)->content);
 			printf("\tFile : %s\n", data->duck_name);
-			printf("\tDelimiter : %s\n", data->delimiter);
 			printf("\tMode : %d\n", data->beak_flag);
 			*node = (*node)->next;
 			j++;
