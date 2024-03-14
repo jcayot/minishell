@@ -15,10 +15,12 @@ TESTS_DIR		:= tests
 
 SRCS			:= $(SRCS_DIR)/minishell.c \
 					$(SRCS_DIR)/run_cmds.c \
+					$(SRCS_DIR)/find_command.c \
 					$(PARSING_DIR)/parse_input.c \
 					$(PARSING_DIR)/get_command_inout.c \
 					$(UTILS_DIR)/ft_mod_split.c \
 					$(UTILS_DIR)/sub_strlen.c \
+					$(UTILS_DIR)/fd_utils.c \
 					$(TESTS_DIR)/tools.c
 
 OBJS			:= ${SRCS:.c=.o}

@@ -55,8 +55,7 @@ int open_ducks(t_list **ducks, int fd)
 	while ((*ducks))
 	{
 		duck_item = *((t_duck *) (*ducks) -> content);
-		if (fd != 0 && fd != 1)
-			close(fd);
+		might_close(fd);
 		if (((t_duck *) (*ducks) -> content) -> beak_flag != O_APPEND)
 			fd = open_put_error(duck_item.duck_name, duck_item.beak_flag);
 		else
@@ -70,26 +69,39 @@ int open_ducks(t_list **ducks, int fd)
 	return (fd);
 }
 
-int pipe_and_run(t_shell_cmd cmd, int in, int out)
-{
-	int	pipe_fd[2] = {0, 0};
-	pid_t		pid;
 
-	pid = fork();
-	if (out == 1)
-	{
-		pipe(pipe_fd);
-		out = pipe_fd[1];
-	}
-	if (pid == 0)
-	{
-		dup2(in, 0);
-		dup2(out, 1);
+void	child_run(int in, int out, char *cmd_path, char **splitted_cmd)
+{
+	if (!change_fd(in, 0)) {
 		close(out);
-		execve();
+		exit(EXIT_FAILURE);
 	}
-	close(out);
-	close()
+	if (!change_fd(out, 1))
+		exit(EXIT_FAILURE);
+	execve(cmd_path, splitted_cmd, NULL);
+	exit(EXIT_FAILURE);
+}
+
+int pipe_and_run(t_shell_cmd cmd, int *in, int out)
+{
+	int			pipe_fd[2];
+	pid_t		pid;
+	int 		local_in;
+	char 		*cmd_path;
+
+	local_in = *in;
+	pipe(pipe_fd);
+	if (out == 1)
+		out = pipe_fd[1];
+	*in = pipe_fd[0];
+	cmd_path = find_command(cmd.splitted_command[0]);
+	pid = fork();
+	if (pid == 0)
+		child_run(local_in, out);
+	free(cmd_path);
+	might_close(pipe_fd[1]);
+	might_close(local_in);
+	return (pid);
 }
 
 int run_cmds(t_shell_cmd *cmds)
@@ -109,9 +121,9 @@ int run_cmds(t_shell_cmd *cmds)
 		out = open_ducks(cmds[i].outputs, out);
 		if (out == -1)
 			return (close(in) == 1);
-		pipe_and_run(cmds[i], in, out);
-		in = out;
+		pipe_and_run(cmds[i], &in, out);
 		i++;
 	}
+	might_close(in);
 	return (1);
 }
