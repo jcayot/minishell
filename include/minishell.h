@@ -37,7 +37,7 @@ typedef struct s_shell_cmd
 
 t_shell_cmd	*parse_input(char *input);
 void		*free_cmds(t_shell_cmd *cmds);
-int			run_cmds(t_shell_cmd *cmds);
+int			run_cmds(t_shell_cmd *cmds, int *r_value);
 char		*find_command(char *command, int *error);
 void		print_all(t_shell_cmd *commands);
 int			sub_strlen(const char *s, char separator);

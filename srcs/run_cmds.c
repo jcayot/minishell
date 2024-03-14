@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <minishell.h>
+#include "get_next_line.h"
 
 int put_file_error(char *file, int error)
 {
@@ -48,6 +49,33 @@ int open_put_error(char *file, int oflag) //GROS G
 		return (put_file_error(file, INT_MAX));
 }
 
+int	read_here_doc(char *delimiter) //DO WITH READLINE PROBABLY
+{
+	char	*line;
+	char	*delimiter_ptr;
+	int		pipe_fd[2];
+
+	if (pipe(pipe_fd) == -1)
+		return (-1);
+	delimiter_ptr = NULL;
+	line = get_next_line(0);
+	while (line)
+	{
+		delimiter_ptr = ft_strnstr(line, delimiter, ft_strlen(line));
+		if (delimiter_ptr)
+			write(pipe_fd[1], line, delimiter_ptr - line);
+		else
+			write(pipe_fd[1], line, ft_strlen(line));
+		free(line);
+		if (!delimiter_ptr)
+			line = get_next_line(0);
+		else
+			line = NULL;
+	}
+	close(pipe_fd[1]);
+	return (pipe_fd[0]);
+}
+
 int open_ducks(t_list **ducks, int fd)
 {
 	t_duck	duck_item;
@@ -59,9 +87,7 @@ int open_ducks(t_list **ducks, int fd)
 		if (((t_duck *) (*ducks) -> content) -> beak_flag != O_APPEND)
 			fd = open_put_error(duck_item.duck_name, duck_item.beak_flag);
 		else
-		{
-			//GROS G
-		}
+			fd = read_here_doc(((t_duck *) (*ducks) -> content) -> duck_name);
 		if (fd == -1)
 			return (-1);
 		*ducks = (*ducks) -> next;
@@ -82,7 +108,7 @@ void	child_run(int in, int out, char *cmd_path, char **splitted_cmd)
 	exit(EXIT_FAILURE);
 }
 
-int pipe_and_run(t_shell_cmd cmd, int *in, int out)
+int pipe_and_run(t_shell_cmd cmd, int *in, int out, int *r_value)
 {
 	int			pipe_fd[2];
 	pid_t		pid;
@@ -94,17 +120,21 @@ int pipe_and_run(t_shell_cmd cmd, int *in, int out)
 	if (out == 1)
 		out = pipe_fd[1];
 	*in = pipe_fd[0];
-	cmd_path = find_command(cmd.splitted_command[0]);
-	pid = fork();
-	if (pid == 0)
-		child_run(local_in, out);
-	free(cmd_path);
+	cmd_path = find_command(cmd.splitted_command[0], r_value);
+	pid = -1;
+	if (cmd_path)
+	{
+		pid = fork();
+		if (pid == 0)
+			child_run(local_in, out, cmd_path, cmd.splitted_command);
+		free(cmd_path);
+	}
 	might_close(pipe_fd[1]);
 	might_close(local_in);
 	return (pid);
 }
 
-int run_cmds(t_shell_cmd *cmds)
+int run_cmds(t_shell_cmd *cmds, int *r_value)
 {
 	int	i;
 	int	in;
@@ -121,7 +151,7 @@ int run_cmds(t_shell_cmd *cmds)
 		out = open_ducks(cmds[i].outputs, out);
 		if (out == -1)
 			return (close(in) == 1);
-		pipe_and_run(cmds[i], &in, out);
+		pipe_and_run(cmds[i], &in, out, r_value);
 		i++;
 	}
 	might_close(in);
