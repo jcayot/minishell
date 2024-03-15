@@ -65,11 +65,11 @@ int	check_duck_again(char *cmd_str, int *len)
 		if (cmd_str[i] == '<' || cmd_str[i] == '>')
 		{
 			*len = i;
-			return (0);
+			return (1);
 		}
 		i++;	
 	}
-	return (1);
+	return (0);
 }
 
 t_list	*get_symbol(char *cmd_str, char *symbol)
