@@ -11,13 +11,15 @@ READLINE		:= -lreadline -L ~/.brew/opt/readline/lib
 SRCS_DIR		:= srcs
 PARSING_DIR		:= $(SRCS_DIR)/parsing
 UTILS_DIR		:= $(SRCS_DIR)/utils
+COMMANDS_DIR	:= $(SRCS_DIR)/commands
 TESTS_DIR		:= tests
 
 SRCS			:= $(SRCS_DIR)/minishell.c \
-					$(SRCS_DIR)/run_cmds.c \
-					$(SRCS_DIR)/find_command.c \
+					$(COMMANDS_DIR)/run_cmds.c \
+					$(COMMANDS_DIR)/find_command.c \
 					$(PARSING_DIR)/parse_input.c \
 					$(PARSING_DIR)/get_command_inout.c \
+					$(PARSING_DIR)/parsing_error.c \
 					$(UTILS_DIR)/ft_mod_split.c \
 					$(UTILS_DIR)/sub_strlen.c \
 					$(UTILS_DIR)/fd_utils.c \
