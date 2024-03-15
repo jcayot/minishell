@@ -14,6 +14,7 @@
 
 int	minishell(void)
 {
+	pid_t		*pids;
 	char		*input;
 	t_shell_cmd	*commands;
 
@@ -28,8 +29,9 @@ int	minishell(void)
 		commands = parse_input(input);
 		if (commands)
 		{
-			print_all(commands);
-			// run_cmds(commands);
+			pids = run_cmds(commands);
+			if (pids)
+				free(pids);
 			free_cmds(commands);
 		}
 		free(input);

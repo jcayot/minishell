@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
 
 char	*find_error(char *one, char *two)
 {
@@ -21,49 +21,54 @@ char	*find_error(char *one, char *two)
 	return (NULL);
 }
 
-char	*check_access(char *command, int *error)
+char	*check_access(char *command)
 {
 	if (access(command, X_OK) == 0)
 		return (ft_strdup(command));
 	else if (access(command, F_OK) == 0)
-	{
-		*error = -126;
 		return (find_error("permission denied: ", command));
-	}
 	else
-	{
-		*error = 127;
 		return (find_error("no such file or directory: ", command));
-	}
 }
 
-/*
- * Segfault on getenv fail!
- */
-
-char	*find_command(char *command, int *error)
+char *find_command(char *command, char **paths)
 {
 	char	*command_with_path;
-	char 	**paths;
+	char	*cmd_with_slash;
 
-	paths = ft_split(getenv("PATH"), ':');
 	while (paths && *paths)
 	{
-		command_with_path = ft_strjoin(*paths, command);
-		if (!command_with_path)
-		{
-			*error = -1;
+		cmd_with_slash = ft_strjoin("/", command);
+		if (!cmd_with_slash)
 			return (NULL);
-		}
+		command_with_path = ft_strjoin(*paths, cmd_with_slash);
+		free(cmd_with_slash);
+		if (!command_with_path)
+			return  (NULL);
 		if (access(command_with_path, X_OK) == 0)
 			return (command_with_path);
 		free(command_with_path);
 		paths++;
 	}
 	if (ft_strncmp(command, "./", 2) == 0)
-		return (check_access(command + 2, error));
+		return (check_access(command + 2));
 	if (ft_strchr(command, '/'))
-		return (check_access(command, error));
-	*error = -127;
+		return (check_access(command));
 	return (find_error(command, ": command not found"));
+}
+
+char	*get_path_find_cmd(char *cmd)
+{
+	char	**paths;
+	char	*paths_str;
+	char	*cmd_with_path;
+
+	paths_str = getenv("PATH");
+	if (!paths_str)
+		return (NULL);
+	cmd_with_path = NULL;
+	paths = ft_split(paths_str, ':');
+	if (paths)
+		cmd_with_path = find_command(cmd, paths);
+	return (cmd_with_path);
 }

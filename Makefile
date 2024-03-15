@@ -23,6 +23,7 @@ SRCS			:= $(SRCS_DIR)/minishell.c \
 					$(UTILS_DIR)/ft_mod_split.c \
 					$(UTILS_DIR)/sub_strlen.c \
 					$(UTILS_DIR)/fd_utils.c \
+					$(UTILS_DIR)/ft_cmdsnum.c \
 					$(TESTS_DIR)/tools.c
 
 OBJS			:= ${SRCS:.c=.o}

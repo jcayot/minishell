@@ -20,6 +20,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <libft.h>
+# include <get_next_line.h>
 
 typedef struct s_duck
 {
@@ -37,11 +38,11 @@ typedef struct s_shell_cmd
 
 t_shell_cmd	*parse_input(char *input);
 void		*free_cmds(t_shell_cmd *cmds);
-int			run_cmds(t_shell_cmd *cmds, int *r_value);
-char		*find_command(char *command, int *error);
+pid_t *run_cmds(t_shell_cmd *cmds);
 void		print_all(t_shell_cmd *commands);
+char		*get_path_find_cmd(char *cmd);
 int			sub_strlen(const char *s, char separator);
-
+int			ft_cmdsnum(t_shell_cmd *cmds);
 int			change_fd(int old_fd, int new_fd);
 int			might_close(int fd);
 

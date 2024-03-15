@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "get_next_line.h"
+#include <minishell.h>
 
 int put_file_error(char *file, int error)
 {
@@ -76,7 +75,7 @@ int	read_here_doc(char *delimiter) //DO WITH READLINE PROBABLY
 	return (pipe_fd[0]);
 }
 
-int open_ducks(t_list **ducks, int fd)
+int	open_ducks(t_list **ducks, int fd)
 {
 	t_duck	duck_item;
 
@@ -95,7 +94,6 @@ int open_ducks(t_list **ducks, int fd)
 	return (fd);
 }
 
-
 void	child_run(int in, int out, char *cmd_path, char **splitted_cmd)
 {
 	if (!change_fd(in, 0)) {
@@ -108,7 +106,7 @@ void	child_run(int in, int out, char *cmd_path, char **splitted_cmd)
 	exit(EXIT_FAILURE);
 }
 
-int pipe_and_run(t_shell_cmd cmd, int *in, int out, int *r_value)
+pid_t	pipe_and_run(t_shell_cmd cmd, int *in, int out)
 {
 	int			pipe_fd[2];
 	pid_t		pid;
@@ -120,7 +118,7 @@ int pipe_and_run(t_shell_cmd cmd, int *in, int out, int *r_value)
 	if (out == 1)
 		out = pipe_fd[1];
 	*in = pipe_fd[0];
-	cmd_path = find_command(cmd.splitted_command[0], r_value);
+	cmd_path = get_path_find_cmd(cmd.splitted_command[0]);
 	pid = -1;
 	if (cmd_path)
 	{
@@ -134,26 +132,30 @@ int pipe_and_run(t_shell_cmd cmd, int *in, int out, int *r_value)
 	return (pid);
 }
 
-int run_cmds(t_shell_cmd *cmds, int *r_value)
+pid_t	*run_cmds(t_shell_cmd *cmds)
 {
-	int	i;
-	int	in;
-	int	out;
+	pid_t	*pids;
+	int		i;
+	int		in;
+	int		out;
 
 	i = 0;
 	in = 0;
+	pids = malloc(ft_cmdsnum(cmds) * sizeof (int));
+	if (!pids)
+		return (NULL);
 	while (!cmds[i].error)
 	{
 		out = 1;
 		in = open_ducks(cmds[i].inputs, in);
 		if (in == -1)
-			return (0);
+			break ;
 		out = open_ducks(cmds[i].outputs, out);
 		if (out == -1)
-			return (close(in) == 1);
-		pipe_and_run(cmds[i], &in, out, r_value);
+			break ;
+		pids[i] = pipe_and_run(cmds[i], &in, out);
 		i++;
 	}
 	might_close(in);
-	return (1);
+	return (pids);
 }
