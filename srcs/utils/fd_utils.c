@@ -17,7 +17,7 @@ int	change_fd(int old_fd, int new_fd)
 	int	result;
 
 	result = dup2(old_fd, new_fd);
-	close(old_fd);
+	might_close(old_fd);
 	return (result != -1);
 }
 
