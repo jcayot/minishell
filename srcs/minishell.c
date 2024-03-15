@@ -30,8 +30,10 @@ int	minishell(void)
 		if (commands)
 		{
 			pids = run_cmds(commands);
-			if (pids)
+			if (pids) {
+				wait(NULL);
 				free(pids);
+			}
 			free_cmds(commands);
 		}
 		free(input);

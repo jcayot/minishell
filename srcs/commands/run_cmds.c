@@ -133,8 +133,7 @@ pid_t	pipe_and_run(t_shell_cmd cmd, int *in, int out, int last)
 			child_run(local_in, out, cmd_path, cmd.splitted_command);
 		free(cmd_path);
 	}
-	if (!last)
-		might_close(pipe_fd[1]);
+	might_close(out);
 	might_close(local_in);
 	return (pid);
 }
@@ -163,6 +162,5 @@ pid_t	*run_cmds(t_shell_cmd *cmds)
 		pids[i] = pipe_and_run(cmds[i], &in, out, i == ft_cmdsnum(cmds) - 1);
 		i++;
 	}
-	might_close(in);
 	return (pids);
 }
