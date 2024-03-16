@@ -36,14 +36,17 @@ typedef struct s_shell_cmd
 	int		error;
 }	t_shell_cmd;
 
+//Parsing
 t_shell_cmd	*parse_input(char *input);
 void		*free_cmds(t_shell_cmd *cmds);
-pid_t *run_cmds(t_shell_cmd *cmds);
-void		print_all(t_shell_cmd *commands);
-char		*get_path_find_cmd(char *cmd);
-int			sub_strlen(const char *s, char separator);
+
+//Commands
+pid_t		*run_cmds(t_shell_cmd *cmds);
+void		wait_pids(pid_t *pids, int number);
 int			ft_cmdsnum(t_shell_cmd *cmds);
-int			change_fd(int old_fd, int new_fd);
-int			might_close(int fd);
+
+//Utils
+void		print_all(t_shell_cmd *commands);
+int			sub_strlen(const char *s, char separator);
 
 #endif //MINISHELL_H

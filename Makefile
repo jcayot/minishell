@@ -17,6 +17,8 @@ TESTS_DIR		:= tests
 SRCS			:= $(SRCS_DIR)/minishell.c \
 					$(COMMANDS_DIR)/run_cmds.c \
 					$(COMMANDS_DIR)/find_command.c \
+					$(COMMANDS_DIR)/ducks_handling.c \
+					$(UTILS_DIR)/wait_pids.c \
 					$(PARSING_DIR)/parse_input.c \
 					$(PARSING_DIR)/get_command_inout.c \
 					$(PARSING_DIR)/parsing_error.c \

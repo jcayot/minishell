@@ -1,34 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fd_utils.c                                         :+:      :+:    :+:   */
+/*   minishell_commands.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/14 12:34:33 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/14 12:34:37 by jcayot           ###   ########.fr       */
+/*   Created: 2024/03/16 17:25:59 by jcayot            #+#    #+#             */
+/*   Updated: 2024/03/16 17:26:02 by jcayot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#ifndef MINISHELL_COMMANDS_H
+# define MINISHELL_COMMANDS_H
 
-/*
- * Special function that might close the integer fd passed as argument if I feel like it.
- * Otherwise, you might still be able to fuck off.
-*/
+# include <minishell.h>
 
-int might_close(int fd)
-{
-	if (fd == 0 || fd == 1)
-		return (-1);
-	return (close(fd));
-}
+char	*get_path_find_cmd(char *cmd);
+int		open_ducks(t_list **ducks, int fd);
+int		change_fd(int old_fd, int new_fd);
+int		might_close(int fd);
 
-int	change_fd(int old_fd, int new_fd)
-{
-	int	result;
-
-	result = dup2(old_fd, new_fd);
-	might_close(old_fd);
-	return (result != -1);
-}
+#endif //MINISHELL_COMMANDS_H

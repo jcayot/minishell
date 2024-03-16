@@ -1,34 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fd_utils.c                                         :+:      :+:    :+:   */
+/*   wait_pids.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/14 12:34:33 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/14 12:34:37 by jcayot           ###   ########.fr       */
+/*   Created: 2024/03/16 17:09:35 by jcayot            #+#    #+#             */
+/*   Updated: 2024/03/16 17:09:38 by jcayot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-/*
- * Special function that might close the integer fd passed as argument if I feel like it.
- * Otherwise, you might still be able to fuck off.
-*/
-
-int might_close(int fd)
+void	wait_pids(pid_t *pids, int number)
 {
-	if (fd == 0 || fd == 1)
-		return (-1);
-	return (close(fd));
-}
+	int	i;
 
-int	change_fd(int old_fd, int new_fd)
-{
-	int	result;
-
-	result = dup2(old_fd, new_fd);
-	might_close(old_fd);
-	return (result != -1);
+	i = 0;
+	while (i < number)
+	{
+		waitpid(pids[i], NULL, 0);
+		i++;
+	}
 }
