@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:33:20 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/13 18:06:02 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/16 14:16:58 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_list	*make_duck(char *file, char *symbol);
 void	free_duck(void *data);
 void	*free_list(t_list **lst, void (*del)(void*));
 char	**ft_modsplit(char const *s, char c);
-void    *bad_duck(char saku);
+int		check_duck_again(char *cmd_str, int *len);
+void	*bad_duck(char saku);
 
 #endif //MINISHELL_PARSING_H

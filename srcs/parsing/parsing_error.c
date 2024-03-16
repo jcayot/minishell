@@ -6,16 +6,57 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 17:42:26 by svesa             #+#    #+#             */
-/*   Updated: 2024/03/13 18:03:21 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/16 14:16:03 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void    *bad_duck(char saku)
+int	check_duck_again(char *cmd_str, int *len)
 {
-	ft_putstr_fd("minishell: parse error near: '", 2);
-	ft_putchar_fd(saku, 2); //CHANGE TO PRINT SYMBOL OF SPECIAL CHAR
+	int	i;
+	int	flag;
+
+	i = 0;
+	while (i < *len)
+	{
+		if (cmd_str[i] == 39 || cmd_str[i] == 34)
+		{
+			flag = cmd_str[i++];
+			while (i < *len && cmd_str[i] != flag)
+				i++;
+		}
+		if (cmd_str[i] == '<' || cmd_str[i] == '>')
+		{
+			*len = i;
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+static int	escape_chars(char *str, char c)
+{
+	if (c == '\n' || c == '\0')
+	{
+		ft_strlcpy(str, "newline", 8);
+		return (1);
+	}
+	else
+		return (0);
+}
+//add more escape chars if needed, worked with all inputs like bash xept command <>
+
+void	*bad_duck(char saku)
+{
+	char	str[8];
+
+	ft_putstr_fd("minishell: syntax error near token: '", 2);
+	if (escape_chars(str, saku))
+		ft_putstr_fd(str, 2);
+	else
+		ft_putchar_fd(saku, 2);
 	ft_putchar_fd('\'', 2);
 	ft_putendl_fd("", 2);
 	return (NULL);

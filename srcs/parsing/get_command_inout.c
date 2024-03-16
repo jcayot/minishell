@@ -48,29 +48,6 @@ t_list	*make_duck(char *file, char *symbol)
 		free(data);
 	return (item);
 }
-int	check_duck_again(char *cmd_str, int *len)
-{
-	int	i;
-	int flag;
-	
-	i = 0;
-	while (i < *len)
-	{
-		if (cmd_str[i] == 39 || cmd_str[i] == 34)
-		{
-			flag = cmd_str[i++];
-			while (i < *len && cmd_str[i] != flag)
-				i++;
-		}
-		if (cmd_str[i] == '<' || cmd_str[i] == '>')
-		{
-			*len = i;
-			return (1);
-		}
-		i++;	
-	}
-	return (0);
-}
 
 t_list	*get_symbol(char *cmd_str, char *symbol)
 {
@@ -127,16 +104,16 @@ t_list	**get_symbols(char *cmd_str, char **symbols)
 
 int	get_cmd_inout(t_shell_cmd *cmd, char *cmd_str)
 {
-	char	*symbols[3];
+	char	*symbols[5];
 
 	symbols[0] = "<<";
 	symbols[1] = "<";
-	symbols[2] = NULL;
+	symbols[2] = ">>";
+	symbols[3] = ">";
+	symbols[4] = NULL;
 	cmd -> inputs = get_symbols(cmd_str, symbols);
 	if (!cmd -> inputs)
 		return (0);
-	symbols[0] = ">>";
-	symbols[1] = ">";
 	cmd -> outputs = get_symbols(cmd_str, symbols);
 	if (!cmd -> outputs)
 	{
