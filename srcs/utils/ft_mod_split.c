@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:51:44 by svesa             #+#    #+#             */
-/*   Updated: 2024/03/16 16:43:39 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/16 17:24:00 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,30 +32,32 @@ static int	count_word(char const *s, char separator)
 	}
 	return (n);
 }
-// static int	check_pipes(char const *s)
-// {
-// 	int	i;
-// 	int	flag;
 
-// 	i = 0;
-// 	flag = 0;
-// 	printf("%s\n", s);
-// 	while(ft_isspace(s[i]))
-// 		i++;
-// 	if (s[i] == '|')
-// 		return (1);
-// 	while (s[i])
-// 	{
-// 		if (s[i] == '|')
-// 			flag = 1;
-// 		else if (s[i] == '|' && flag == 1 && s[i - 1] != '|')
-// 			return (1);
-// 		if (!ft_isspace(s[i]))
-// 			flag = 0;
-// 		i++; 
-// 	}
-// 	return (0);
-// }
+static int	check_pipes(char const *s)
+{
+	int	i;
+	int	flag;
+
+	i = 0;
+	flag = 0;
+	while (ft_isspace(s[i]))
+		i++;
+	if (s[i] == '|')
+		return (1);
+	while (s[i])
+	{
+		if (s[i] == '|' && s[i + 1] == '|')
+			i++;
+		else if (s[i] == '|' && flag == 1)
+			return (1);
+		else if (s[i] == '|' || s[i] == '>' || s[i] == '<')
+			flag = 1;
+		else if (!ft_isspace(s[i]) && s[i] != '|')
+			flag = 0;
+		i++;
+	}
+	return (0);
+}
 
 char	**ft_modsplit(char const *s, char c)
 {
