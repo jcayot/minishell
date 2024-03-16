@@ -73,7 +73,7 @@ t_list	*get_symbol(char *cmd_str, char *symbol)
 	return (item);
 }
 
-t_list	**get_symbols(char *cmd_str, char **symbols)
+t_list	**get_symbols(char *cmd_str, char **symbols, int len)
 {
 	t_list	**extracted;
 	t_list	*item;
@@ -86,7 +86,7 @@ t_list	**get_symbols(char *cmd_str, char **symbols)
 	while (*cmd_str)
 	{
 		i = 0;
-		while (symbols[i])
+		while (symbols[i] && i < len)
 		{
 			if (ft_strncmp(cmd_str, symbols[i], ft_strlen(symbols[i])) == 0)
 			{
@@ -111,10 +111,10 @@ int	get_cmd_inout(t_shell_cmd *cmd, char *cmd_str)
 	symbols[2] = ">>";
 	symbols[3] = ">";
 	symbols[4] = NULL;
-	cmd -> inputs = get_symbols(cmd_str, symbols);
+	cmd -> inputs = get_symbols(cmd_str, symbols, 2);
 	if (!cmd -> inputs)
 		return (0);
-	cmd -> outputs = get_symbols(cmd_str, symbols);
+	cmd -> outputs = get_symbols(cmd_str, symbols + 2, 2);
 	if (!cmd -> outputs)
 	{
 		ft_lstclear(cmd -> inputs, &free_duck);
