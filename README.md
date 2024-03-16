@@ -1,5 +1,6 @@
-Usage :
-1 - make
-2 - ./minishell
-3 - bash
-(Don't forget to run step 3 if you want it to work properly! Steps 1 and 2 can be skiped!)
+# Minishell <br />
+## Usage :<br />
+## 1 - make<br />
+## 2 - ./minishell<br />
+## 3 - bash<br />
+## (Don't forget to run step 3 if you want it to work properly! Steps 1 and 2 can be skiped!)<br />
