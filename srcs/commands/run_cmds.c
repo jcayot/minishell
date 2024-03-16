@@ -12,7 +12,7 @@
 
 #include <minishell.h>
 
-int put_file_error(char *file, int error)
+int	put_file_error(char *file, int error)
 {
 	ft_putstr_fd("-minishell: ", 2);
 	ft_putstr_fd(file, 2);
@@ -28,9 +28,9 @@ int put_file_error(char *file, int error)
 	return (-1);
 }
 
-int open_put_error(char *file, int oflag) //GROS G
+int	open_put_error(char *file, int oflag) //GROS G
 {
-	int fd;
+	int	fd;
 
 	if ((oflag & O_CREAT) != 0)
 		fd = open(file, oflag, 420);

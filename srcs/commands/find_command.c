@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 15:51:03 by jcayot            #+#    #+#             */
-/*   Updated: 2024/02/06 17:47:31 by jcayot           ###   ########.fr       */
+/*   Updated: 2024/03/16 13:07:02 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*check_access(char *command)
 		return (find_error("no such file or directory: ", command));
 }
 
-char *find_command(char *command, char **paths)
+char	*find_command(char *command, char **paths)
 {
 	char	*command_with_path;
 	char	*cmd_with_slash;
@@ -44,7 +44,7 @@ char *find_command(char *command, char **paths)
 		command_with_path = ft_strjoin(*paths, cmd_with_slash);
 		free(cmd_with_slash);
 		if (!command_with_path)
-			return  (NULL);
+			return (NULL);
 		if (access(command_with_path, X_OK) == 0)
 			return (command_with_path);
 		free(command_with_path);

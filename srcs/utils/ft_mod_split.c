@@ -6,11 +6,12 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:51:44 by svesa             #+#    #+#             */
-/*   Updated: 2024/03/06 14:54:20 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/16 16:43:39 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+#include <minishell_parsing.h>
 
 static int	count_word(char const *s, char separator)
 {
@@ -31,6 +32,30 @@ static int	count_word(char const *s, char separator)
 	}
 	return (n);
 }
+// static int	check_pipes(char const *s)
+// {
+// 	int	i;
+// 	int	flag;
+
+// 	i = 0;
+// 	flag = 0;
+// 	printf("%s\n", s);
+// 	while(ft_isspace(s[i]))
+// 		i++;
+// 	if (s[i] == '|')
+// 		return (1);
+// 	while (s[i])
+// 	{
+// 		if (s[i] == '|')
+// 			flag = 1;
+// 		else if (s[i] == '|' && flag == 1 && s[i - 1] != '|')
+// 			return (1);
+// 		if (!ft_isspace(s[i]))
+// 			flag = 0;
+// 		i++; 
+// 	}
+// 	return (0);
+// }
 
 char	**ft_modsplit(char const *s, char c)
 {
@@ -39,6 +64,8 @@ char	**ft_modsplit(char const *s, char c)
 	int		i;
 	int		l;
 
+	// if (check_pipes(s))
+	// 	return (bad_duck('|'));
 	n = count_word(s, c);
 	array = (char **) malloc((n + 1) * sizeof (char *));
 	if (array == NULL)
