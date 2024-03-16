@@ -63,6 +63,8 @@ char	*get_path_find_cmd(char *cmd)
 	char	*paths_str;
 	char	*cmd_with_path;
 
+	if (ft_strncmp(cmd, "", 1) == 0)
+		return (NULL);
 	paths_str = getenv("PATH");
 	if (!paths_str)
 		return (NULL);

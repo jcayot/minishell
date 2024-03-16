@@ -78,5 +78,6 @@ pid_t	*run_cmds(t_shell_cmd *cmds)
 		pids[i] = pipe_and_run(cmds[i], &in, out, i == ft_cmdsnum(cmds) - 1);
 		i++;
 	}
+	might_close(in);
 	return (pids);
 }

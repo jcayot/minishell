@@ -48,28 +48,25 @@ int	open_put_error(char *file, int oflag) //GROS G
 		return (put_file_error(file, INT_MAX));
 }
 
-int	read_here_doc(char *delimiter) //DO WITH READLINE PROBABLY
+int	read_here_doc(char *delimiter)
 {
 	char	*line;
-	char	*delimiter_ptr;
 	int		pipe_fd[2];
+	int		is_delimiter;
 
 	if (pipe(pipe_fd) == -1)
 		return (-1);
-	delimiter_ptr = NULL;
 	line = get_next_line(0);
+	is_delimiter = 0;
 	while (line)
 	{
-		delimiter_ptr = ft_strnstr(line, delimiter, ft_strlen(line));
-		if (delimiter_ptr)
-			write(pipe_fd[1], line, delimiter_ptr - line);
-		else
-			write(pipe_fd[1], line, ft_strlen(line));
+		write(pipe_fd[1], line, ft_strlen(line));
+		if (ft_strlen(line) > 1)
+			is_delimiter = ft_strncmp(line, delimiter, ft_strlen(line) - 1) == 0;
 		free(line);
-		if (!delimiter_ptr)
+		line = NULL;
+		if (!is_delimiter)
 			line = get_next_line(0);
-		else
-			line = NULL;
 	}
 	close(pipe_fd[1]);
 	return (pipe_fd[0]);
