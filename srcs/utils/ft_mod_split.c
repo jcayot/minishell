@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:51:44 by svesa             #+#    #+#             */
-/*   Updated: 2024/03/16 17:24:00 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/16 17:48:55 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ char	**ft_modsplit(char const *s, char c)
 	int		i;
 	int		l;
 
-	// if (check_pipes(s))
-	// 	return (bad_duck('|'));
+	if (check_pipes(s))
+		return (bad_duck('|'));
 	n = count_word(s, c);
 	array = (char **) malloc((n + 1) * sizeof (char *));
 	if (array == NULL)

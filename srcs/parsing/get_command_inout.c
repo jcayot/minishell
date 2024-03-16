@@ -69,7 +69,7 @@ t_list	*get_symbol(char *cmd_str, char *symbol)
 	if (!item)
 		return (free(data), NULL);
 	ft_memmove(cmd_str, cmd_str + l + i, ft_strlen(cmd_str + l));
-	cmd_str[l] = 0;
+	cmd_str[l + i + 1] = 0;
 	return (item);
 }
 
@@ -123,3 +123,4 @@ int	get_cmd_inout(t_shell_cmd *cmd, char *cmd_str)
 	}
 	return (1);
 }
+
