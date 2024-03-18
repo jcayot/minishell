@@ -4,9 +4,9 @@ CFLAGS			:= -Wextra -Wall -Werror -Wunreachable-code
 LIBFT			:= ./lib/libft/libft.a
 LIBFT_DIR		:= ./lib/libft
 
-HEADERS			:= -I ./include -I $(LIBFT_DIR) -I ~/.brew/opt/readline/include
+HEADERS			:= -I ./include -I $(LIBFT_DIR)
 
-READLINE		:= -lreadline -L ~/.brew/opt/readline/lib
+READLINE		:= -lreadline
 
 SRCS_DIR		:= srcs
 PARSING_DIR		:= $(SRCS_DIR)/parsing
@@ -36,7 +36,7 @@ all: $(NAME)
 	$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
 
 $(NAME): $(LIBFT) $(OBJS)
-	@$(CC) $(READLINE) $(OBJS) $(LIBFT) $(HEADERS) -o $(NAME)
+	@$(CC) $(OBJS) $(LIBFT) $(HEADERS) -o $(NAME) $(READLINE)
 
 $(LIBFT) :	$(LIBFT_DIR)
 			@$(MAKE) bonus gnl -C $(LIBFT_DIR)

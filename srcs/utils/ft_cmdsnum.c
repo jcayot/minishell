@@ -14,7 +14,7 @@
 
 int	ft_cmdsnum(t_shell_cmd *cmds)
 {
-	int n;
+	int	n;
 
 	n = 0;
 	while (!cmds[n].error)

@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+#include <sys/wait.h>
 # include <libft.h>
 # include <get_next_line.h>
 
@@ -36,13 +37,19 @@ typedef struct s_shell_cmd
 	int		error;
 }	t_shell_cmd;
 
+typedef struct s_pid_launched
+{
+	int		pid_n;
+	pid_t	*pids;
+}	t_pid_launched;
+
 //Parsing
 t_shell_cmd	*parse_input(char *input);
 void		*free_cmds(t_shell_cmd *cmds);
 
 //Commands
-pid_t		*run_cmds(t_shell_cmd *cmds);
-void		wait_pids(pid_t *pids, int number);
+t_pid_launched run_cmds(t_shell_cmd *cmds, int cmd_n);
+void		wait_pids(pid_t *pids, int n);
 int			ft_cmdsnum(t_shell_cmd *cmds);
 
 //Utils

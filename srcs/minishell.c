@@ -14,9 +14,9 @@
 
 int	minishell(void)
 {
-	pid_t		*pids;
-	char		*input;
-	t_shell_cmd	*commands;
+	t_pid_launched	pid_launched;
+	char			*input;
+	t_shell_cmd		*commands;
 
 	rl_bind_key('\t', rl_complete);
 	using_history();
@@ -29,11 +29,11 @@ int	minishell(void)
 		commands = parse_input(input);
 		if (commands)
 		{
-			// print_all(commands);
-			pids = run_cmds(commands);
-			if (pids) {
-				wait_pids(pids, ft_cmdsnum(commands));
-				free(pids);
+			pid_launched = run_cmds(commands, ft_cmdsnum(commands));
+			if (pid_launched.pids)
+			{
+				wait_pids(pid_launched.pids, pid_launched.pid_n);
+				free(pid_launched.pids);
 			}
 			free_cmds(commands);
 		}

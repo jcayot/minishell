@@ -13,13 +13,14 @@
 #include <minishell.h>
 
 /*
- * Special function that might close the integer fd passed as argument if I feel like it.
+ * Special function that might close the integer fd passed as argument
+ * if I feel like it.
  * Otherwise, you might still be able to fuck off.
 */
 
-int might_close(int fd)
+int	might_close(int fd)
 {
-	if (fd == 0 || fd == 1)
+	if (fd <= 1)
 		return (-1);
 	return (close(fd));
 }

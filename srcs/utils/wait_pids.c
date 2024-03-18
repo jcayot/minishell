@@ -12,14 +12,15 @@
 
 #include <minishell.h>
 
-void	wait_pids(pid_t *pids, int number)
+void	wait_pids(pid_t *pids, int n)
 {
 	int	i;
 
 	i = 0;
-	while (i < number)
+	while (i < n)
 	{
-		waitpid(pids[i], NULL, 0);
+		if (pids[i] > 0)
+			waitpid(pids[i], NULL, 0);
 		i++;
 	}
 }

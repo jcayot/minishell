@@ -54,30 +54,31 @@ pid_t	pipe_and_run(t_shell_cmd cmd, int *in, int out, int last)
 	return (pid);
 }
 
-pid_t	*run_cmds(t_shell_cmd *cmds)
+t_pid_launched run_cmds(t_shell_cmd *cmds, int cmd_n)
 {
-	pid_t	*pids;
-	int		i;
+	t_pid_launched	pids_run;
 	int		in;
 	int		out;
 
-	i = 0;
+	pids_run.pid_n = 0;
 	in = 0;
-	pids = malloc(ft_cmdsnum(cmds) * sizeof (int));
-	if (!pids)
-		return (NULL);
-	while (!cmds[i].error)
+	pids_run.pids = malloc(ft_cmdsnum(cmds) * sizeof (pid_t));
+	if (!pids_run.pids)
+		return (pids_run);
+	while (pids_run.pid_n < cmd_n)
 	{
 		out = 1;
-		in = open_ducks(cmds[i].inputs, in);
+		in = open_ducks(cmds[pids_run.pid_n].inputs, in);
 		if (in == -1)
 			break ;
-		out = open_ducks(cmds[i].outputs, out);
+		out = open_ducks(cmds[pids_run.pid_n].outputs, out);
 		if (out == -1)
+		{
+			might_close(in);
 			break ;
-		pids[i] = pipe_and_run(cmds[i], &in, out, i == ft_cmdsnum(cmds) - 1);
-		i++;
+		}
+		pids_run.pids[pids_run.pid_n] = pipe_and_run(cmds[pids_run.pid_n], &in, out, pids_run.pid_n == ft_cmdsnum(cmds) - 1);
+		pids_run.pid_n++;
 	}
-	might_close(in);
-	return (pids);
+	return (pids_run);
 }
