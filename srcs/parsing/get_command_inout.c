@@ -12,13 +12,14 @@
 
 #include <minishell_parsing.h>
 
-void	free_duck(void *data)
+void	free_duck(void *void_duck)
 {
-	t_duck	*input;
+	t_duck	*duck;
 
-	input = (t_duck *) data;
-	if (input -> duck_name)
-		free(input -> duck_name);
+	duck = (t_duck *) void_duck;
+	if (duck -> duck_name)
+		free(duck -> duck_name);
+	free(duck);
 }
 
 t_list	*make_duck(char *file, char *symbol)
