@@ -57,8 +57,8 @@ pid_t	pipe_and_run(t_shell_cmd cmd, int *in, int out, int last)
 t_pid_launched run_cmds(t_shell_cmd *cmds, int cmd_n)
 {
 	t_pid_launched	pids_run;
-	int		in;
-	int		out;
+	int				in;
+	int				out;
 
 	pids_run.pid_n = 0;
 	in = 0;
@@ -77,7 +77,7 @@ t_pid_launched run_cmds(t_shell_cmd *cmds, int cmd_n)
 			might_close(in);
 			break ;
 		}
-		pids_run.pids[pids_run.pid_n] = pipe_and_run(cmds[pids_run.pid_n], &in, out, pids_run.pid_n == ft_cmdsnum(cmds) - 1);
+		pids_run.pids[pids_run.pid_n] = pipe_and_run(cmds[pids_run.pid_n], &in, out, pids_run.pid_n == cmd_n - 1);
 		pids_run.pid_n++;
 	}
 	return (pids_run);
