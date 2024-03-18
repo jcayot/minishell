@@ -71,6 +71,9 @@ char	*get_path_find_cmd(char *cmd)
 	cmd_with_path = NULL;
 	paths = ft_split(paths_str, ':');
 	if (paths)
+	{
 		cmd_with_path = find_command(cmd, paths);
+		ft_strarray_free(paths);
+	}
 	return (cmd_with_path);
 }
