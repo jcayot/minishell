@@ -10,22 +10,29 @@ READLINE		:= -lreadline
 
 SRCS_DIR		:= srcs
 PARSING_DIR		:= $(SRCS_DIR)/parsing
-UTILS_DIR		:= $(SRCS_DIR)/utils
 COMMANDS_DIR	:= $(SRCS_DIR)/commands
+BUILTIN_DIR		:= $(SRCS_DIR)/builtin
+BABIES_DIR		:= $(BUILTIN_DIR)/babies
+GROWNUPS_DIR	:= $(BUILTIN_DIR)/grownups
+UTILS_DIR		:= $(SRCS_DIR)/utils
 TESTS_DIR		:= tests
 
 SRCS			:= $(SRCS_DIR)/minishell.c \
-					$(COMMANDS_DIR)/run_cmds.c \
-					$(COMMANDS_DIR)/find_command.c \
-					$(COMMANDS_DIR)/ducks_handling.c \
-					$(UTILS_DIR)/wait_pids.c \
 					$(PARSING_DIR)/parse_input.c \
 					$(PARSING_DIR)/get_command_inout.c \
 					$(PARSING_DIR)/parsing_error.c \
+					$(COMMANDS_DIR)/run_cmds.c \
+					$(COMMANDS_DIR)/find_command.c \
+					$(COMMANDS_DIR)/ducks_handling.c \
+					$(BABIES_DIR)/echo.c \
+					$(BABIES_DIR)/pwd.c \
+					$(GROWNUPS_DIR)/cd.c \
+					$(GROWNUPS_DIR)/uitgang.c \
 					$(UTILS_DIR)/ft_mod_split.c \
 					$(UTILS_DIR)/sub_strlen.c \
 					$(UTILS_DIR)/fd_utils.c \
 					$(UTILS_DIR)/ft_cmdsnum.c \
+					$(UTILS_DIR)/wait_pids.c \
 					$(TESTS_DIR)/tools.c
 
 OBJS			:= ${SRCS:.c=.o}
