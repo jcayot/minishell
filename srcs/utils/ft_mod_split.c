@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:51:44 by svesa             #+#    #+#             */
-/*   Updated: 2024/03/16 17:48:55 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/23 17:11:39 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,36 @@ static int	check_pipes(char const *s)
 	return (0);
 }
 
+static int	make_split(char **array, char const *s, char c, int n)
+{
+	int	i;
+	int	l;
+
+	i = 0;
+	while (i < n)
+	{
+		l = sub_strlen(s, c);
+		if (l != 0)
+		{
+			if ((*s == '"' || *s == '\'')
+				&& (s[l - 1] == '\'' || s[l - 1] == '"'))
+				array[i] = ft_substr(s + 1, 0, l - 2);
+			else
+				array[i] = ft_substr(s, 0, l);
+			if (array[i] == NULL)
+				return (1);
+			i++;
+		}
+		s += (l + 1);
+	}
+	return (0);
+}
+// open quotes are problem, need better solution
+
 char	**ft_modsplit(char const *s, char c)
 {
 	char	**array;
 	int		n;
-	int		i;
-	int		l;
 
 	if (check_pipes(s))
 		return (bad_duck('|'));
@@ -72,19 +96,7 @@ char	**ft_modsplit(char const *s, char c)
 	array = (char **) malloc((n + 1) * sizeof (char *));
 	if (array == NULL)
 		return (NULL);
-	i = 0;
-	while (i < n)
-	{
-		l = sub_strlen(s, c);
-		if (l != 0)
-		{
-			array[i] = ft_substr(s, 0, l);
-			if (array[i] == NULL)
-				return ((char **) ft_strarray_free(array));
-			i++;
-		}
-		s += (l + 1);
-	}
-	array[i] = NULL;
+	if (make_split(array, s, c, n))
+		return ((char **) ft_strarray_free(array));
 	return (array);
 }
