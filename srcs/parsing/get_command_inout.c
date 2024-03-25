@@ -128,4 +128,3 @@ int	get_cmd_inout(t_shell_cmd *cmd, char *cmd_str)
 	}
 	return (1);
 }
-

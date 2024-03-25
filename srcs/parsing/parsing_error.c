@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 17:42:26 by svesa             #+#    #+#             */
-/*   Updated: 2024/03/16 14:16:03 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/25 15:59:59 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ void	*bad_duck(char saku)
 {
 	char	str[8];
 
-	ft_putstr_fd("minishell: syntax error near token: '", 2);
+	if (saku == '"' || saku == '\'')
+		ft_putstr_fd("minishell: syntax error: open '", 2);
+	else
+		ft_putstr_fd("minishell: syntax error near token: '", 2);
 	if (escape_chars(str, saku))
 		ft_putstr_fd(str, 2);
 	else
