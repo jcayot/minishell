@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:51:44 by svesa             #+#    #+#             */
-/*   Updated: 2024/03/23 17:11:39 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/25 13:52:06 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ static int	make_split(char **array, char const *s, char c, int n)
 		}
 		s += (l + 1);
 	}
+	array[i] = NULL;
 	return (0);
 }
 // open quotes are problem, need better solution
