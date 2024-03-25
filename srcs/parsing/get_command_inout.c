@@ -70,7 +70,11 @@ t_list	*get_symbol(char *cmd_str, char *symbol)
 	if (!item)
 		return (free(data), NULL);
 	ft_memmove(cmd_str, cmd_str + l + i, ft_strlen(cmd_str + l));
-	cmd_str[l + i + 1] = 0;
+	if (l == 1)
+		l += 2;
+	else if (l == 2)
+		l += 1;
+	cmd_str[l] = 0;
 	return (item);
 }
 
