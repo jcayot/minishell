@@ -56,8 +56,4 @@ int			ft_cmdsnum(t_shell_cmd *cmds);
 void		print_all(t_shell_cmd *commands);
 int			sub_strlen(const char *s, char separator);
 
-//Builtin
-int			cd(int n, char *args[]);
-int			uitgang(int	n, char *args[]);
-
 #endif //MINISHELL_H

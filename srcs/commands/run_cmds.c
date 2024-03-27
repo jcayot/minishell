@@ -12,42 +12,49 @@
 
 #include <minishell_commands.h>
 
-pid_t grownups_run(char **splitted_command)
+pid_t	run_builtin(t_shell_runnable runnable)
 {
-	if (ft_strncmp(splitted_command[0], "cd", ft_strlen(splitted_command[0])) == 0)
-		cd(ft_strarray_len(splitted_command), splitted_command);
-	else if (ft_strncmp(splitted_command[0], "exit", ft_strlen(splitted_command[0])) == 0)
-		uitgang(ft_strarray_len(splitted_command), splitted_command);
-	return (0);
+	pid_t	result;
+	int		save_in;
+	int 	save_out;
+
+	save_in = dup(0);
+	save_out = dup(1);
+	change_fd(runnable.in, 0);
+	change_fd(runnable.out, 1);
+	result = runnable.builtin(ft_strarray_len(runnable.args), runnable.args);
+	change_fd(save_in, 0);
+	change_fd(save_out, 1);
+	return (result * -1);
 }
 
-pid_t	child_run(int in, int out, char *cmd_path, char **splitted_cmd)
+pid_t	run_child(t_shell_runnable runnable)
 {
 	pid_t		pid;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		if (!change_fd(in, 0))
+		if (!change_fd(runnable.in, 0))
 		{
-			close(out);
+			close(runnable.out);
 			exit(EXIT_FAILURE);
 		}
-		if (!change_fd(out, 1))
+		if (!change_fd(runnable.out, 1))
 			exit(EXIT_FAILURE);
-		execve(cmd_path, splitted_cmd, NULL);
+		execve(runnable.path, runnable.args, NULL);
 		exit(EXIT_FAILURE);
 	}
-	free(cmd_path);
+	free(runnable.path);
 	return (pid);
 }
 
-pid_t	pipe_and_run(t_shell_cmd cmd, int *in, int out, int last)
+pid_t	pipe_and_make(t_shell_cmd cmd, int *in, int out, int last)
 {
-	int			pipe_fd[2];
-	pid_t		pid;
-	int			local_in;
-	char		*cmd_path;
+	t_shell_runnable	runnable;
+	pid_t				pid;
+	int					pipe_fd[2];
+	int					local_in;
 
 	local_in = *in;
 	if (!last)
@@ -57,16 +64,12 @@ pid_t	pipe_and_run(t_shell_cmd cmd, int *in, int out, int last)
 			out = pipe_fd[1];
 		*in = pipe_fd[0];
 	}
-	cmd_path = get_path_find_cmd(cmd.splitted_command[0]);
+	runnable = make_runnable(cmd.splitted_command, local_in, out);
 	pid = -1;
-	if (cmd_path)
-	{
-		if (ft_strncmp(cmd_path, ":builtin:grownups:", ft_strlen(cmd_path)) == 0)
-			pid = grownups_run(cmd.splitted_command);
-		else
-			pid = child_run(local_in, out, cmd_path, cmd.splitted_command);
-		free(cmd_path);
-	}
+	if (runnable.builtin)
+		pid = run_builtin(runnable);
+	else if (runnable.path)
+		pid = run_child(runnable);
 	might_close(out);
 	might_close(local_in);
 	return (pid);
@@ -95,7 +98,7 @@ t_pid_launched run_cmds(t_shell_cmd *cmds, int cmd_n)
 			might_close(in);
 			break ;
 		}
-		pids_run.pids[pids_run.pid_n] = pipe_and_run(cmds[pids_run.pid_n], &in, out, pids_run.pid_n == cmd_n - 1);
+		pids_run.pids[pids_run.pid_n] = pipe_and_make(cmds[pids_run.pid_n], &in, out, pids_run.pid_n == cmd_n - 1);
 		pids_run.pid_n++;
 	}
 	return (pids_run);

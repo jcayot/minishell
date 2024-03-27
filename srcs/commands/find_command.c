@@ -57,50 +57,40 @@ char	*find_command(char *cmd, char **paths)
 	return (find_error(cmd, ": cmd not found"));
 }
 
-//TODO Might require to replace : by some character forbidden in files/folder names
-char	*find_builtin(char *cmd)
+void	*find_builtin(char *cmd)
 {
-	const char	babies[2][10] = {"echo", "pwd"};
-	const char	grownups[2][10] = {"cd", "uitgang"};
-	int i;
-
-	i = 0;
-	while (i < 2)
-	{
-		if (ft_strncmp(cmd, babies[i], ft_strlen(cmd)) == 0)
-			return (ft_strjoin(":builtin:babies:", cmd));
-		i++;
-	}
-	i = 0;
-	while (i < 2)
-	{
-		if (ft_strncmp(cmd, grownups[i], ft_strlen(cmd)) == 0)
-			return (ft_strjoin(":builtin:grownups:", cmd));
-		i++;
-	}
+	if (ft_strncmp(cmd, "exit", ft_strlen(cmd)) == 0)
+		return (&uitgang);
+	if (ft_strncmp(cmd, "cd", ft_strlen(cmd)) == 0)
+		return (&cd);
+	if (ft_strncmp(cmd, "echo", ft_strlen(cmd)) == 0)
+		return (&echo);
+	if (ft_strncmp(cmd, "pwd", ft_strlen(cmd)) == 0)
+		return (&pwd);
 	return (NULL);
 }
 
-char	*get_path_find_cmd(char *cmd)
+t_shell_runnable	make_runnable(char **splitted_cmd, int in, int out)
 {
-	char	**paths;
-	char	*paths_str;
-	char	*cmd_with_path;
+	t_shell_runnable	runnable;
+	char				**paths;
+	char				*paths_str;
 
-	if (ft_strncmp(cmd, "", 1) == 0)
-		return (NULL);
-	cmd_with_path = find_builtin(cmd);
-	if (cmd_with_path)
-		return (cmd_with_path);
+	runnable.in = in;
+	runnable.out = out;
+	runnable.args = splitted_cmd;
+	runnable.path = NULL;
+	runnable.builtin = find_builtin(splitted_cmd[0]);
+	if (runnable.builtin)
+		return (runnable);
 	paths_str = getenv("PATH");
 	if (!paths_str)
-		return (NULL);
-	cmd_with_path = NULL;
+		return (runnable);
 	paths = ft_split(paths_str, ':');
 	if (paths)
 	{
-		cmd_with_path = find_command(cmd, paths);
+		runnable.path = find_command(splitted_cmd[0], paths);
 		ft_strarray_free(paths);
 	}
-	return (cmd_with_path);
+	return (runnable);
 }
