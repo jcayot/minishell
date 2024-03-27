@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:24:24 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/27 21:20:30 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/27 21:24:44 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void		wait_pids(pid_t *pids, int n);
 int			ft_cmdsnum(t_shell_cmd *cmds);
 
 //Utils
-void		print_all(t_shell_cmd *commands, t_list *env);
+void		print_all(t_shell_cmd *commands);
 int			sub_strlen(const char *s, char separator);
 
 //Builtin
