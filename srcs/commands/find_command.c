@@ -21,24 +21,24 @@ char	*find_error(char *one, char *two)
 	return (NULL);
 }
 
-char	*check_access(char *command)
+char	*check_access(char *cmd)
 {
-	if (access(command, X_OK) == 0)
-		return (ft_strdup(command));
-	else if (access(command, F_OK) == 0)
-		return (find_error("permission denied: ", command));
+	if (access(cmd, X_OK) == 0)
+		return (ft_strdup(cmd));
+	else if (access(cmd, F_OK) == 0)
+		return (find_error("permission denied: ", cmd));
 	else
-		return (find_error("no such file or directory: ", command));
+		return (find_error("no such file or directory: ", cmd));
 }
 
-char	*find_command(char *command, char **paths)
+char	*find_command(char *cmd, char **paths)
 {
 	char	*command_with_path;
 	char	*cmd_with_slash;
 
 	while (paths && *paths)
 	{
-		cmd_with_slash = ft_strjoin("/", command);
+		cmd_with_slash = ft_strjoin("/", cmd);
 		if (!cmd_with_slash)
 			return (NULL);
 		command_with_path = ft_strjoin(*paths, cmd_with_slash);
@@ -50,11 +50,35 @@ char	*find_command(char *command, char **paths)
 		free(command_with_path);
 		paths++;
 	}
-	if (ft_strncmp(command, "./", 2) == 0)
-		return (check_access(command + 2));
-	if (ft_strchr(command, '/'))
-		return (check_access(command));
-	return (find_error(command, ": command not found"));
+	if (ft_strncmp(cmd, "./", 2) == 0)
+		return (check_access(cmd + 2));
+	if (ft_strchr(cmd, '/'))
+		return (check_access(cmd));
+	return (find_error(cmd, ": cmd not found"));
+}
+
+//TODO Might require to replace : by some character forbidden in files/folder names
+char	*find_builtin(char *cmd)
+{
+	const char	babies[2][10] = {"echo", "pwd"};
+	const char	grownups[2][10] = {"cd", "uitgang"};
+	int i;
+
+	i = 0;
+	while (i < 2)
+	{
+		if (ft_strncmp(cmd, babies[i], ft_strlen(cmd)) == 0)
+			return (ft_strjoin(":builtin:babies:", cmd));
+		i++;
+	}
+	i = 0;
+	while (i < 2)
+	{
+		if (ft_strncmp(cmd, grownups[i], ft_strlen(cmd)) == 0)
+			return (ft_strjoin(":builtin:grownups", cmd));
+		i++;
+	}
+	return (NULL);
 }
 
 char	*get_path_find_cmd(char *cmd)
@@ -65,6 +89,9 @@ char	*get_path_find_cmd(char *cmd)
 
 	if (ft_strncmp(cmd, "", 1) == 0)
 		return (NULL);
+	cmd_with_path = find_builtin(cmd);
+	if (cmd_with_path)
+		return (cmd_with_path);
 	paths_str = getenv("PATH");
 	if (!paths_str)
 		return (NULL);
