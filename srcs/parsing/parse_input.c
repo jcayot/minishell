@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:57:56 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/06 14:53:43 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/27 20:00:07 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	*free_cmds(t_shell_cmd *cmds)
 	return (NULL);
 }
 
-t_shell_cmd	make_cmd(char *cmd_str)
+t_shell_cmd	make_cmd(char *cmd_str, t_list *env)
 {
 	t_shell_cmd	cmd;
 
@@ -43,6 +43,7 @@ t_shell_cmd	make_cmd(char *cmd_str)
 	if (!get_cmd_inout(&cmd, cmd_str))
 		return (cmd);
 	cmd.splitted_command = ft_modsplit(cmd_str, ' ');
+	parse_env(cmd.splitted_command, env);
 	if (!cmd.splitted_command)
 	{
 		free_list(cmd.inputs, &free_duck);
@@ -53,7 +54,7 @@ t_shell_cmd	make_cmd(char *cmd_str)
 	return (cmd);
 }
 
-t_shell_cmd	*parse_input(char *input)
+t_shell_cmd	*parse_input(char *input, t_list *env)
 {
 	t_shell_cmd	*cmds;
 	char		**cmds_str;
@@ -68,7 +69,7 @@ t_shell_cmd	*parse_input(char *input)
 	i = 0;
 	while (cmds && i < n_cmd)
 	{
-		cmds[i] = make_cmd(cmds_str[i]);
+		cmds[i] = make_cmd(cmds_str[i], env);
 		if (cmds[i].error)
 		{
 			free_cmds(cmds);

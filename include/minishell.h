@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:24:24 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/04 18:17:47 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/27 21:24:44 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-#include <sys/wait.h>
+# include <sys/wait.h>
 # include <libft.h>
 # include <get_next_line.h>
 
@@ -43,9 +43,15 @@ typedef struct s_pid_launched
 	pid_t	*pids;
 }	t_pid_launched;
 
+//Environment
+int			init_env(t_list **env, char **envp);
+int			parse_env(char **split_cmd, t_list *env);
+char		*get_env(char *str, t_list **env);
+
 //Parsing
-t_shell_cmd	*parse_input(char *input);
+t_shell_cmd	*parse_input(char *input, t_list *env);
 void		*free_cmds(t_shell_cmd *cmds);
+void		*free_list(t_list **lst, void (*del)(void*));
 
 //Commands
 t_pid_launched run_cmds(t_shell_cmd *cmds, int cmd_n);
