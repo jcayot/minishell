@@ -6,29 +6,32 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:24:05 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/16 16:44:12 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/27 20:51:20 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	minishell(void)
+int	minishell(char **envp)
 {
 	t_pid_launched	pid_launched;
 	char			*input;
 	t_shell_cmd		*commands;
+	t_list			*env;
 
 	rl_bind_key('\t', rl_complete);
 	using_history();
+	init_env(&env, envp);
 	while (1)
 	{
 		input = readline("minishell$> ");
 		if (!input)
 			break ;
 		add_history(input);
-		commands = parse_input(input);
+		commands = parse_input(input, env);
 		if (commands)
 		{
+			// print_all(commands, env);
 			pid_launched = run_cmds(commands, ft_cmdsnum(commands));
 			if (pid_launched.pids)
 			{
@@ -39,10 +42,16 @@ int	minishell(void)
 		}
 		free(input);
 	}
+	free_list(&env, free);
 	return (EXIT_SUCCESS);
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
-	return (minishell());
+	if (argc == 1 && argv && envp)
+		return (minishell(envp));
+	else 
+		return(EXIT_FAILURE);
 }
+
+//< apina cat -e | grep -e "macac" > monkemadness

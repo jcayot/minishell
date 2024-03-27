@@ -1,5 +1,5 @@
 NAME			:= minishell
-CFLAGS			:= -Wextra -Wall -Werror -Wunreachable-code
+CFLAGS			:= -Wextra -Wall -Werror -Wunreachable-code -g
 
 LIBFT			:= ./lib/libft/libft.a
 LIBFT_DIR		:= ./lib/libft
@@ -15,6 +15,7 @@ BUILTIN_DIR		:= $(SRCS_DIR)/builtin
 BABIES_DIR		:= $(BUILTIN_DIR)/babies
 GROWNUPS_DIR	:= $(BUILTIN_DIR)/grownups
 UTILS_DIR		:= $(SRCS_DIR)/utils
+ENV_DIR			:= $(SRCS_DIR)/env
 TESTS_DIR		:= tests
 
 SRCS			:= $(SRCS_DIR)/minishell.c \
@@ -33,6 +34,7 @@ SRCS			:= $(SRCS_DIR)/minishell.c \
 					$(UTILS_DIR)/fd_utils.c \
 					$(UTILS_DIR)/ft_cmdsnum.c \
 					$(UTILS_DIR)/wait_pids.c \
+					$(ENV_DIR)/env.c \
 					$(TESTS_DIR)/tools.c
 
 OBJS			:= ${SRCS:.c=.o}
