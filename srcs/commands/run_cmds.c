@@ -12,17 +12,34 @@
 
 #include <minishell_commands.h>
 
-void	child_run(int in, int out, char *cmd_path, char **splitted_cmd)
+pid_t grownups_run(char **splitted_command)
 {
-	if (!change_fd(in, 0))
+	if (ft_strncmp(splitted_command[0], "cd", ft_strlen(splitted_command[0])) == 0)
+		cd(ft_strarray_len(splitted_command), splitted_command);
+	else if (ft_strncmp(splitted_command[0], "exit", ft_strlen(splitted_command[0])) == 0)
+		uitgang(ft_strarray_len(splitted_command), splitted_command);
+	return (0);
+}
+
+pid_t	child_run(int in, int out, char *cmd_path, char **splitted_cmd)
+{
+	pid_t		pid;
+
+	pid = fork();
+	if (pid == 0)
 	{
-		close(out);
+		if (!change_fd(in, 0))
+		{
+			close(out);
+			exit(EXIT_FAILURE);
+		}
+		if (!change_fd(out, 1))
+			exit(EXIT_FAILURE);
+		execve(cmd_path, splitted_cmd, NULL);
 		exit(EXIT_FAILURE);
 	}
-	if (!change_fd(out, 1))
-		exit(EXIT_FAILURE);
-	execve(cmd_path, splitted_cmd, NULL);
-	exit(EXIT_FAILURE);
+	free(cmd_path);
+	return (pid);
 }
 
 pid_t	pipe_and_run(t_shell_cmd cmd, int *in, int out, int last)
@@ -44,9 +61,10 @@ pid_t	pipe_and_run(t_shell_cmd cmd, int *in, int out, int last)
 	pid = -1;
 	if (cmd_path)
 	{
-		pid = fork();
-		if (pid == 0)
-			child_run(local_in, out, cmd_path, cmd.splitted_command);
+		if (ft_strncmp(cmd_path, ":builtin:grownups:", ft_strlen(cmd_path)) == 0)
+			pid = grownups_run(cmd.splitted_command);
+		else
+			pid = child_run(local_in, out, cmd_path, cmd.splitted_command);
 		free(cmd_path);
 	}
 	might_close(out);

@@ -48,7 +48,7 @@ int	open_put_error(char *file, int oflag) //GROS G
 		return (put_file_error(file, INT_MAX));
 }
 
-int	read_here_doc(char *delimiter)
+int	read_coin_coin(char *delimiter)
 {
 	char	*line;
 	int		pipe_fd[2];
@@ -83,7 +83,7 @@ int	open_ducks(t_list **ducks, int fd)
 		if (((t_duck *)(*ducks)-> content)-> beak_flag != O_APPEND)
 			fd = open_put_error(duck_item.duck_name, duck_item.beak_flag);
 		else
-			fd = read_here_doc(((t_duck *)(*ducks)-> content)-> duck_name);
+			fd = read_coin_coin(((t_duck *) (*ducks)->content)->duck_name);
 		if (fd == -1)
 			return (-1);
 		*ducks = (*ducks)-> next;
