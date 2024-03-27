@@ -75,7 +75,7 @@ char	*find_builtin(char *cmd)
 	while (i < 2)
 	{
 		if (ft_strncmp(cmd, grownups[i], ft_strlen(cmd)) == 0)
-			return (ft_strjoin(":builtin:grownups", cmd));
+			return (ft_strjoin(":builtin:grownups:", cmd));
 		i++;
 	}
 	return (NULL);
