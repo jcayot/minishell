@@ -12,8 +12,6 @@ SRCS_DIR		:= srcs
 PARSING_DIR		:= $(SRCS_DIR)/parsing
 COMMANDS_DIR	:= $(SRCS_DIR)/commands
 BUILTIN_DIR		:= $(SRCS_DIR)/builtin
-BABIES_DIR		:= $(BUILTIN_DIR)/babies
-GROWNUPS_DIR	:= $(BUILTIN_DIR)/grownups
 UTILS_DIR		:= $(SRCS_DIR)/utils
 ENV_DIR			:= $(SRCS_DIR)/env
 TESTS_DIR		:= tests
@@ -25,10 +23,10 @@ SRCS			:= $(SRCS_DIR)/minishell.c \
 					$(COMMANDS_DIR)/run_cmds.c \
 					$(COMMANDS_DIR)/find_command.c \
 					$(COMMANDS_DIR)/ducks_handling.c \
-					$(BABIES_DIR)/echo.c \
-					$(BABIES_DIR)/pwd.c \
-					$(GROWNUPS_DIR)/cd.c \
-					$(GROWNUPS_DIR)/uitgang.c \
+					$(BUILTIN_DIR)/echo.c \
+					$(BUILTIN_DIR)/pwd.c \
+					$(BUILTIN_DIR)/cd.c \
+					$(BUILTIN_DIR)/uitgang.c \
 					$(UTILS_DIR)/ft_mod_split.c \
 					$(UTILS_DIR)/sub_strlen.c \
 					$(UTILS_DIR)/fd_utils.c \
