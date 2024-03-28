@@ -20,6 +20,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+# include <string.h>
+# include <errno.h>
 # include <libft.h>
 # include <get_next_line.h>
 

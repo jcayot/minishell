@@ -31,7 +31,6 @@ int	minishell(char **envp)
 		commands = parse_input(input, env);
 		if (commands)
 		{
-			// print_all(commands, env);
 			pid_launched = run_cmds(commands, ft_cmdsnum(commands));
 			if (pid_launched.pids)
 			{

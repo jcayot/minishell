@@ -43,6 +43,7 @@ pid_t	run_child(t_shell_runnable runnable)
 		if (!change_fd(runnable.out, 1))
 			exit(EXIT_FAILURE);
 		execve(runnable.path, runnable.args, NULL);
+		perror(strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 	free(runnable.path);
