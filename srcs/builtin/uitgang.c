@@ -49,7 +49,6 @@ static unsigned char	retardedtoi(char *str)
 
 int	uitgang(int	n, char *args[])
 {
-	unsigned char	code;
 	printf("exit\n");
 	if (n > 2)
 		return (127);
