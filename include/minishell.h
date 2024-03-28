@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:24:24 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/27 21:24:44 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/28 13:32:54 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,6 @@ int			ft_cmdsnum(t_shell_cmd *cmds);
 //Utils
 void		print_all(t_shell_cmd *commands);
 int			sub_strlen(const char *s, char separator);
+void		print_env(t_list *env);
 
 #endif //MINISHELL_H

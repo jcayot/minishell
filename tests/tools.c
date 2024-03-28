@@ -6,11 +6,21 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 17:59:23 by svesa             #+#    #+#             */
-/*   Updated: 2024/03/12 16:30:36 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/28 13:34:20 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	print_env(t_list *env)
+{
+	printf("All stored env vars: \n");
+	while (env)
+	{
+		printf("%s\n", (env->content));
+		env = env->next;
+	}
+}
 
 void	print_all(t_shell_cmd *commands)
 {

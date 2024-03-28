@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 13:46:37 by svesa             #+#    #+#             */
-/*   Updated: 2024/03/27 21:18:28 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/28 14:09:52 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,17 @@ int	init_env(t_list **env, char **envp)
 
 char	*get_env(char *str, t_list **env)
 {
-	char	*temp;
 	char	*start;
 
 	start = str;
 	while (*env)
 	{
 		if (!ft_strncmp(str + 1, (*env)->content, ft_strlen(str + 1)))
-		{
-			temp = (*env)->content;
-			temp = ft_substr(temp, ft_strlen(start),
-					ft_strlen(temp) - ft_strlen(start) + 1);
-			ft_lstadd_back(env, ft_lstnew((*env)->content));
-			(*env)->content = temp;
-			return ((char *)((*env)->content));
-		}
+			return ((char *)((*env)->content) + ft_strlen(start));
 		*env = (*env)->next;
 	}
 	return (NULL);
 }
-// 100 leaks here but needs refactoring anyways, also exits dont do shit
 
 int	parse_env(char **split_cmd, t_list *env)
 {
@@ -67,9 +58,12 @@ int	parse_env(char **split_cmd, t_list *env)
 	{
 		if (ft_strchr(split_cmd[i], '$'))
 		{
-			temp = split_cmd[i];
+			temp = get_env(split_cmd[i], &env);
 			free(split_cmd[i]);
-			split_cmd[i] = get_env(split_cmd[i], &env);
+			split_cmd[i] = malloc(sizeof(char) * ft_strlen(temp) + 1);
+			if (!split_cmd[i])
+				return (EXIT_FAILURE);
+			ft_strlcpy(split_cmd[i], temp, ft_strlen(temp) + 1);
 		}
 		i++;
 	}
