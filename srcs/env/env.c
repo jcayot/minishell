@@ -6,11 +6,11 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 13:46:37 by svesa             #+#    #+#             */
-/*   Updated: 2024/03/28 14:09:52 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/29 13:42:52 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
 
 int	init_env(t_list **env, char **envp)
 {
@@ -34,16 +34,21 @@ int	init_env(t_list **env, char **envp)
 	return (EXIT_SUCCESS);
 }
 
-char	*get_env(char *str, t_list **env)
+char	*get_env(char *str, t_list *env)
 {
 	char	*start;
 
 	start = str;
-	while (*env)
+	while (env)
 	{
-		if (!ft_strncmp(str + 1, (*env)->content, ft_strlen(str + 1)))
-			return ((char *)((*env)->content) + ft_strlen(start));
-		*env = (*env)->next;
+		if (str[0] == '$')
+		{
+			if (!ft_strncmp(str + 1, env->content, ft_strlen(start + 1)))
+				return ((char *)(env->content) + ft_strlen(start));
+		}
+		else if (!ft_strncmp(str, env->content, ft_strlen(start)))
+			return ((char *)(env->content) + ft_strlen(start) + 1);
+		env = env->next;
 	}
 	return (NULL);
 }
@@ -58,7 +63,7 @@ int	parse_env(char **split_cmd, t_list *env)
 	{
 		if (ft_strchr(split_cmd[i], '$'))
 		{
-			temp = get_env(split_cmd[i], &env);
+			temp = get_env(split_cmd[i], env);
 			free(split_cmd[i]);
 			split_cmd[i] = malloc(sizeof(char) * ft_strlen(temp) + 1);
 			if (!split_cmd[i])

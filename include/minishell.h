@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:24:24 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/28 13:32:54 by svesa            ###   ########.fr       */
+/*   Updated: 2024/03/29 13:45:52 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_pid_launched
 //Environment
 int			init_env(t_list **env, char **envp);
 int			parse_env(char **split_cmd, t_list *env);
-char		*get_env(char *str, t_list **env);
+char		*get_env(char *str, t_list *env);
 
 //Parsing
 t_shell_cmd	*parse_input(char *input, t_list *env);
