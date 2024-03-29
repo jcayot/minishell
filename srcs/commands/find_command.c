@@ -36,6 +36,10 @@ char	*find_command(char *cmd, char **paths)
 	char	*command_with_path;
 	char	*cmd_with_slash;
 
+	if (ft_strncmp(cmd, "./", 2) == 0)
+		return (check_access(cmd + 2));
+	if (ft_strchr(cmd, '/'))
+		return (check_access(cmd));
 	while (paths && *paths)
 	{
 		cmd_with_slash = ft_strjoin("/", cmd);
@@ -50,10 +54,6 @@ char	*find_command(char *cmd, char **paths)
 		free(command_with_path);
 		paths++;
 	}
-	if (ft_strncmp(cmd, "./", 2) == 0)
-		return (check_access(cmd + 2));
-	if (ft_strchr(cmd, '/'))
-		return (check_access(cmd));
 	return (find_error(cmd, ": cmd not found"));
 }
 
