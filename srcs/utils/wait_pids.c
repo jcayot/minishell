@@ -24,7 +24,9 @@ int wait_pids(pid_t *pids, int n)
 			waitpid(pids[i], &code, 0);
 		i++;
 	}
-	if (pids[i] > 0)
+	if (i == 0)
+		return (1);
+	else if (pids[i - 1] > 0)
 		return (WEXITSTATUS(code));
-	return (pids[i] * -1);
+	return (pids[i - 1] * -1);
 }

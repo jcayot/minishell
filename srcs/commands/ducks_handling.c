@@ -14,11 +14,11 @@
 
 int	put_file_error(char *file, char *str_error)
 {
-	perror("-minishell: ");
-	perror(file);
-	perror(" : ");
-	perror(str_error);
-	perror("\n");
+	ft_putstr_fd("-minishell: ", 2);
+	ft_putstr_fd(file, 2);
+	ft_putstr_fd(" : ", 2);
+	ft_putstr_fd(str_error, 2);
+	ft_putstr_fd("\n", 2);
 	return (-1);
 }
 

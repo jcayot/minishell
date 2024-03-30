@@ -36,6 +36,7 @@ int	minishell(char **envp)
 			if (pid_launched.pids)
 			{
 				r_value = wait_pids(pid_launched.pids, pid_launched.n);
+				printf("%d\n", r_value);
 				free(pid_launched.pids);
 			}
 			free_cmds(commands);

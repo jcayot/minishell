@@ -14,10 +14,10 @@
 
 char	*find_error(char *one, char *two)
 {
-	perror("minishell: ");
-	perror(one);
-	perror(two);
-	perror("");
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(one, 2);
+	ft_putstr_fd(two, 2);
+	ft_putstr_fd("\n", 2);
 	return (NULL);
 }
 
@@ -66,13 +66,13 @@ char	*find_command(char *cmd, char **paths, int *error)
 
 void	*find_builtin(char *cmd)
 {
-	if (ft_strncmp(cmd, "exit", ft_strlen(cmd)) == 0)
+	if (ft_strncmp(cmd, "exit", 5) == 0)
 		return (&uitgang);
-	if (ft_strncmp(cmd, "cd", ft_strlen(cmd)) == 0)
+	if (ft_strncmp(cmd, "cd", 3) == 0)
 		return (&cd);
-	if (ft_strncmp(cmd, "echo", ft_strlen(cmd)) == 0)
+	if (ft_strncmp(cmd, "echo", 5) == 0)
 		return (&echo);
-	if (ft_strncmp(cmd, "pwd", ft_strlen(cmd)) == 0)
+	if (ft_strncmp(cmd, "pwd", 4) == 0)
 		return (&pwd);
 	return (NULL);
 }

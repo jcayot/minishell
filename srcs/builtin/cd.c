@@ -16,16 +16,16 @@ int go_to_path(char *path)
 {
 	if (access(path, F_OK) == -1)
 	{
-		perror("cd: ");
-		perror(path);
-		perror(" : No such file or directory. Please make sure that you're not retarded\n");
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putstr_fd(" : No such file or directory. Please make sure that you're not retarded\n", 2);
 		return (1);
 	}
 	else if (access(path, R_OK) == -1)
 	{
-		perror("cd : ");
-		perror(path);
-		perror(" : Permission denied\n");
+		ft_putstr_fd("cd : ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putstr_fd(" : Permission denied\n", 2);
 		return (1);
 	}
 	return (chdir(path));
@@ -38,7 +38,7 @@ int go_home(void)
 	home_path = getenv("HOME");
 	if (!home_path)
 	{
-		perror("cd: HOME not set you retard\n");
+		ft_putstr_fd("cd: HOME not set you retard\n", 2);
 		return (1);
 	}
 	return (go_to_path(home_path));
@@ -67,7 +67,7 @@ int	cd(int n, char *args[])
 
 	if (n > 2)
 	{
-		perror("cd: too many arguments\n");
+		ft_putstr_fd("cd: too many arguments\n", 2);
 		return (1);
 	}
 	else if (n == 1)
