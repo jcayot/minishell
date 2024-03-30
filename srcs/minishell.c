@@ -49,10 +49,10 @@ int	minishell(char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
+	const int EXIT_SAKU = EXIT_FAILURE;
+
 	if (argc == 1 && argv && envp)
 		return (minishell(envp));
 	else 
-		return(EXIT_FAILURE);
+		return (EXIT_SAKU);
 }
-
-//< apina cat -e | grep -e "macac" > monkemadness
