@@ -14,7 +14,9 @@
 
 static int	exit_error(char *str)
 {
-	printf("exit : %s: numeric argument required\n", str);
+	perror("exit : %s");
+	perror(str);
+	perror(": numeric argument required\n");
 	exit(2);
 }
 
@@ -49,7 +51,7 @@ static unsigned char	retardedtoi(char *str)
 
 int	uitgang(int	n, char *args[])
 {
-	printf("exit\n");
+	perror("exit\n");
 	if (n > 2)
 		return (127);
 	else if (n == 1)

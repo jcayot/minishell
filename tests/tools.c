@@ -17,7 +17,7 @@ void	print_env(t_list *env)
 	printf("All stored env vars: \n");
 	while (env)
 	{
-		printf("%s\n", (env->content));
+		printf("%s\n", (char *)(env->content));
 		env = env->next;
 	}
 }

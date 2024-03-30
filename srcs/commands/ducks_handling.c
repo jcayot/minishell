@@ -12,40 +12,26 @@
 
 #include <minishell_commands.h>
 
-int	put_file_error(char *file, int error)
+int	put_file_error(char *file, char *str_error)
 {
-	ft_putstr_fd("-minishell: ", 2);
-	ft_putstr_fd(file, 2);
-	ft_putstr_fd(": ", 2);
-	if (error == F_OK)
-		ft_putstr_fd("No such file or directory\n", 2);
-	else if (error == R_OK)
-		ft_putstr_fd("Permission denied\n", 2);
-	else if (error == W_OK)
-		ft_putstr_fd("Permission denied\n", 2);
-	else
-		ft_putstr_fd("Unexpected error opening file\n", 2);
+	perror("-minishell: ");
+	perror(file);
+	perror(" : ");
+	perror(str_error);
+	perror("\n");
 	return (-1);
 }
 
-int	open_put_error(char *file, int oflag) //GROS G
+int	open_put_error(char *file, int oflag)
 {
 	int	fd;
+	int error;
 
-	fd = open(file, oflag, 420); //PERMISSION ????
+	fd = open(file, oflag, 420);
 	if (fd != -1)
 		return (fd);
-	if ((oflag & O_RDONLY) != 0)
-	{
-		if (access(file, F_OK) == -1)
-			return (put_file_error(file, F_OK));
-		else if (access(file, R_OK) == -1)
-			return (put_file_error(file, R_OK));
-	}
-	if ((oflag & O_WRONLY) != 0)
-		return (put_file_error(file, W_OK));
-	else
-		return (put_file_error(file, INT_MAX));
+	error = errno;
+	return (put_file_error(file, strerror(error)));
 }
 
 int	read_coin_coin(char *delimiter)
@@ -89,4 +75,18 @@ int	open_ducks(t_list **ducks, int fd)
 		*ducks = (*ducks)-> next;
 	}
 	return (fd);
+}
+
+int open_inout(t_list **in_ducks, t_list **out_ducks, int *inout)
+{
+	inout[0] = open_ducks(in_ducks, inout[0]);
+	if (inout[0] == -1)
+		return (0);
+	inout[1] = open_ducks(out_ducks, 1);
+	if (inout[1] == -1)
+	{
+		might_close(inout[0]);
+		return (0);
+	}
+	return (1);
 }

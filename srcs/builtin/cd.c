@@ -10,14 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
 
 int go_to_path(char *path)
 {
 	if (access(path, F_OK) == -1)
-		return (printf("cd: %s: No such file or directory. Please make sure that you're not retarded\n", path) != -2);
+	{
+		perror("cd: ");
+		perror(path);
+		perror(" : No such file or directory. Please make sure that you're not retarded\n");
+		return (1);
+	}
 	else if (access(path, R_OK) == -1)
-		return (printf("cd : %s: : Permission denied\n", path) != -2);
+	{
+		perror("cd : ");
+		perror(path);
+		perror(" : Permission denied\n");
+		return (1);
+	}
 	return (chdir(path));
 }
 
@@ -27,7 +37,10 @@ int go_home(void)
 
 	home_path = getenv("HOME");
 	if (!home_path)
-		return (printf("cd: HOME not set you retard\n") != -2);
+	{
+		perror("cd: HOME not set you retard\n");
+		return (1);
+	}
 	return (go_to_path(home_path));
 }
 
@@ -53,7 +66,10 @@ int	cd(int n, char *args[])
 	char	*path;
 
 	if (n > 2)
-		return (printf("cd: too many arguments\n") != -2);
+	{
+		perror("cd: too many arguments\n");
+		return (1);
+	}
 	else if (n == 1)
 		return (go_home());
 	else {

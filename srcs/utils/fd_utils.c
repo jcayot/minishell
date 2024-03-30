@@ -33,3 +33,17 @@ int	change_fd(int old_fd, int new_fd)
 	might_close(old_fd);
 	return (result != -1);
 }
+
+int	save_inout(int *save_dest)
+{
+	save_dest[0] = dup(0);
+	if (save_dest[0] == -1)
+		return (0);
+	save_dest[1] = dup(1);
+	if (save_dest[1] == -1)
+	{
+		close(save_dest[0]);
+		return (0);
+	}
+	return (1);
+}

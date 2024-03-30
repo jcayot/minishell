@@ -17,15 +17,15 @@
 
 typedef struct s_shell_runnable
 {
-	int in;
-	int out;
+	int		in;
+	int		out;
 	char	*path;
 	pid_t	((*builtin)(int, char**));
 	char	**args;
 }	t_shell_runnable;
 
-t_shell_runnable	make_runnable(char **splitted_cmd, int in, int out);
-int					open_ducks(t_list **ducks, int fd);
+t_shell_runnable	make_runnable(char **splitted_cmd, int *inout, int *error);
+int					open_inout(t_list **in_ducks, t_list **out_ducks, int *inout);
 int					change_fd(int old_fd, int new_fd);
 int					might_close(int fd);
 

@@ -41,7 +41,7 @@ typedef struct s_shell_cmd
 
 typedef struct s_pid_launched
 {
-	int		pid_n;
+	int		n;
 	pid_t	*pids;
 }	t_pid_launched;
 
@@ -57,12 +57,14 @@ void		*free_list(t_list **lst, void (*del)(void*));
 
 //Commands
 t_pid_launched run_cmds(t_shell_cmd *cmds, int cmd_n);
-void		wait_pids(pid_t *pids, int n);
+int wait_pids(pid_t *pids, int n);
 int			ft_cmdsnum(t_shell_cmd *cmds);
 
 //Utils
 void		print_all(t_shell_cmd *commands);
 int			sub_strlen(const char *s, char separator);
 void		print_env(t_list *env);
+int			save_inout(int *save_dest);
+int			minierror(char *str_error);
 
 #endif //MINISHELL_H

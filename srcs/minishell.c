@@ -18,6 +18,7 @@ int	minishell(char **envp)
 	char			*input;
 	t_shell_cmd		*commands;
 	t_list			*env;
+	int 			r_value;
 
 	rl_bind_key('\t', rl_complete);
 	using_history();
@@ -34,7 +35,7 @@ int	minishell(char **envp)
 			pid_launched = run_cmds(commands, ft_cmdsnum(commands));
 			if (pid_launched.pids)
 			{
-				wait_pids(pid_launched.pids, pid_launched.pid_n);
+				r_value = wait_pids(pid_launched.pids, pid_launched.n);
 				free(pid_launched.pids);
 			}
 			free_cmds(commands);
