@@ -22,6 +22,9 @@ int	minishell(char **envp)
 
 	rl_bind_key('\t', rl_complete);
 	using_history();
+	env = ft_lstnew(NULL);
+	if (!env)
+		return (EXIT_FAILURE);
 	init_env(&env, envp);
 	while (1)
 	{
