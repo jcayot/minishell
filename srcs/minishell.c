@@ -17,25 +17,22 @@ int	minishell(char **envp)
 	t_pid_launched	pid_launched;
 	char			*input;
 	t_shell_cmd		*commands;
-	t_list			*env;
+	t_list			**env;
 	int 			r_value;
 
 	rl_bind_key('\t', rl_complete);
 	using_history();
-	env = ft_lstnew(NULL);
-	if (!env)
-		return (EXIT_FAILURE);
-	init_env(&env, envp);
+	env = init_env(envp);
 	while (1)
 	{
 		input = readline("minishell$> ");
 		if (!input)
 			break ;
 		add_history(input);
-		commands = parse_input(input, env);
+		commands = parse_input(input, *env);
 		if (commands)
 		{
-			pid_launched = run_cmds(commands, ft_cmdsnum(commands));
+			pid_launched = run_cmds(commands, ft_cmdsnum(commands), *env);
 			if (pid_launched.pids)
 			{
 				r_value = wait_pids(pid_launched.pids, pid_launched.n);
@@ -46,7 +43,7 @@ int	minishell(char **envp)
 		}
 		free(input);
 	}
-	free_list(&env, free);
+	free_list(env, &free);
 	return (EXIT_SUCCESS);
 }
 

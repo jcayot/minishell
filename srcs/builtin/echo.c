@@ -12,7 +12,7 @@
 
 #include <minishell.h>
 
-int	echo(int n, char *args[])
+int echo(int n, char *args[])
 {
 	int	nl;
 	int	i;

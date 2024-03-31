@@ -46,9 +46,10 @@ typedef struct s_pid_launched
 }	t_pid_launched;
 
 //Environment
-int			init_env(t_list **env, char **envp);
+t_list **	init_env(char **envp);
 int			parse_env(char **split_cmd, t_list *env);
 char		*get_env(char *str, t_list *env);
+char		**get_envp(t_list *env);
 
 //Parsing
 t_shell_cmd	*parse_input(char *input, t_list *env);
@@ -56,7 +57,7 @@ void		*free_cmds(t_shell_cmd *cmds);
 void		*free_list(t_list **lst, void (*del)(void*));
 
 //Commands
-t_pid_launched run_cmds(t_shell_cmd *cmds, int cmd_n);
+t_pid_launched run_cmds(t_shell_cmd *cmds, int cmd_n, t_list *env_lst);
 int wait_pids(pid_t *pids, int n);
 int			ft_cmdsnum(t_shell_cmd *cmds);
 

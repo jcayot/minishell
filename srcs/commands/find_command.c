@@ -77,7 +77,7 @@ void	*find_builtin(char *cmd)
 	return (NULL);
 }
 
-t_shell_runnable make_runnable(char **splitted_cmd, int *inout, int *error)
+t_shell_runnable make_runnable(char **splitted_cmd, int *inout, int *error, t_list *env_lst)
 {
 	t_shell_runnable	runnable;
 	char				**paths;
@@ -91,7 +91,7 @@ t_shell_runnable make_runnable(char **splitted_cmd, int *inout, int *error)
 	*error = 1;
 	if (runnable.builtin)
 		return (runnable);
-	paths_str = getenv("PATH");
+	paths_str = get_env("PATH", env_lst);
 	if (!paths_str)
 		return (runnable);
 	paths = ft_split(paths_str, ':');

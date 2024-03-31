@@ -31,11 +31,11 @@ int go_to_path(char *path)
 	return (chdir(path));
 }
 
-int go_home(void)
+int go_home(t_list *envp)
 {
 	char	*home_path;
 
-	home_path = getenv("HOME");
+	home_path = get_env("HOME", envp);
 	if (!home_path)
 	{
 		ft_putstr_fd("cd: HOME not set you retard\n", 2);
@@ -52,7 +52,10 @@ char	*get_full_path(char *relative)
 
 	if (getcwd(buffer, 1000) == NULL)
 		return (NULL);
-	path_with_dash = ft_strjoin(buffer, "/");
+	if (buffer[ft_strlen(buffer) - 1] != '/')
+		path_with_dash = ft_strjoin(buffer, "/");
+	else
+		path_with_dash = ft_strdup(buffer);
 	if (!path_with_dash)
 		return (NULL);
 	full_path = ft_strjoin(path_with_dash, relative);
@@ -60,7 +63,7 @@ char	*get_full_path(char *relative)
 	return (full_path);
 }
 
-int	cd(int n, char *args[])
+int cd(int n, char *args[], t_list *envp)
 {
 	int 	result;
 	char	*path;
@@ -71,7 +74,7 @@ int	cd(int n, char *args[])
 		return (1);
 	}
 	else if (n == 1)
-		return (go_home());
+		return (go_home(envp));
 	else {
 		if (*args[1] == '/')
 			return (go_to_path(args[1]));

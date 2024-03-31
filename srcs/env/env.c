@@ -12,26 +12,27 @@
 
 #include <minishell.h>
 
-int	init_env(t_list **env, char **envp)
+t_list	**init_env(char **envp)
 {
+	t_list	**env_lst;
 	char	*data;
 	int		i;
 
 	i = 0;
+	env_lst = malloc(sizeof (t_list *));
+	if (!env_lst)
+		return (NULL);
+	*env_lst = NULL;
 	while (envp[i])
 	{
 		data = malloc(sizeof(char) * ft_strlen(envp[i]) + 1);
 		if (!data)
-		{
-			if (*env)
-				free_list(env, free);
-			return (EXIT_FAILURE);
-		}
+			return (free_list(env_lst, &free));
 		ft_strlcpy(data, envp[i], ft_strlen(envp[i]) + 1);
-		ft_lstadd_back(env, ft_lstnew(data));
+		ft_lstadd_back(env_lst, ft_lstnew(data));
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (env_lst);
 }
 
 char	*get_env(char *str, t_list *env)
@@ -51,6 +52,27 @@ char	*get_env(char *str, t_list *env)
 		env = env->next;
 	}
 	return (NULL);
+}
+
+char	**get_envp(t_list *env)
+{
+	char	**envp;
+	int 	i;
+
+	envp = malloc((ft_lstsize(env) + 1) * sizeof (char *));
+	if (!envp)
+		return (NULL);
+	i = 0;
+	while (env)
+	{
+		envp[i] = ft_strdup(env -> content);
+		if (!envp[i])
+			return (ft_strarray_free(envp));
+		env = env -> next;
+		i++;
+	}
+    envp[i] = NULL;
+	return (envp);
 }
 
 int	parse_env(char **split_cmd, t_list *env)
