@@ -18,7 +18,7 @@
 int		get_cmd_inout(t_shell_cmd *cmd, char *cmd_str);
 t_list	*make_duck(char *file, char *symbol);
 void	free_duck(void *void_duck);
-void	*free_list(t_list **lst, void (*del)(void*));
+void	*free_lst(t_list **lst, void (*del)(void*));
 char	**ft_modsplit(char const *s, char c);
 int		check_duck_again(char *cmd_str, int *len);
 void	*bad_duck(char saku);

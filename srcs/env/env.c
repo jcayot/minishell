@@ -27,7 +27,7 @@ t_list	**init_env(char **envp)
 	{
 		data = malloc(sizeof(char) * ft_strlen(envp[i]) + 1);
 		if (!data)
-			return (free_list(env_lst, &free));
+			return (free_lst(env_lst, &free));
 		ft_strlcpy(data, envp[i], ft_strlen(envp[i]) + 1);
 		ft_lstadd_back(env_lst, ft_lstnew(data));
 		i++;

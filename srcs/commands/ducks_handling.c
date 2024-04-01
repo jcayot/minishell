@@ -58,31 +58,31 @@ int	read_coin_coin(char *delimiter)
 	return (pipe_fd[0]);
 }
 
-int	open_ducks(t_list **ducks, int fd)
+int	open_ducks(t_list *ducks, int fd)
 {
 	t_duck	duck_item;
 
-	while ((*ducks))
+	while (ducks)
 	{
 		might_close(fd);
-		duck_item = *((t_duck *)(*ducks)-> content);
-		if (((t_duck *)(*ducks)-> content)-> beak_flag != O_APPEND)
+		duck_item = *((t_duck *)ducks-> content);
+		if (((t_duck *)ducks-> content) -> beak_flag != O_APPEND)
 			fd = open_put_error(duck_item.duck_name, duck_item.beak_flag);
 		else
-			fd = read_coin_coin(((t_duck *)(*ducks)->content)->duck_name);
+			fd = read_coin_coin(((t_duck *)ducks -> content)->duck_name);
 		if (fd == -1)
 			return (-1);
-		*ducks = (*ducks)-> next;
+		ducks = ducks -> next;
 	}
 	return (fd);
 }
 
 int	open_inout(t_list **in_ducks, t_list **out_ducks, int *inout)
 {
-	inout[0] = open_ducks(in_ducks, inout[0]);
+	inout[0] = open_ducks(*in_ducks, inout[0]);
 	if (inout[0] == -1)
 		return (0);
-	inout[1] = open_ducks(out_ducks, 1);
+	inout[1] = open_ducks(*out_ducks, 1);
 	if (inout[1] == -1)
 	{
 		might_close(inout[0]);

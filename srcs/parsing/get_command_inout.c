@@ -19,7 +19,7 @@ void	free_duck(void *void_duck)
 	duck = (t_duck *) void_duck;
 	if (duck -> duck_name)
 		free(duck -> duck_name);
-	free(duck);
+	free(void_duck);
 }
 
 t_list	*make_duck(char *file, char *symbol)
@@ -69,12 +69,12 @@ t_list	*get_symbol(char *cmd_str, char *symbol)
 	item = make_duck(data, symbol);
 	if (!item)
 		return (free(data), NULL);
-	ft_memmove(cmd_str, cmd_str + l + i, ft_strlen(cmd_str + l));
-	if (l == 1)
-		l += 2;
-	else if (l == 2)
-		l += 1;
-	cmd_str[l] = 0;
+	ft_memmove(cmd_str, cmd_str + l + i, ft_strlen(cmd_str + l + i) + 1);
+//	if (l == 1)
+//		l += 2;
+//	else if (l == 2)
+//		l += 1;
+	//cmd_str[l] = 0;
 	return (item);
 }
 
@@ -97,7 +97,7 @@ t_list	**get_symbols(char *cmd_str, char **symbols, int len)
 			{
 				item = get_symbol(cmd_str, symbols[i]);
 				if (!item)
-					return (free_list(extracted, &free_duck));
+					return (free_lst(extracted, &free_duck));
 				ft_lstadd_back(extracted, item);
 			}
 			i++;

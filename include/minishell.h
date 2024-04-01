@@ -58,7 +58,7 @@ char			**get_envp(t_list *env);
 //Parsing
 t_shell_cmd		*parse_input(char *input, t_list *env);
 void			*free_cmds(t_shell_cmd *cmds);
-void			*free_list(t_list **lst, void (*del)(void*));
+void			*free_lst(t_list **lst, void (*del)(void*));
 
 //Commands
 t_pid_launched	run_cmds(t_shell_cmd *cmds, int cmd_n, t_list *env_lst);

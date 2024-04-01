@@ -26,6 +26,7 @@ int	miniloop(t_list **env)
 			break ;
 		add_history(input);
 		commands = parse_input(input, *env);
+		free(input);
 		if (commands)
 		{
 			pid_launched = run_cmds(commands, ft_cmdsnum(commands), *env);
@@ -37,7 +38,6 @@ int	miniloop(t_list **env)
 			}
 			free_cmds(commands);
 		}
-		free(input);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -50,7 +50,7 @@ int	minishell(char **envp)
 	using_history();
 	env = init_env(envp);
 	miniloop(env);
-	free_list(env, &free);
+	free_lst(env, &free);
 	return (EXIT_SUCCESS);
 }
 
