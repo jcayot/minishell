@@ -22,8 +22,6 @@ int	miniloop(t_list **env)
 	while (1)
 	{
 		input = readline("minishell$> ");
-		if (!input)
-			break ;
 		add_history(input);
 		commands = parse_input(input, *env);
 		free(input);

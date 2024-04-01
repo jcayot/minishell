@@ -66,7 +66,7 @@ int	open_ducks(t_list *ducks, int fd)
 	{
 		might_close(fd);
 		duck_item = *((t_duck *)ducks-> content);
-		if (((t_duck *)ducks-> content) -> beak_flag != O_APPEND)
+		if (((t_duck *)ducks-> content)-> beak_flag != O_APPEND)
 			fd = open_put_error(duck_item.duck_name, duck_item.beak_flag);
 		else
 			fd = read_coin_coin(((t_duck *)ducks -> content)->duck_name);
