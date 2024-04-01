@@ -12,17 +12,13 @@
 
 #include <minishell.h>
 
-int	minishell(char **envp)
+int	miniloop(t_list **env)
 {
 	t_pid_launched	pid_launched;
 	char			*input;
 	t_shell_cmd		*commands;
-	t_list			**env;
 	int				r_value;
 
-	rl_bind_key('\t', rl_complete);
-	using_history();
-	env = init_env(envp);
 	while (1)
 	{
 		input = readline("minishell$> ");
@@ -43,6 +39,17 @@ int	minishell(char **envp)
 		}
 		free(input);
 	}
+	return (EXIT_SUCCESS);
+}
+
+int	minishell(char **envp)
+{
+	t_list			**env;
+
+	rl_bind_key('\t', rl_complete);
+	using_history();
+	env = init_env(envp);
+	miniloop(env);
 	free_list(env, &free);
 	return (EXIT_SUCCESS);
 }
