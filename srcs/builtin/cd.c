@@ -19,14 +19,14 @@ int go_to_path(char *path)
 		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(path, 2);
 		ft_putstr_fd(" : No such file or directory. Please make sure that you're not retarded\n", 2);
-		return (1);
+		return (EXIT_SAKU);
 	}
 	else if (access(path, R_OK) == -1)
 	{
 		ft_putstr_fd("cd : ", 2);
 		ft_putstr_fd(path, 2);
 		ft_putstr_fd(" : Permission denied\n", 2);
-		return (1);
+		return (EXIT_SAKU);
 	}
 	return (chdir(path));
 }
@@ -39,7 +39,7 @@ int go_home(t_list *envp)
 	if (!home_path)
 	{
 		ft_putstr_fd("cd: HOME not set you retard\n", 2);
-		return (1);
+		return (EXIT_SAKU);
 	}
 	return (go_to_path(home_path));
 }
@@ -71,7 +71,7 @@ int cd(int n, char *args[], t_list *envp)
 	if (n > 2)
 	{
 		ft_putstr_fd("cd: too many arguments\n", 2);
-		return (1);
+		return (EXIT_SAKU);
 	}
 	else if (n == 1)
 		return (go_home(envp));
@@ -80,7 +80,7 @@ int cd(int n, char *args[], t_list *envp)
 			return (go_to_path(args[1]));
 		path = get_full_path(args[1]);
 		if (!path)
-			return (EXIT_FAILURE);
+			return (EXIT_SAKU);
 		result = go_to_path(path);
 		free(path);
 		return (result);

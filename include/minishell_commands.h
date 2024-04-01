@@ -32,7 +32,8 @@ int					might_close(int fd);
 //Builtin
 int					cd(int n, char *args[], t_list *envp);
 int					uitgang(int	n, char *args[]);
-int echo(int n, char *args[]);
+int					echo(int n, char *args[]);
 int					pwd(void);
+int					env(int n, char *args[], t_list *envp);
 
 #endif //MINISHELL_COMMANDS_H

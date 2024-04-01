@@ -74,6 +74,8 @@ void	*find_builtin(char *cmd)
 		return (&echo);
 	if (ft_strncmp(cmd, "pwd", 4) == 0)
 		return (&pwd);
+	if (ft_strncmp(cmd, "env", 4) == 0)
+		return (&env);
 	return (NULL);
 }
 

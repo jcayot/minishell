@@ -27,7 +27,7 @@ int echo(int n, char *args[])
 	while (i < n)
 	{
 		if (printf("%s", args[i]) == -1)
-			return (EXIT_FAILURE);
+			return (EXIT_SAKU);
 		i++;
 	}
 	if (nl)

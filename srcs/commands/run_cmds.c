@@ -49,13 +49,13 @@ pid_t	run_child(t_shell_runnable runnable, t_list *env)
 		if (!change_fd(runnable.in, 0))
 		{
 			close(runnable.out);
-			exit(EXIT_FAILURE);
+			exit(EXIT_SAKU);
 		}
 		if (!change_fd(runnable.out, 1))
-			exit(EXIT_FAILURE);
+			exit(EXIT_SAKU);
 		execve(runnable.path, runnable.args, envp);
 		perror("minishell: ");
-		exit(EXIT_FAILURE);
+		exit(EXIT_SAKU);
 	}
 	ft_strarray_free(envp);
 	free(runnable.path);

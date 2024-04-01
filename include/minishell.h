@@ -13,6 +13,10 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# ifndef EXIT_SAKU
+#  define EXIT_SAKU 1
+# endif //EXIT_SAKU
+
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
