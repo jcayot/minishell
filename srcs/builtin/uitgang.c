@@ -49,7 +49,7 @@ static unsigned char	retardedtoi(char *str)
 	return ((unsigned char) n);
 }
 
-int	uitgang(int	n, char *args[])
+int	uitgang(int n, char *args[])
 {
 	ft_putstr_fd("exit\n", 2);
 	if (n > 2)

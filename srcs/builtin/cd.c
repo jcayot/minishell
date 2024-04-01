@@ -12,13 +12,14 @@
 
 #include <minishell.h>
 
-int go_to_path(char *path)
+int	go_to_path(char *path)
 {
 	if (access(path, F_OK) == -1)
 	{
 		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(path, 2);
-		ft_putstr_fd(" : No such file or directory. Please make sure that you're not retarded\n", 2);
+		ft_putstr_fd(" : No such file or directory."
+			" Please make sure that you're not retarded\n", 2);
 		return (EXIT_SAKU);
 	}
 	else if (access(path, R_OK) == -1)
@@ -31,7 +32,7 @@ int go_to_path(char *path)
 	return (chdir(path));
 }
 
-int go_home(t_list *envp)
+int	go_home(t_list *envp)
 {
 	char	*home_path;
 
@@ -63,9 +64,9 @@ char	*get_full_path(char *relative)
 	return (full_path);
 }
 
-int cd(int n, char *args[], t_list *envp)
+int	cd(int n, char *args[], t_list *envp)
 {
-	int 	result;
+	int		result;
 	char	*path;
 
 	if (n > 2)
@@ -75,7 +76,8 @@ int cd(int n, char *args[], t_list *envp)
 	}
 	else if (n == 1)
 		return (go_home(envp));
-	else {
+	else
+	{
 		if (*args[1] == '/')
 			return (go_to_path(args[1]));
 		path = get_full_path(args[1]);

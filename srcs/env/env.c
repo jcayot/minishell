@@ -57,7 +57,7 @@ char	*get_env(char *str, t_list *env)
 char	**get_envp(t_list *env)
 {
 	char	**envp;
-	int 	i;
+	int		i;
 
 	envp = malloc((ft_lstsize(env) + 1) * sizeof (char *));
 	if (!envp)
@@ -71,7 +71,7 @@ char	**get_envp(t_list *env)
 		env = env -> next;
 		i++;
 	}
-    envp[i] = NULL;
+	envp[i] = NULL;
 	return (envp);
 }
 

@@ -33,7 +33,6 @@ SRCS			:= $(SRCS_DIR)/minishell.c \
 					$(UTILS_DIR)/fd_utils.c \
 					$(UTILS_DIR)/ft_cmdsnum.c \
 					$(UTILS_DIR)/wait_pids.c \
-					$(UTILS_DIR)/mini_error.c \
 					$(ENV_DIR)/env.c \
 					$(TESTS_DIR)/tools.c
 

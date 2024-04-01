@@ -12,9 +12,9 @@
 
 #include <minishell.h>
 
-int wait_pids(pid_t *pids, int n)
+int	wait_pids(pid_t *pids, int n)
 {
-	int code;
+	int	code;
 	int	i;
 
 	i = 0;

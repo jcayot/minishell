@@ -37,8 +37,8 @@ typedef struct s_duck
 
 typedef struct s_shell_cmd
 {
-	t_list	**inputs;
-	t_list	**outputs;
+	t_list	**ins;
+	t_list	**outs;
 	char	**splitted_command;
 	int		error;
 }	t_shell_cmd;
@@ -50,26 +50,24 @@ typedef struct s_pid_launched
 }	t_pid_launched;
 
 //Environment
-t_list **	init_env(char **envp);
-int			parse_env(char **split_cmd, t_list *env);
-char		*get_env(char *str, t_list *env);
-char		**get_envp(t_list *env);
+t_list			**init_env(char **envp);
+int				parse_env(char **split_cmd, t_list *env);
+char			*get_env(char *str, t_list *env);
+char			**get_envp(t_list *env);
 
 //Parsing
-t_shell_cmd	*parse_input(char *input, t_list *env);
-void		*free_cmds(t_shell_cmd *cmds);
-void		*free_list(t_list **lst, void (*del)(void*));
+t_shell_cmd		*parse_input(char *input, t_list *env);
+void			*free_cmds(t_shell_cmd *cmds);
+void			*free_list(t_list **lst, void (*del)(void*));
 
 //Commands
-t_pid_launched run_cmds(t_shell_cmd *cmds, int cmd_n, t_list *env_lst);
-int wait_pids(pid_t *pids, int n);
-int			ft_cmdsnum(t_shell_cmd *cmds);
+t_pid_launched	run_cmds(t_shell_cmd *cmds, int cmd_n, t_list *env_lst);
+int				wait_pids(pid_t *pids, int n);
+int				ft_cmdsnum(t_shell_cmd *cmds);
 
 //Utils
-void		print_all(t_shell_cmd *commands);
-int			sub_strlen(const char *s, char separator);
-void		print_env(t_list *env);
-int			save_inout(int *save_dest);
-int			minierror(char *str_error);
+void			print_all(t_shell_cmd *commands);
+int				sub_strlen(const char *s, char separator);
+int				save_inout(int *save_dest);
 
 #endif //MINISHELL_H

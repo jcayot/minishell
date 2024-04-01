@@ -46,7 +46,7 @@ static int	escape_chars(char *str, char c)
 	else
 		return (0);
 }
-//add more escape chars if needed, worked with all inputs like bash xept command <>
+//add more escape chars if needed, worked with all ins like bash xept command <>
 
 void	*bad_duck(char saku)
 {

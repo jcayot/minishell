@@ -12,16 +12,6 @@
 
 #include "minishell.h"
 
-void	print_env(t_list *env)
-{
-	printf("All stored env vars: \n");
-	while (env)
-	{
-		printf("%s\n", (char *)(env->content));
-		env = env->next;
-	}
-}
-
 void	print_all(t_shell_cmd *commands)
 {
 	size_t	i;
@@ -36,7 +26,7 @@ void	print_all(t_shell_cmd *commands)
 		if (i)
 			printf("\n");
 		printf("Command number: %d\n\n", (int)i);
-		node = commands[i].inputs;
+		node = commands[i].ins;
 		j = 0;
 		while (*node)
 		{
@@ -47,7 +37,7 @@ void	print_all(t_shell_cmd *commands)
 			*node = (*node)->next;
 			j++;
 		}
-		node = commands[i].outputs;
+		node = commands[i].outs;
 		j = 0;
 		while (*node)
 		{

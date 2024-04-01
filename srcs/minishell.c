@@ -18,7 +18,7 @@ int	minishell(char **envp)
 	char			*input;
 	t_shell_cmd		*commands;
 	t_list			**env;
-	int 			r_value;
+	int				r_value;
 
 	rl_bind_key('\t', rl_complete);
 	using_history();
@@ -51,6 +51,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	if (argc == 1 && argv && envp)
 		return (minishell(envp));
-	else 
+	else
 		return (EXIT_SAKU);
 }

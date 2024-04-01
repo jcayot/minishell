@@ -79,7 +79,8 @@ void	*find_builtin(char *cmd)
 	return (NULL);
 }
 
-t_shell_runnable make_runnable(char **splitted_cmd, int *inout, int *error, t_list *env_lst)
+t_shell_runnable	make_runnable(char **splitted_cmd, int *inout, int *error,
+								t_list *env_lst)
 {
 	t_shell_runnable	runnable;
 	char				**paths;

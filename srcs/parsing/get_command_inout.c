@@ -116,14 +116,14 @@ int	get_cmd_inout(t_shell_cmd *cmd, char *cmd_str)
 	symbols[2] = ">>";
 	symbols[3] = ">";
 	symbols[4] = NULL;
-	cmd -> inputs = get_symbols(cmd_str, symbols, 2);
-	if (!cmd -> inputs)
+	cmd -> ins = get_symbols(cmd_str, symbols, 2);
+	if (!cmd -> ins)
 		return (0);
-	cmd -> outputs = get_symbols(cmd_str, symbols + 2, 2);
-	if (!cmd -> outputs)
+	cmd -> outs = get_symbols(cmd_str, symbols + 2, 2);
+	if (!cmd -> outs)
 	{
-		ft_lstclear(cmd -> inputs, &free_duck);
-		free(cmd -> inputs);
+		ft_lstclear(cmd -> ins, &free_duck);
+		free(cmd -> ins);
 		return (0);
 	}
 	return (1);

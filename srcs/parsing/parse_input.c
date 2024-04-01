@@ -26,8 +26,8 @@ void	*free_cmds(t_shell_cmd *cmds)
 	i = 0;
 	while (!cmds[i].error)
 	{
-		free_list(cmds[i].inputs, &free_duck);
-		free_list(cmds[i].outputs, &free_duck);
+		free_list(cmds[i].ins, &free_duck);
+		free_list(cmds[i].outs, &free_duck);
 		ft_strarray_free(cmds[i].splitted_command);
 		i++;
 	}
@@ -46,8 +46,8 @@ t_shell_cmd	make_cmd(char *cmd_str, t_list *env)
 	parse_env(cmd.splitted_command, env);
 	if (!cmd.splitted_command)
 	{
-		free_list(cmd.inputs, &free_duck);
-		free_list(cmd.outputs, &free_duck);
+		free_list(cmd.ins, &free_duck);
+		free_list(cmd.outs, &free_duck);
 		return (cmd);
 	}
 	cmd.error = 0;

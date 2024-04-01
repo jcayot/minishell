@@ -25,7 +25,7 @@ int	put_file_error(char *file, char *str_error)
 int	open_put_error(char *file, int oflag)
 {
 	int	fd;
-	int error;
+	int	error;
 
 	fd = open(file, oflag, 420);
 	if (fd != -1)
@@ -38,20 +38,20 @@ int	read_coin_coin(char *delimiter)
 {
 	char	*line;
 	int		pipe_fd[2];
-	int		is_delimiter;
+	int		is_deli;
 
 	if (pipe(pipe_fd) == -1)
 		return (-1);
 	line = get_next_line(0);
-	is_delimiter = 0;
+	is_deli = 0;
 	while (line)
 	{
 		write(pipe_fd[1], line, ft_strlen(line));
 		if (ft_strlen(line) > 1)
-			is_delimiter = ft_strncmp(line, delimiter, ft_strlen(line) - 1) == 0;
+			is_deli = ft_strncmp(line, delimiter, ft_strlen(line) - 1) == 0;
 		free(line);
 		line = NULL;
-		if (!is_delimiter)
+		if (!is_deli)
 			line = get_next_line(0);
 	}
 	close(pipe_fd[1]);
@@ -69,7 +69,7 @@ int	open_ducks(t_list **ducks, int fd)
 		if (((t_duck *)(*ducks)-> content)-> beak_flag != O_APPEND)
 			fd = open_put_error(duck_item.duck_name, duck_item.beak_flag);
 		else
-			fd = read_coin_coin(((t_duck *) (*ducks)->content)->duck_name);
+			fd = read_coin_coin(((t_duck *)(*ducks)->content)->duck_name);
 		if (fd == -1)
 			return (-1);
 		*ducks = (*ducks)-> next;
@@ -77,7 +77,7 @@ int	open_ducks(t_list **ducks, int fd)
 	return (fd);
 }
 
-int open_inout(t_list **in_ducks, t_list **out_ducks, int *inout)
+int	open_inout(t_list **in_ducks, t_list **out_ducks, int *inout)
 {
 	inout[0] = open_ducks(in_ducks, inout[0]);
 	if (inout[0] == -1)
