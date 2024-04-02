@@ -83,7 +83,7 @@ int	export(int n, char *args[], t_list *envp)
 	{
 		while (envp)
 		{
-			printf("declare -x %s\n", envp->content); //kinda bash behavior
+			printf("declare -x %s\n", (char *) envp->content); //kinda bash behavior
 			envp = envp -> next;
 		}
 		return (EXIT_SUCCESS);

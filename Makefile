@@ -1,5 +1,5 @@
 NAME			:= minishell
-CFLAGS			:= -Wextra -Wall -Werror -Wunreachable-code -g
+CFLAGS			:= -Wextra -Wall -Werror -g
 
 LIBFT			:= ./lib/libft/libft.a
 LIBFT_DIR		:= ./lib/libft

@@ -31,13 +31,13 @@ t_list	*make_duck(char *file, char *symbol)
 	if (!data)
 		return (NULL);
 	data -> duck_name = file;
-	if (ft_strncmp(symbol, "<<", 2) == 0)
+	if (ft_strncmp(symbol, "<<", 3) == 0)
 		data -> beak_flag = O_APPEND;
-	else if (ft_strncmp(symbol, ">>", 2) == 0)
+	else if (ft_strncmp(symbol, ">>", 3) == 0)
 		data -> beak_flag = O_APPEND | O_WRONLY;
-	else if (ft_strncmp(symbol, "<", 1) == 0)
+	else if (ft_strncmp(symbol, "<", 2) == 0)
 		data -> beak_flag = O_RDONLY;
-	else if (ft_strncmp(symbol, ">", 1) == 0)
+	else if (ft_strncmp(symbol, ">", 2) == 0)
 		data -> beak_flag = O_CREAT | O_WRONLY;
 	else
 	{
@@ -90,6 +90,7 @@ t_list	**get_symbols(char *cmd_str, char **symbols, int len)
 		{
 			if (ft_strncmp(cmd_str, symbols[i], ft_strlen(symbols[i])) == 0)
 			{
+				printf("cmd str : %s\n",cmd_str);
 				item = get_symbol(cmd_str, symbols[i]);
 				if (!item)
 					return (free_lst(extracted, &free_duck));
