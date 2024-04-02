@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 13:52:55 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/02 10:28:01 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/02 10:32:23 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,8 @@ static t_list	*check_dups(char *arg, t_list *envp)
 	while (envp)
 	{
 		var = envp -> content;
-		if (var[0] == '@')
-		{
-			if (!ft_strncmp(arg, var + 1, len))
-				return (envp);
-		}
-		else
-		{
-			if (!ft_strncmp(arg, var, len))
-				return (envp);
-		}
+		if (!ft_strncmp(arg, var, len))
+			return (envp);
 		envp = envp -> next;
 	}
 	return (NULL);
