@@ -28,6 +28,7 @@ int	miniloop(t_list **env)
 		free(input);
 		if (!commands)
 			break ;
+		printf("%p et %p et %p\n", commands -> splitted_command, commands->ins, commands -> outs);
 		if (commands -> splitted_command)
 		{
 			pid_launched = run_cmds(commands, ft_cmdsnum(commands), *env);
@@ -37,8 +38,9 @@ int	miniloop(t_list **env)
 				printf("%d\n", r_value);
 				free(pid_launched.pids);
 			}
-			free_cmds(commands);
 		}
+		free_cmds_content(commands);
+		free(commands);
 	}
 	return (EXIT_SUCCESS);
 }

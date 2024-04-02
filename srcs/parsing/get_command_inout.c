@@ -50,7 +50,7 @@ t_list	*make_duck(char *file, char *symbol)
 	return (item);
 }
 
-t_list	*get_symbol(char *cmd_str, char *symbol)
+t_list	*get_symbol(char *cmd_str, char *symbol, int *error)
 {
 	t_list	*item;
 	char	*data;
@@ -62,7 +62,10 @@ t_list	*get_symbol(char *cmd_str, char *symbol)
 		i++;
 	l = (int) sub_strlen(cmd_str + i, ' ');
 	if (l == 0 || check_duck_again(cmd_str + i, &l))
+	{
+		*error = 2;
 		return (bad_duck(cmd_str[i + l]));
+	}
 	data = ft_substr(cmd_str + i, 0, l);
 	if (!data)
 		return (NULL);
@@ -73,7 +76,7 @@ t_list	*get_symbol(char *cmd_str, char *symbol)
 	return (item);
 }
 
-t_list	**get_symbols(char *cmd_str, char **symbols, int len)
+t_list **get_symbols(char *cmd_str, char **symbols, int len, int *error)
 {
 	t_list	**extracted;
 	t_list	*item;
@@ -90,7 +93,7 @@ t_list	**get_symbols(char *cmd_str, char **symbols, int len)
 		{
 			if (ft_strncmp(cmd_str, symbols[i], ft_strlen(symbols[i])) == 0)
 			{
-				item = get_symbol(cmd_str, symbols[i]);
+				item = get_symbol(cmd_str, symbols[i], error);
 				if (!item)
 					return (free_lst(extracted, &free_duck));
 				ft_lstadd_back(extracted, item);
@@ -112,14 +115,16 @@ int	get_cmd_inout(t_shell_cmd *cmd, char *cmd_str)
 	symbols[2] = ">>";
 	symbols[3] = ">";
 	symbols[4] = NULL;
-	cmd -> ins = get_symbols(cmd_str, symbols, 2);
+	cmd -> outs = NULL;
+	cmd -> ins = get_symbols(cmd_str, symbols, 2, &cmd->error);
 	if (!cmd -> ins)
 		return (0);
-	cmd -> outs = get_symbols(cmd_str, symbols + 2, 2);
+	cmd -> outs = get_symbols(cmd_str, symbols + 2, 2, &cmd->error);
 	if (!cmd -> outs)
 	{
 		ft_lstclear(cmd -> ins, &free_duck);
 		free(cmd -> ins);
+		cmd -> ins = NULL;
 		return (0);
 	}
 	return (1);

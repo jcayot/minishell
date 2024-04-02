@@ -19,7 +19,7 @@ void	*free_lst(t_list **lst, void (*del)(void*))
 	return (NULL);
 }
 
-void	*free_cmds(t_shell_cmd *cmds)
+void	*free_cmds_content(t_shell_cmd *cmds)
 {
 	int	i;
 
@@ -29,9 +29,11 @@ void	*free_cmds(t_shell_cmd *cmds)
 		free_lst(cmds[i].ins, &free_duck);
 		free_lst(cmds[i].outs, &free_duck);
 		ft_strarray_free(cmds[i].splitted_command);
+		cmds[i].ins = NULL;
+		cmds[i].outs = NULL;
+		cmds[i].splitted_command = NULL;
 		i++;
 	}
-	free(cmds);
 	return (NULL);
 }
 
@@ -40,16 +42,19 @@ t_shell_cmd	make_cmd(char *cmd_str, t_list *env)
 	t_shell_cmd	cmd;
 
 	cmd.error = 1;
+	cmd.splitted_command = NULL;
 	if (!get_cmd_inout(&cmd, cmd_str))
 		return (cmd);
 	cmd.splitted_command = ft_modsplit(cmd_str, ' ');
-	parse_env(cmd.splitted_command, env);
 	if (!cmd.splitted_command)
 	{
 		free_lst(cmd.ins, &free_duck);
 		free_lst(cmd.outs, &free_duck);
+		cmd.ins = NULL;
+		cmd.outs = NULL;
 		return (cmd);
 	}
+	parse_env(cmd.splitted_command, env);
 	cmd.error = 0;
 	return (cmd);
 }
@@ -82,11 +87,20 @@ t_shell_cmd	*parse_input(char *input, t_list *env)
 	i = 0;
 	while (i < n_cmd)
 	{
+		cmds[i] = null_terminate();
 		cmds[i] = make_cmd(cmds_str[i], env);
-		if (cmds[i].error)
+		if (cmds[i].error != 0)
 		{
-			free_cmds(cmds);
-			return (ft_strarray_free(cmds_str));
+			if (cmds[i].error == 1)
+			{
+				ft_strarray_free(cmds_str);
+				free_cmds_content(cmds);
+				free(cmds);
+				return (NULL);
+			}
+			ft_strarray_free(cmds_str);
+			free_cmds_content(cmds);
+			return (cmds);
 		}
 		i++;
 	}

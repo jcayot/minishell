@@ -57,7 +57,7 @@ char			**get_envp(t_list *env);
 
 //Parsing
 t_shell_cmd		*parse_input(char *input, t_list *env);
-void			*free_cmds(t_shell_cmd *cmds);
+void			*free_cmds_content(t_shell_cmd *cmds);
 void			*free_lst(t_list **lst, void (*del)(void*));
 
 //Commands
