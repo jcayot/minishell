@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 13:46:37 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/02 10:07:14 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/02 10:21:53 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*get_env(char *str, t_list *env)
 	start = str;
 	while (env)
 	{
-		if (str[0] == '$' || str[0] == '@')
+		if (str[0] == '$')
 		{
 			if (!ft_strncmp(str + 1, env->content, ft_strlen(start + 1)))
 				return ((char *)(env->content) + ft_strlen(start));

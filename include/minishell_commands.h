@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_commands.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:25:59 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/16 17:26:02 by jcayot           ###   ########.fr       */
+/*   Updated: 2024/04/02 08:11:25 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ int					uitgang(int n, char *args[]);
 int					echo(int n, char *args[]);
 int					pwd(void);
 int					env(int n, char *args[], t_list *envp);
+int					export(int n, char *args[], t_list *envp);
 
 #endif //MINISHELL_COMMANDS_H

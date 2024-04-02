@@ -28,6 +28,7 @@ SRCS			:= $(SRCS_DIR)/minishell.c \
 					$(BUILTIN_DIR)/cd.c \
 					$(BUILTIN_DIR)/uitgang.c \
 					$(BUILTIN_DIR)/env.c \
+					$(BUILTIN_DIR)/export.c \
 					$(UTILS_DIR)/ft_mod_split.c \
 					$(UTILS_DIR)/sub_strlen.c \
 					$(UTILS_DIR)/fd_utils.c \
