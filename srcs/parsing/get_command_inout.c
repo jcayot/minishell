@@ -90,7 +90,6 @@ t_list	**get_symbols(char *cmd_str, char **symbols, int len)
 		{
 			if (ft_strncmp(cmd_str, symbols[i], ft_strlen(symbols[i])) == 0)
 			{
-				printf("cmd str : %s\n",cmd_str);
 				item = get_symbol(cmd_str, symbols[i]);
 				if (!item)
 					return (free_lst(extracted, &free_duck));
@@ -98,7 +97,8 @@ t_list	**get_symbols(char *cmd_str, char **symbols, int len)
 			}
 			i++;
 		}
-		cmd_str++;
+		if (*cmd_str)
+			cmd_str++;
 	}
 	return (extracted);
 }
