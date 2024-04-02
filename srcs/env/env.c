@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 13:46:37 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/02 10:21:53 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/02 10:59:39 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,13 @@ int	parse_env(char **split_cmd, t_list *env)
 		if (ft_strchr(split_cmd[i], '$'))
 		{
 			temp = get_env(split_cmd[i], env);
-			if (!temp)
-				return (EXIT_FAILURE);
 			free(split_cmd[i]);
+			if (!temp)
+			{
+				split_cmd[i] = malloc(sizeof(char) * 1);
+				split_cmd[i][0] = '\0';
+				return (EXIT_SUCCESS);
+			}
 			split_cmd[i] = malloc(sizeof(char) * ft_strlen(temp) + 1);
 			if (!split_cmd[i])
 				return (EXIT_FAILURE);
