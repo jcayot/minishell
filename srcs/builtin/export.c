@@ -6,30 +6,33 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 13:52:55 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/02 10:32:23 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/02 12:23:19 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static int	parse_export(char **args)
+static int	export_error(void)
+{
+	ft_putstr_fd("Even monkeys know how to use export.\n", 2);
+	return (EXIT_FAILURE);
+}
+
+static int	parse_export(char *arg)
 {
 	int	i;
-	int	j;
 
 	i = 0;
-	while (args[i])
-	{
-		j = 0;
-		while (args[i][j])
-		{
-			if (!ft_isprint(args[i][j]) && args[i][j] != 32) //not bash behavior
-				return (EXIT_FAILURE);
-			j++;
-		}
+	while (ft_isalnum(arg[i]) && arg[i])
 		i++;
-	}
-	return (EXIT_SUCCESS);
+	if (arg[i++] != '=')
+		return (EXIT_FAILURE);
+	while (ft_isalnum(arg[i]) && arg[i])
+		i++;
+	if (!arg[i])
+		return (EXIT_SUCCESS);
+	else
+		return (EXIT_FAILURE);
 }
 
 static t_list	*check_dups(char *arg, t_list *envp)
@@ -77,13 +80,11 @@ int	export(int n, char *args[], t_list *envp)
 {
 	int	i;
 
-	if (parse_export(args + 1))
-		return (EXIT_FAILURE);
 	if (n == 1 && !ft_strncmp(args[0], "export", 7))
 	{
 		while (envp)
 		{
-			printf("declare -x %s\n", (char *) envp->content); //kinda bash behavior
+			printf("declare -x %s\n", envp->content); //kinda bash behavior
 			envp = envp -> next;
 		}
 		return (EXIT_SUCCESS);
@@ -93,6 +94,8 @@ int	export(int n, char *args[], t_list *envp)
 	{
 		while (args[i] && i < n)
 		{
+			if (parse_export(args[i]))
+				return (export_error());
 			do_stuff(args[i], envp);
 			i++;
 		}
