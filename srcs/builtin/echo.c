@@ -28,9 +28,12 @@ int	echo(int n, char *args[])
 	{
 		if (printf("%s", args[i]) == -1)
 			return (EXIT_SAKU);
+		if (i != n - 1)
+			if (printf(" ") == -1)
+				return (EXIT_SAKU);
 		i++;
 	}
 	if (nl)
-		return (printf("\n") != -1);
+		return (printf("\n") == -1);
 	return (EXIT_SUCCESS);
 }
