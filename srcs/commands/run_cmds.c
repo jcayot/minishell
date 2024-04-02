@@ -83,7 +83,6 @@ pid_t	pipe_and_make(t_shell_cmd cmd, int *inout, int last, t_list *env_lst)
 	else
 		pid = error * -1;
 	might_close(local_inout[0]);
-	might_close(local_inout[1]);
 	return (pid);
 }
 
@@ -100,11 +99,17 @@ t_pid_launched	run_cmds(t_shell_cmd *cmds, int cmd_n, t_list *env_lst)
 	while (pids_run.n < cmd_n)
 	{
 		if (open_inout(cmds[pids_run.n].ins, cmds[pids_run.n].outs, inout))
-			pids_run.pids[pids_run.n] = pipe_and_make(cmds[pids_run.n], inout,
-					pids_run.n == cmd_n - 1, env_lst);
+		{
+			if (cmds->splitted_command[0])
+				pids_run.pids[pids_run.n] = pipe_and_make(cmds[pids_run.n], inout,pids_run.n == cmd_n - 1, env_lst);
+			else
+				pids_run.pids[pids_run.n] = 0;
+			might_close(inout[1]);
+		}
 		else
 			pids_run.pids[pids_run.n] = -1;
 		pids_run.n++;
 	}
+	might_close(inout[0]);
 	return (pids_run);
 }

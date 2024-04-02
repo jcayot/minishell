@@ -54,6 +54,17 @@ t_shell_cmd	make_cmd(char *cmd_str, t_list *env)
 	return (cmd);
 }
 
+t_shell_cmd	null_terminate(void)
+{
+	t_shell_cmd	null;
+
+	null.ins = NULL;
+	null.outs = NULL;
+	null.splitted_command = NULL;
+	null.error = 1;
+	return (null);
+}
+
 t_shell_cmd	*parse_input(char *input, t_list *env)
 {
 	t_shell_cmd	*cmds;
@@ -66,19 +77,20 @@ t_shell_cmd	*parse_input(char *input, t_list *env)
 		return (NULL);
 	n_cmd = (int) ft_strarray_len(cmds_str);
 	cmds = malloc((n_cmd + 1) * sizeof (t_shell_cmd));
+	if (!cmds)
+		return (ft_strarray_free(cmds_str));
 	i = 0;
-	while (cmds && i < n_cmd)
+	while (i < n_cmd)
 	{
 		cmds[i] = make_cmd(cmds_str[i], env);
 		if (cmds[i].error)
 		{
 			free_cmds(cmds);
-			return (NULL);
+			return (ft_strarray_free(cmds_str));
 		}
 		i++;
 	}
-	if (cmds)
-		cmds[i].error = 1;
+	cmds[i] = null_terminate();
 	ft_strarray_free(cmds_str);
 	return (cmds);
 }

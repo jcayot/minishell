@@ -19,13 +19,16 @@ int	miniloop(t_list **env)
 	t_shell_cmd		*commands;
 	int				r_value;
 
+	r_value = 0;
 	while (1)
 	{
 		input = readline("minishell$> ");
 		add_history(input);
 		commands = parse_input(input, *env);
 		free(input);
-		if (commands)
+		if (!commands)
+			break ;
+		if (commands -> splitted_command)
 		{
 			pid_launched = run_cmds(commands, ft_cmdsnum(commands), *env);
 			if (pid_launched.pids)
