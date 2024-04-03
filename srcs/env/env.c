@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 13:46:37 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/02 10:59:39 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/03 18:42:55 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,20 @@ char	**get_envp(t_list *env)
 	return (envp);
 }
 
-int	parse_env(char **split_cmd, t_list *env)
+static int	no_match(char *split_cmd, int r_val)
+{
+	free(split_cmd);
+	if (split_cmd[1] == '?' && !split_cmd[2])
+		split_cmd = ft_itoa(r_val);
+	else
+	{
+		split_cmd = malloc(sizeof(char) * 1);
+		split_cmd[0] = '\0';
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	parse_env(char **split_cmd, t_list *env, int r_val)
 {
 	int		i;
 	char	*temp;
@@ -86,13 +99,9 @@ int	parse_env(char **split_cmd, t_list *env)
 		if (ft_strchr(split_cmd[i], '$'))
 		{
 			temp = get_env(split_cmd[i], env);
-			free(split_cmd[i]);
 			if (!temp)
-			{
-				split_cmd[i] = malloc(sizeof(char) * 1);
-				split_cmd[i][0] = '\0';
-				return (EXIT_SUCCESS);
-			}
+				return (no_match(split_cmd[i], r_val));
+			free(split_cmd[i]);
 			split_cmd[i] = malloc(sizeof(char) * ft_strlen(temp) + 1);
 			if (!split_cmd[i])
 				return (EXIT_FAILURE);

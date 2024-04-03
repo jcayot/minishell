@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:57:56 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/27 20:00:07 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/03 17:23:42 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	*free_cmds_content(t_shell_cmd *cmds)
 	return (NULL);
 }
 
-t_shell_cmd	make_cmd(char *cmd_str, t_list *env)
+t_shell_cmd	make_cmd(char *cmd_str, t_list *env, int r_val)
 {
 	t_shell_cmd	cmd;
 
@@ -54,7 +54,7 @@ t_shell_cmd	make_cmd(char *cmd_str, t_list *env)
 		cmd.outs = NULL;
 		return (cmd);
 	}
-	parse_env(cmd.splitted_command, env);
+	parse_env(cmd.splitted_command, env, r_val);
 	cmd.error = 0;
 	return (cmd);
 }
@@ -70,7 +70,7 @@ t_shell_cmd	null_terminate(void)
 	return (null);
 }
 
-t_shell_cmd	*parse_input(char *input, t_list *env)
+t_shell_cmd	*parse_input(char *input, t_list *env, int r_val)
 {
 	t_shell_cmd	*cmds;
 	char		**cmds_str;
@@ -88,7 +88,7 @@ t_shell_cmd	*parse_input(char *input, t_list *env)
 	while (i < n_cmd)
 	{
 		cmds[i] = null_terminate();
-		cmds[i] = make_cmd(cmds_str[i], env);
+		cmds[i] = make_cmd(cmds_str[i], env, r_val);
 		if (cmds[i].error != 0)
 		{
 			if (cmds[i].error == 1)

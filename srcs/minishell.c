@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:24:05 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/03 14:00:28 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/03 17:19:26 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	miniloop(t_list **env)
 	{
 		input = readline("minishell$> ");
 		add_history(input);
-		commands = parse_input(input, *env);
+		commands = parse_input(input, *env, r_value);
 		free(input);
 		if (!commands)
 			break ;
@@ -35,7 +35,6 @@ int	miniloop(t_list **env)
 			if (pid_launched.pids)
 			{
 				r_value = wait_pids(pid_launched.pids, pid_launched.n);
-				printf("%d\n", r_value);
 				free(pid_launched.pids);
 			}
 		}
