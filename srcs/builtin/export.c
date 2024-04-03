@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 13:52:55 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/02 12:23:19 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/03 14:10:58 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	export_error(void)
 	return (EXIT_FAILURE);
 }
 
-static int	parse_export(char *arg)
+static int	parse_export(char *arg) // not exact bash behavior with spaces between inputs or included chars
 {
 	int	i;
 
@@ -46,8 +46,8 @@ static t_list	*check_dups(char *arg, t_list *envp)
 	while (envp)
 	{
 		var = envp -> content;
-		if (!ft_strncmp(arg, var, len))
-			return (envp);
+		if (!ft_strncmp(arg, var, len) && var[len] == '=')
+            return (envp);
 		envp = envp -> next;
 	}
 	return (NULL);
@@ -61,7 +61,7 @@ static int	do_stuff(char *arg, t_list *envp)
 	data = malloc(sizeof(char) * ft_strlen(arg) + 1);
 	if (!data)
 	{
-		free_lst(&envp, free);
+		free_lst(&envp, free); //we free anyways at the end right?
 		return (EXIT_FAILURE);
 	}
 	ft_strlcpy(data, arg, ft_strlen(arg) + 1);
@@ -76,29 +76,31 @@ static int	do_stuff(char *arg, t_list *envp)
 	return (EXIT_SUCCESS);
 }
 
-int	export(int n, char *args[], t_list *envp)
+int	export(int n, char *args[], t_list **envp)
 {
-	int	i;
+	int		i;
+	t_list	*start;
 
+	if (n < 1)
+		return (EXIT_FAILURE);
+	start = *envp;
 	if (n == 1 && !ft_strncmp(args[0], "export", 7))
 	{
-		while (envp)
+		while (*envp)
 		{
-			printf("declare -x %s\n", (char *) envp->content); //kinda bash behavior
-			envp = envp -> next;
+			printf("declare -x %s\n", (char *) (*envp)->content); //kinda bash behavior
+			(*envp) = (*envp) -> next;
 		}
+		*envp = start;
 		return (EXIT_SUCCESS);
 	}
 	i = 1;
-	if (n > 1)
+	while (args[i] && i < n)
 	{
-		while (args[i] && i < n)
-		{
-			if (parse_export(args[i]))
-				return (export_error());
-			do_stuff(args[i], envp);
-			i++;
-		}
+		if (parse_export(args[i]))
+			return (export_error());
+		do_stuff(args[i], *envp);
+		i++;
 	}
 	return (EXIT_SUCCESS);
 }

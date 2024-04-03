@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:25:59 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/02 08:11:25 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/03 13:33:47 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ typedef struct s_shell_runnable
 	int		in;
 	int		out;
 	char	*path;
-	pid_t	((*builtin)(int32_t, char **, t_list *));
+	pid_t	((*builtin)(int32_t, char **, t_list **));
 	char	**args;
 }	t_shell_runnable;
 
@@ -32,11 +32,12 @@ int					change_fd(int old_fd, int new_fd);
 int					might_close(int fd);
 
 //Builtin
-int					cd(int n, char *args[], t_list *envp);
+int					cd(int n, char *args[], t_list **envp);
 int					uitgang(int n, char *args[]);
 int					echo(int n, char *args[]);
 int					pwd(void);
-int					env(int n, char *args[], t_list *envp);
-int					export(int n, char *args[], t_list *envp);
+int					env(int n, char *args[], t_list **envp);
+int					export(int n, char *args[], t_list **envp);
+int					unset(int n, char *args[], t_list **envp);
 
 #endif //MINISHELL_COMMANDS_H

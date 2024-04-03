@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcayot <jcayot.student@hive.fi>            +#+  +:+       +#+        */
+/*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 20:37:40 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/20 20:37:41 by jcayot           ###   ########.fr       */
+/*   Updated: 2024/04/03 12:38:55 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*get_full_path(char *relative)
 	return (full_path);
 }
 
-int	cd(int n, char *args[], t_list *envp)
+int	cd(int n, char *args[], t_list **envp)
 {
 	int		result;
 	char	*path;
@@ -75,7 +75,7 @@ int	cd(int n, char *args[], t_list *envp)
 		return (EXIT_SAKU);
 	}
 	else if (n == 1)
-		return (go_home(envp));
+		return (go_home(*envp));
 	else
 	{
 		if (*args[1] == '/')

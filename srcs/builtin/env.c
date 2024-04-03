@@ -3,23 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcayot <jcayot.student@hive.fi>            +#+  +:+       +#+        */
+/*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:53:44 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/01 15:53:46 by jcayot           ###   ########.fr       */
+/*   Updated: 2024/04/03 13:43:52 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	env(int n, char *args[], t_list *envp)
+int	env(int n, char *args[], t_list **envp)
 {
+	t_list	*start;
+
 	if (n != 1 || !args)
 		return (EXIT_SAKU);
-	while (envp)
+	start = *envp;
+	while (*envp)
 	{
-		printf("%s\n", (char *) envp -> content);
-		envp = envp -> next;
+		printf("%s\n", (char *) (*envp) -> content);
+		(*envp) = (*envp) -> next;
 	}
+	*envp = start;
 	return (EXIT_SUCCESS);
 }

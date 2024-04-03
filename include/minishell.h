@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:24:24 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/29 13:45:52 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/03 13:33:14 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void			*free_cmds_content(t_shell_cmd *cmds);
 void			*free_lst(t_list **lst, void (*del)(void*));
 
 //Commands
-t_pid_launched	run_cmds(t_shell_cmd *cmds, int cmd_n, t_list *env_lst);
+t_pid_launched	run_cmds(t_shell_cmd *cmds, int cmd_n, t_list **env_lst);
 int				wait_pids(pid_t *pids, int n);
 int				ft_cmdsnum(t_shell_cmd *cmds);
 

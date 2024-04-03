@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commands.c                                         :+:      :+:    :+:   */
+/*   run_cmds.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:10:53 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/05 18:10:55 by jcayot           ###   ########.fr       */
+/*   Updated: 2024/04/03 13:59:07 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell_commands.h>
 
-pid_t	run_builtin(t_shell_runnable run, t_list *env)
+pid_t	run_builtin(t_shell_runnable run, t_list **env)
 {
 	pid_t	result;
 	int		saved_inout[2];
@@ -58,7 +58,7 @@ pid_t	run_child(t_shell_runnable runnable, t_list *env)
 	return (pid);
 }
 
-pid_t	pipe_and_make(t_shell_cmd cmd, int *inout, int last, t_list *env_lst)
+pid_t	pipe_and_make(t_shell_cmd cmd, int *inout, int last, t_list **env_lst)
 {
 	t_shell_runnable	run;
 	pid_t				pid;
@@ -75,18 +75,18 @@ pid_t	pipe_and_make(t_shell_cmd cmd, int *inout, int last, t_list *env_lst)
 			local_inout[1] = pipe_fd[1];
 		inout[0] = pipe_fd[0];
 	}
-	run = make_runnable(cmd.splitted_command, local_inout, &error, env_lst);
+	run = make_runnable(cmd.splitted_command, local_inout, &error, *env_lst);
 	if (run.builtin)
 		pid = run_builtin(run, env_lst);
 	else if (run.path)
-		pid = run_child(run, env_lst);
+		pid = run_child(run, *env_lst);
 	else
 		pid = error * -1;
 	might_close(local_inout[0]);
 	return (pid);
 }
 
-t_pid_launched	run_cmds(t_shell_cmd *cmds, int cmd_n, t_list *env_lst)
+t_pid_launched	run_cmds(t_shell_cmd *cmds, int cmd_n, t_list **env_lst)
 {
 	t_pid_launched	pids_run;
 	int				inout[2];

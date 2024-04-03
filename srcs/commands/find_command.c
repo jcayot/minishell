@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 15:51:03 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/02 08:10:56 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/02 13:09:10 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ void	*find_builtin(char *cmd)
 		return (&env);
 	if (ft_strncmp(cmd, "export", 7) == 0)
 		return (&export);
+	if (ft_strncmp(cmd, "unset", 6) == 0)
+		return (&unset);
 	return (NULL);
 }
 
