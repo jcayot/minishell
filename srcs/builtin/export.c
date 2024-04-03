@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 13:52:55 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/03 14:10:58 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/03 14:55:32 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static t_list	*check_dups(char *arg, t_list *envp)
 	{
 		var = envp -> content;
 		if (!ft_strncmp(arg, var, len) && var[len] == '=')
-            return (envp);
+			return (envp);
 		envp = envp -> next;
 	}
 	return (NULL);
@@ -61,7 +61,7 @@ static int	do_stuff(char *arg, t_list *envp)
 	data = malloc(sizeof(char) * ft_strlen(arg) + 1);
 	if (!data)
 	{
-		free_lst(&envp, free); //we free anyways at the end right?
+		free_lst(&envp, free);//we free anyways at the end right?
 		return (EXIT_FAILURE);
 	}
 	ft_strlcpy(data, arg, ft_strlen(arg) + 1);
@@ -89,7 +89,7 @@ int	export(int n, char *args[], t_list **envp)
 		while (*envp)
 		{
 			printf("declare -x %s\n", (char *) (*envp)->content); //kinda bash behavior
-			(*envp) = (*envp) -> next;
+			(*envp) = (*envp)->next;
 		}
 		*envp = start;
 		return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:53:44 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/03 13:43:52 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/03 14:54:43 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	env(int n, char *args[], t_list **envp)
 	start = *envp;
 	while (*envp)
 	{
-		printf("%s\n", (char *) (*envp) -> content);
-		(*envp) = (*envp) -> next;
+		printf("%s\n", (char *)(*envp)->content);
+		(*envp) = (*envp)->next;
 	}
 	*envp = start;
 	return (EXIT_SUCCESS);
