@@ -36,6 +36,7 @@ SRCS			:= $(SRCS_DIR)/minishell.c \
 					$(UTILS_DIR)/ft_cmdsnum.c \
 					$(UTILS_DIR)/wait_pids.c \
 					$(ENV_DIR)/env.c \
+					$(ENV_DIR)/env_parsing.c \
 					$(TESTS_DIR)/tools.c
 
 OBJS			:= ${SRCS:.c=.o}
