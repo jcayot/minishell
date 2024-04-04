@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:24:24 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/03 18:45:15 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/04 16:09:23 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ char			**get_envp(t_list *env);
 t_shell_cmd		*parse_input(char *input, t_list *env, int r_val);
 void			*free_cmds_content(t_shell_cmd *cmds);
 void			*free_lst(t_list **lst, void (*del)(void*));
+void			*bad_duck(char saku);
 
 //Commands
 t_pid_launched	run_cmds(t_shell_cmd *cmds, int cmd_n, t_list **env_lst);

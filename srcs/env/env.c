@@ -6,11 +6,11 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 13:46:37 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/03 18:42:55 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/04 16:22:09 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include <minishell_env.h>
 
 t_list	**init_env(char **envp)
 {
@@ -75,39 +75,13 @@ char	**get_envp(t_list *env)
 	return (envp);
 }
 
-static int	no_match(char *split_cmd, int r_val)
+char	*i_hate_this(char *arg)
 {
-	free(split_cmd);
-	if (split_cmd[1] == '?' && !split_cmd[2])
-		split_cmd = ft_itoa(r_val);
-	else
-	{
-		split_cmd = malloc(sizeof(char) * 1);
-		split_cmd[0] = '\0';
-	}
-	return (EXIT_SUCCESS);
-}
+	char		*temp;
+	static char	set[4] = "$\'\"";
 
-int	parse_env(char **split_cmd, t_list *env, int r_val)
-{
-	int		i;
-	char	*temp;
-
-	i = 0;
-	while (split_cmd[i])
-	{
-		if (ft_strchr(split_cmd[i], '$'))
-		{
-			temp = get_env(split_cmd[i], env);
-			if (!temp)
-				return (no_match(split_cmd[i], r_val));
-			free(split_cmd[i]);
-			split_cmd[i] = malloc(sizeof(char) * ft_strlen(temp) + 1);
-			if (!split_cmd[i])
-				return (EXIT_FAILURE);
-			ft_strlcpy(split_cmd[i], temp, ft_strlen(temp) + 1);
-		}
-		i++;
-	}
-	return (EXIT_SUCCESS);
+	temp = arg;
+	arg = ft_strtrim(arg, set);
+	free(temp);
+	return (arg);
 }
