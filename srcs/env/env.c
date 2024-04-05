@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 13:46:37 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/04 16:22:09 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/05 14:24:26 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,12 @@ char	*get_env(char *str, t_list *env)
 	{
 		if (str[0] == '$')
 		{
-			if (!ft_strncmp(str + 1, env->content, ft_strlen(start + 1)))
+			if (!ft_strncmp(str + 1, env->content, ft_strlen(start + 1))
+				&& (*((char*)env->content + ft_strlen(start + 1)) == '='))
 				return ((char *)(env->content) + ft_strlen(start));
 		}
-		else if (!ft_strncmp(str, env->content, ft_strlen(start)))
+		else if (!ft_strncmp(str, env->content, ft_strlen(start))
+			&& (*((char*)env->content + ft_strlen(start)) == '='))
 			return ((char *)(env->content) + ft_strlen(start) + 1);
 		env = env->next;
 	}
