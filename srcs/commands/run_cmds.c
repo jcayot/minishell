@@ -32,7 +32,7 @@ pid_t	run_builtin(t_shell_runnable run, t_list **env)
 	return (result * -1);
 }
 
-pid_t	run_child(t_shell_runnable runnable, t_list *env)
+pid_t	run_child(t_shell_runnable runnable, t_list *env, int to_close)
 {
 	pid_t		pid;
 	char		**envp;
@@ -48,6 +48,7 @@ pid_t	run_child(t_shell_runnable runnable, t_list *env)
 		}
 		if (!change_fd(runnable.out, 1))
 			exit(EXIT_SAKU);
+		might_close(to_close);
 		execve(runnable.path, runnable.args, envp);
 		perror("minishell: ");
 		exit(EXIT_SAKU);
@@ -79,7 +80,7 @@ pid_t	pipe_and_make(t_shell_cmd cmd, int *inout, int last, t_list **env_lst)
 	if (run.builtin)
 		pid = run_builtin(run, env_lst);
 	else if (run.path)
-		pid = run_child(run, *env_lst);
+		pid = run_child(run, *env_lst, inout[0]);
 	else
 		pid = error * -1;
 	might_close(local_inout[0]);
