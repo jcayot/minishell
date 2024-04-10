@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:51:44 by svesa             #+#    #+#             */
-/*   Updated: 2024/03/25 16:10:11 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/10 18:55:56 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,18 @@ static int	check_kavychki(char **s)
 	char	*start;
 
 	start = *s;
-	flag = 0;
+	flag = -1;
 	while (ft_isspace(**s))
 		(*s)++;
 	while (**s)
 	{
-		if ((**s == 39 || **s == 34) && flag == 0)
+		if ((**s == 39 || **s == 34) && flag == -1)
 			flag = (int)(*s - start);
-		else if ((**s == 39 || **s == 34) && flag != 0)
-			flag = 0;
+		else if ((**s == 39 || **s == 34) && flag != -1)
+			flag = -1;
 		(*s)++;
 	}
-	if (flag != 0)
+	if (flag != -1)
 	{
 		*s = start + flag;
 		return (1);
