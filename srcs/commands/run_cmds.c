@@ -83,6 +83,7 @@ pid_t	pipe_and_make(t_shell_cmd cmd, int *inout, int last, t_list **env_lst)
 	else
 		pid = error * -1;
 	might_close(local_inout[0]);
+	might_close(local_inout[1]);
 	return (pid);
 }
 
