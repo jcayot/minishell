@@ -37,15 +37,25 @@ void	*free_cmds_content(t_shell_cmd *cmds)
 	return (NULL);
 }
 
+t_shell_cmd	null_terminate(void)
+{
+	t_shell_cmd	null;
+
+	null.ins = NULL;
+	null.outs = NULL;
+	null.splitted_command = NULL;
+	null.error = 1;
+	return (null);
+}
+
 t_shell_cmd	make_cmd(char *cmd_str, t_list *env, int r_val)
 {
 	t_shell_cmd	cmd;
 
-	cmd.error = 1;
-	cmd.splitted_command = NULL;
+	cmd = null_terminate();
 	if (!get_cmd_inout(&cmd, cmd_str))
 		return (cmd);
-	cmd.splitted_command = ft_modsplit(cmd_str, ' ');
+	cmd.splitted_command = split_input(cmd_str, ' ');
 	if (!cmd.splitted_command)
 	{
 		free_lst(cmd.ins, &free_duck);
@@ -59,52 +69,35 @@ t_shell_cmd	make_cmd(char *cmd_str, t_list *env, int r_val)
 	return (cmd);
 }
 
-t_shell_cmd	null_terminate(void)
-{
-	t_shell_cmd	null;
-
-	null.ins = NULL;
-	null.outs = NULL;
-	null.splitted_command = NULL;
-	null.error = 1;
-	return (null);
-}
-
 t_shell_cmd	*parse_input(char *input, t_list *env, int r_val)
 {
 	t_shell_cmd	*cmds;
-	char		**cmds_str;
+	char		**splitted_input;
 	int			n_cmd;
 	int			i;
 
-	cmds_str = ft_modsplit(input, '|');
-	if (!cmds_str)
+	splitted_input = split_input(input, '|');
+	if (!splitted_input)
 		return (NULL);
-	n_cmd = (int) ft_strarray_len(cmds_str);
+	n_cmd = (int) ft_strarray_len(splitted_input);
 	cmds = malloc((n_cmd + 1) * sizeof (t_shell_cmd));
 	if (!cmds)
-		return (ft_strarray_free(cmds_str));
+		return (ft_strarray_free(splitted_input));
 	i = 0;
 	while (i < n_cmd)
 	{
-		cmds[i] = null_terminate();
-		cmds[i] = make_cmd(cmds_str[i], env, r_val);
+		cmds[i] = make_cmd(splitted_input[i], env, r_val);
 		if (cmds[i].error != 0)
 		{
-			if (cmds[i].error == 1)
-			{
-				ft_strarray_free(cmds_str);
-				free_cmds_content(cmds);
-				free(cmds);
-				return (NULL);
-			}
-			ft_strarray_free(cmds_str);
+			ft_strarray_free(splitted_input);
 			free_cmds_content(cmds);
+			if (cmds[i].error == 1)
+				return (free(cmds), NULL);
 			return (cmds);
 		}
 		i++;
 	}
 	cmds[i] = null_terminate();
-	ft_strarray_free(cmds_str);
+	ft_strarray_free(splitted_input);
 	return (cmds);
 }

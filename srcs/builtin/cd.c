@@ -32,17 +32,21 @@ int	go_to_path(char *path)
 	return (chdir(path));
 }
 
-int	go_home(t_list *envp)
+int	go_target(t_list *envp, char *target)
 {
-	char	*home_path;
+	char	*target_path;
 
-	home_path = get_env("HOME", envp);
-	if (!home_path)
+	target_path = get_env(target, envp);
+	if (!target_path)
 	{
-		ft_putstr_fd("cd: HOME not set you retard\n", 2);
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(target, 2);
+		ft_putstr_fd(" not set you retard\n", 2);
 		return (EXIT_SAKU);
 	}
-	return (go_to_path(home_path));
+	else if (ft_strncmp(target, "OLDPWD", 7) == 0)
+		ft_putendl_fd(target_path, 1);
+	return (go_to_path(target_path));
 }
 
 char	*get_full_path(char *relative)
@@ -74,12 +78,14 @@ int	cd(int n, char *args[], t_list **envp)
 		ft_putstr_fd("cd: too many arguments\n", 2);
 		return (EXIT_SAKU);
 	}
-	else if (n == 1)
-		return (go_home(*envp));
+	else if (n == 1 || ft_strncmp(args[1], "~", 2) == 0)
+		return (go_target(*envp, "HOME"));
 	else
 	{
 		if (*args[1] == '/')
 			return (go_to_path(args[1]));
+		else if (ft_strncmp(args[1], "-", 2) == 0)
+			return (go_target(*envp, "OLDPWD"));
 		path = get_full_path(args[1]);
 		if (!path)
 			return (EXIT_SAKU);

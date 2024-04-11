@@ -112,17 +112,21 @@ static int	make_split(char **array, char const *s, char c, int n)
 	return (0);
 }
 
-char	**ft_modsplit(char const *s, char c)
+char	**split_input(char const *s, char c)
 {
 	char	**array;
 	int		n;
 
-	if (check_pipes((char **)&s) || check_kavychki((char **)&s))
-		return (bad_duck((char)*s));
 	n = count_word(s, c);
 	array = (char **) malloc((n + 1) * sizeof (char *));
-	if (array == NULL)
+	if (!array)
 		return (NULL);
+	if (check_pipes((char **)&s) || check_kavychki((char **)&s))
+	{
+		bad_duck((char) *s);
+		*array = NULL;
+		return (array);
+	}
 	if (make_split(array, s, c, n))
 		return ((char **) ft_strarray_free(array));
 	return (array);
