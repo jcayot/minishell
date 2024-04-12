@@ -51,11 +51,11 @@ int	go_target(t_list *envp, char *target)
 
 char	*get_full_path(char *relative)
 {
-	char	buffer[1000];
+	char	buffer[10000];
 	char	*path_with_dash;
 	char	*full_path;
 
-	if (getcwd(buffer, 1000) == NULL)
+	if (getcwd(buffer, 10000) == NULL)
 		return (NULL);
 	if (buffer[ft_strlen(buffer) - 1] != '/')
 		path_with_dash = ft_strjoin(buffer, "/");

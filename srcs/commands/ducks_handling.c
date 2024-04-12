@@ -27,9 +27,12 @@ int	open_put_error(char *file, int oflag)
 	int	fd;
 	int	error;
 
-	fd = open(file, oflag, 420);
-	if (fd != -1)
-		return (fd);
+	if (access(file, W_OK) != 0 || unlink(file) == 0)
+	{
+		fd = open(file, oflag, 420);
+		if (fd != -1)
+			return (fd);
+	}
 	error = errno;
 	return (put_file_error(file, strerror(error)));
 }
@@ -38,21 +41,23 @@ int	read_coin_coin(char *delimiter)
 {
 	char	*line;
 	int		pipe_fd[2];
-	int		is_deli;
 
 	if (pipe(pipe_fd) == -1)
 		return (-1);
 	line = get_next_line(0);
-	is_deli = 0;
 	while (line)
 	{
+		if (ft_strlen(line) - 1 == ft_strlen(delimiter))
+		{
+			if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
+			{
+				free(line);
+				break ;
+			}
+		}
 		write(pipe_fd[1], line, ft_strlen(line));
-		if (ft_strlen(line) > 1)
-			is_deli = ft_strncmp(line, delimiter, ft_strlen(line) - 1) == 0;
 		free(line);
-		line = NULL;
-		if (!is_deli)
-			line = get_next_line(0);
+		line = get_next_line(0);
 	}
 	close(pipe_fd[1]);
 	return (pipe_fd[0]);
