@@ -28,15 +28,17 @@ int	miniloop(t_list **env)
 		free(input);
 		if (!commands)
 			break ;
-		// printf("%p et %p et %p\n", commands -> splitted_command, commands->ins, commands -> outs);
 		if (commands -> splitted_command)
 		{
-			pid_launched = run_cmds(commands, ft_cmdsnum(commands), env);
-			if (pid_launched.pids)
+			pid_launched = run_cmds(commands, env);
+			if (!pid_launched.pids)
 			{
-				r_value = wait_pids(pid_launched.pids, pid_launched.n);
-				free(pid_launched.pids);
+				free_cmds_content(commands);
+				free(commands);
+				break ;
 			}
+			r_value = wait_pids(pid_launched.pids, pid_launched.n);
+			free(pid_launched.pids);
 		}
 		free_cmds_content(commands);
 		free(commands);

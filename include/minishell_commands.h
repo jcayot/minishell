@@ -24,12 +24,21 @@ typedef struct s_shell_runnable
 	char	**args;
 }	t_shell_runnable;
 
+typedef struct s_run_context
+{
+	t_list	**env_lst;
+	int 	inout[2];
+	int 	cmd_i;
+	int		cmd_n;
+}	t_run_context;
+
 t_shell_runnable	make_runnable(char **splitted_cmd, int *inout, int *error,
 						t_list *env_lst);
 int					open_inout(t_list **in_ducks, t_list **out_ducks,
 						int *inout);
 int					change_fd(int old_fd, int new_fd);
 int					might_close(int fd);
+pid_t				run_builtin(t_shell_runnable run, t_list **env_lst, int cmd_n);
 
 //Builtin
 int					cd(int n, char *args[], t_list **envp);
