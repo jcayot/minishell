@@ -4,9 +4,9 @@ CFLAGS			:= -Wextra -Wall -Werror -g
 LIBFT			:= ./lib/libft/libft.a
 LIBFT_DIR		:= ./lib/libft
 
-HEADERS			:= -I ./include -I $(LIBFT_DIR)
+HEADERS			:= -I ./include -I $(LIBFT_DIR) -I ~/.brew/opt/readline/include
 
-READLINE		:= -lreadline
+READLINE		:= -lreadline -L ~/.brew/opt/readline/lib
 
 SRCS_DIR		:= srcs
 PARSING_DIR		:= $(SRCS_DIR)/parsing
