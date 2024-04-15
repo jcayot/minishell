@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:42:44 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/05 16:39:36 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/15 18:25:58 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,17 @@
 
 static char	*no_match(char *split_cmd, int r_val)
 {
-	free(split_cmd);
 	if (split_cmd[1] == '?' && !split_cmd[2])
+	{
+		free (split_cmd);
 		split_cmd = ft_itoa(r_val);
+	}
 	else
 	{
+		free(split_cmd);
 		split_cmd = malloc(sizeof(char) * 1);
+		if (!split_cmd)
+			return (NULL);
 		split_cmd[0] = '\0';
 	}
 	return (split_cmd);

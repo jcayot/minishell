@@ -1,5 +1,5 @@
 NAME			:= minishell
-CFLAGS			:= -Wextra -Wall -Werror -g
+CFLAGS			:=  -Wextra -Wall -Werror -g
 
 LIBFT			:= ./lib/libft/libft.a
 LIBFT_DIR		:= ./lib/libft
@@ -38,7 +38,8 @@ SRCS			:= $(SRCS_DIR)/minishell.c \
 					$(UTILS_DIR)/wait_pids.c \
 					$(ENV_DIR)/env.c \
 					$(ENV_DIR)/env_parsing.c \
-					$(TESTS_DIR)/tools.c
+					$(TESTS_DIR)/tools.c  \
+					$(SRCS_DIR)/sigs/sigs.c
 
 OBJS			:= ${SRCS:.c=.o}
 

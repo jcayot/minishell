@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:24:24 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/04 16:09:23 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/15 18:46:54 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 # include <errno.h>
 # include <libft.h>
 # include <get_next_line.h>
+# include <signal.h>
+
+typedef struct sigaction t_sigact;
 
 typedef struct s_duck
 {
@@ -70,5 +73,9 @@ int				ft_cmdsnum(t_shell_cmd *cmds);
 void			print_all(t_shell_cmd *commands);
 int				sub_strlen(const char *s, char separator);
 int				save_inout(int *save_dest);
+
+//Signals
+void    		signals_default(void);
+void			signals_running(void);
 
 #endif //MINISHELL_H

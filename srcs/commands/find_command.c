@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 15:51:03 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/02 13:09:10 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/15 18:22:22 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ char	*find_command(char *cmd, char **paths, int *error)
 
 void	*find_builtin(char *cmd)
 {
+	if (!cmd)
+		return (NULL);
 	if (ft_strncmp(cmd, "exit", 5) == 0)
 		return (&uitgang);
 	if (ft_strncmp(cmd, "cd", 3) == 0)
@@ -95,6 +97,8 @@ t_shell_runnable	make_runnable(char **splitted_cmd, int *inout, int *error,
 	runnable.args = splitted_cmd;
 	runnable.path = NULL;
 	runnable.builtin = find_builtin(splitted_cmd[0]);
+	if (!splitted_cmd[0])
+		return (runnable);
 	*error = 1;
 	if (runnable.builtin)
 		return (runnable);

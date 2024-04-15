@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:10:53 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/03 13:59:07 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/15 18:43:13 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ pid_t	run(char **splitted_cmd, t_run_context context, int *inout)
 	int					err;
 
 	run = make_runnable(splitted_cmd, inout, &err, *context.env_lst);
+	signals_running();
 	if (run.builtin)
 		pid = run_builtin(run, context.env_lst, context.cmd_n);
 	else if (run.path)

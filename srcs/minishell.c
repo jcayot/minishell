@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:24:05 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/03 17:19:26 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/15 18:37:06 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ int	miniloop(t_list **env)
 	r_value = 0;
 	while (1)
 	{
+		signals_default();
 		input = readline("minishell$> ");
+		if (!input)
+			break ;
 		add_history(input);
 		commands = parse_input(input, *env, r_value);
 		free(input);
