@@ -12,26 +12,6 @@
 
 #include <minishell_commands.h>
 
-pid_t	run_builtin(t_shell_runnable run, t_list **env)
-{
-	pid_t	result;
-	int		saved_inout[2];
-
-	if (!save_inout(saved_inout))
-		return (-1);
-	if (!change_fd(run.in, 0))
-		return (-1);
-	if (!change_fd(run.out, 1))
-	{
-		change_fd(saved_inout[0], 0);
-		return (-1);
-	}
-	result = run.builtin(ft_strarray_len(run.args), run.args, env);
-	change_fd(saved_inout[0], 0);
-	change_fd(saved_inout[1], 1);
-	return (result * -1);
-}
-
 pid_t	run_child(t_shell_runnable runnable, t_list *env, int to_close)
 {
 	pid_t		pid;
@@ -50,7 +30,8 @@ pid_t	run_child(t_shell_runnable runnable, t_list *env, int to_close)
 			exit(EXIT_SAKU);
 		might_close(to_close);
 		execve(runnable.path, runnable.args, envp);
-		perror("minishell: ");
+		ft_putstr_fd("-minishell: ", 2);
+		perror(runnable.args[0]);
 		exit(EXIT_SAKU);
 	}
 	if (envp)
@@ -59,59 +40,63 @@ pid_t	run_child(t_shell_runnable runnable, t_list *env, int to_close)
 	return (pid);
 }
 
-pid_t	pipe_and_make(t_shell_cmd cmd, int *inout, int last, t_list **env_lst)
+pid_t	pipe_and_make(t_shell_cmd cmd, t_run_context context)
 {
 	t_shell_runnable	run;
 	pid_t				pid;
 	int					pipe_fd[2];
-	int					local_inout[2];
-	int					error;
+	int					local_fd[2];
+	int					err;
 
-	local_inout[0] = inout[0];
-	local_inout[1] = inout[1];
-	if (!last)
+	local_fd[0] = context.inout[0];
+	local_fd[1] = context.inout[1];
+	if (context.cmd_i < context.cmd_n - 1)
 	{
 		pipe(pipe_fd);
-		if (local_inout[1] == 1)
-			local_inout[1] = pipe_fd[1];
-		inout[0] = pipe_fd[0];
+		if (local_fd[1] == 1)
+			local_fd[1] = pipe_fd[1];
+		context.inout[0] = pipe_fd[0];
 	}
-	run = make_runnable(cmd.splitted_command, local_inout, &error, *env_lst);
+	run = make_runnable(cmd.splitted_command, local_fd, &err, *context.env_lst);
 	if (run.builtin)
-		pid = run_builtin(run, env_lst);
+		pid = run_builtin(run, context.env_lst, context.cmd_n);
 	else if (run.path)
-		pid = run_child(run, *env_lst, inout[0]);
+		pid = run_child(run, *context.env_lst, context.inout[0]);
 	else
-		pid = error * -1;
-	might_close(local_inout[0]);
-	might_close(local_inout[1]);
+		pid = err * -1;
+	might_close(local_fd[0]);
+	might_close(local_fd[1]);
 	return (pid);
 }
 
-t_pid_launched	run_cmds(t_shell_cmd *cmds, int cmd_n, t_list **env_lst)
+t_pid_launched	run_cmds(t_shell_cmd *cmds, t_list **env_lst)
 {
 	t_pid_launched	pids_run;
-	int				inout[2];
+	t_run_context	context;
 
+	context.inout[0] = 0;
+	context.cmd_n = ft_cmdsnum(cmds);
+	context.env_lst = env_lst;
+	context.cmd_i = 0;
 	pids_run.n = 0;
-	inout[0] = 0;
-	pids_run.pids = malloc(ft_cmdsnum(cmds) * sizeof (pid_t));
+	pids_run.pids = malloc(context.cmd_n * sizeof (pid_t));
 	if (!pids_run.pids)
 		return (pids_run);
-	while (pids_run.n < cmd_n)
+	while (context.cmd_i < context.cmd_n)
 	{
-		if (open_inout(cmds[pids_run.n].ins, cmds[pids_run.n].outs, inout))
+		if (open_inout(cmds[context.cmd_i].ins, cmds[context.cmd_i].outs, context.inout))
 		{
 			if (cmds->splitted_command[0])
-				pids_run.pids[pids_run.n] = pipe_and_make(cmds[pids_run.n], inout,pids_run.n == cmd_n - 1, env_lst);
+				pids_run.pids[context.cmd_i] = pipe_and_make(cmds[context.cmd_i], context);
 			else
-				pids_run.pids[pids_run.n] = 0;
-			might_close(inout[1]);
+				pids_run.pids[context.cmd_i] = 0;
+			might_close(context.inout[1]);
 		}
 		else
-			pids_run.pids[pids_run.n] = -1;
-		pids_run.n++;
+			pids_run.pids[context.cmd_i] = -1;
+		context.cmd_i++;
 	}
-	might_close(inout[0]);
+	might_close(context.inout[0]);
+	pids_run.n = context.cmd_i;
 	return (pids_run);
 }

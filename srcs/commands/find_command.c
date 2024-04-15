@@ -100,10 +100,12 @@ t_shell_runnable	make_runnable(char **splitted_cmd, int *inout, int *error,
 		return (runnable);
 	paths_str = get_env("PATH", env_lst);
 	if (!paths_str)
-		return (runnable);
-	paths = ft_split(paths_str, ':');
-	if (paths)
+		runnable.path = find_command(splitted_cmd[0], NULL, error);
+	else
 	{
+		paths = ft_split(paths_str, ':');
+		if (!paths)
+			return (runnable);
 		runnable.path = find_command(splitted_cmd[0], paths, error);
 		ft_strarray_free(paths);
 	}
