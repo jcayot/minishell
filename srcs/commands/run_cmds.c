@@ -40,30 +40,44 @@ pid_t	run_child(t_shell_runnable runnable, t_list *env, int to_close)
 	return (pid);
 }
 
-pid_t	pipe_and_make(t_shell_cmd cmd, t_run_context context)
+pid_t	run(char **splitted_cmd, t_run_context context, int *inout)
 {
 	t_shell_runnable	run;
 	pid_t				pid;
-	int					pipe_fd[2];
-	int					local_fd[2];
 	int					err;
 
-	local_fd[0] = context.inout[0];
-	local_fd[1] = context.inout[1];
-	if (context.cmd_i < context.cmd_n - 1)
-	{
-		pipe(pipe_fd);
-		if (local_fd[1] == 1)
-			local_fd[1] = pipe_fd[1];
-		context.inout[0] = pipe_fd[0];
-	}
-	run = make_runnable(cmd.splitted_command, local_fd, &err, *context.env_lst);
+	run = make_runnable(splitted_cmd, inout, &err, *context.env_lst);
 	if (run.builtin)
 		pid = run_builtin(run, context.env_lst, context.cmd_n);
 	else if (run.path)
 		pid = run_child(run, *context.env_lst, context.inout[0]);
 	else
 		pid = err * -1;
+	return (pid);
+}
+
+pid_t	run_loop(t_shell_cmd cmd, t_run_context *context)
+{
+	pid_t	pid;
+	int		local_fd[2];
+	int		pipe_fd[2];
+
+	open_inout(cmd.ins, cmd.outs, context -> inout);
+	local_fd[0] = context -> inout[0];
+	local_fd[1] = context -> inout[1];
+	if (context -> cmd_i < context -> cmd_n - 1)
+	{
+		pipe(pipe_fd);
+		if (local_fd[1] == 1)
+			local_fd[1] = pipe_fd[1];
+		else
+			close(pipe_fd[1]);
+		context -> inout[0] = pipe_fd[0];
+	}
+	if (local_fd[0] != -1 && local_fd[1] != -1)
+		pid = run(cmd.splitted_command, *context, local_fd);
+	else
+		pid = 0;
 	might_close(local_fd[0]);
 	might_close(local_fd[1]);
 	return (pid);
@@ -84,16 +98,7 @@ t_pid_launched	run_cmds(t_shell_cmd *cmds, t_list **env_lst)
 		return (pids_run);
 	while (context.cmd_i < context.cmd_n)
 	{
-		if (open_inout(cmds[context.cmd_i].ins, cmds[context.cmd_i].outs, context.inout))
-		{
-			if (cmds->splitted_command[0])
-				pids_run.pids[context.cmd_i] = pipe_and_make(cmds[context.cmd_i], context);
-			else
-				pids_run.pids[context.cmd_i] = 0;
-			might_close(context.inout[1]);
-		}
-		else
-			pids_run.pids[context.cmd_i] = -1;
+		pids_run.pids[context.cmd_i] = run_loop(cmds[context.cmd_i], &context);
 		context.cmd_i++;
 	}
 	might_close(context.inout[0]);
