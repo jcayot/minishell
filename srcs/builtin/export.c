@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 13:52:55 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/16 15:56:46 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/16 18:50:56 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static t_list	*check_dups(char *arg, t_list *envp)
 	return (NULL);
 }
 
-static int	do_stuff(char *arg, t_list *envp)
+int	update_env_node(char *arg, t_list *envp)
 {
 	char	*data;
 	t_list	*asd;
@@ -103,7 +103,7 @@ int	export(int n, char *args[], t_list **envp)
 		return (export_error());
 	while (args[i] && i < n)
 	{
-		do_stuff(args[i], *envp);
+		update_env_node(args[i], *envp);
 		i++;
 	}
 	return (EXIT_SUCCESS);
