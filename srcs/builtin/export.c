@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 13:52:55 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/03 14:55:32 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/16 15:56:46 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,32 @@
 
 static int	export_error(void)
 {
-	ft_putstr_fd("Even monkeys know how to use export.\n", 2);
+	ft_putstr_fd("Nice try. We don't do exact bash copying. ", 2);
+	ft_putstr_fd("Try export var=val for proper functionality.\n", 2);
 	return (EXIT_FAILURE);
 }
 
-static int	parse_export(char *arg) // not exact bash behavior with spaces between inputs or included chars
+static int	parse_export(char *args[]) // not exact bash behavior with spaces between inputs or included chars
 {
 	int	i;
+	int	j;
 
-	i = 0;
-	while (ft_isalnum(arg[i]) && arg[i])
-		i++;
-	if (arg[i++] != '=')
-		return (EXIT_FAILURE);
-	while (ft_isalnum(arg[i]) && arg[i])
-		i++;
-	if (!arg[i])
-		return (EXIT_SUCCESS);
-	else
-		return (EXIT_FAILURE);
+	j = 0;
+	while (args[j])
+	{
+		i = 0;
+		while (ft_isalnum(args[j][i]) && args[j][i])
+			i++;
+		if (args[j][i++] != '=')
+			return (EXIT_FAILURE);
+		while (ft_isalnum(args[j][i]) && args[j][i])
+			i++;
+		if (!args[j][i])
+			j++;
+		else
+			return (EXIT_FAILURE);
+	}
+	return(EXIT_SUCCESS);
 }
 
 static t_list	*check_dups(char *arg, t_list *envp)
@@ -60,10 +67,7 @@ static int	do_stuff(char *arg, t_list *envp)
 
 	data = malloc(sizeof(char) * ft_strlen(arg) + 1);
 	if (!data)
-	{
-		free_lst(&envp, free);//we free anyways at the end right?
 		return (EXIT_FAILURE);
-	}
 	ft_strlcpy(data, arg, ft_strlen(arg) + 1);
 	if (check_dups(arg, envp))
 	{
@@ -88,21 +92,21 @@ int	export(int n, char *args[], t_list **envp)
 	{
 		while (*envp)
 		{
-			printf("declare -x %s\n", (char *) (*envp)->content); //kinda bash behavior
+			printf("declare -x %s\n", (char *) (*envp)->content);
 			(*envp) = (*envp)->next;
 		}
 		*envp = start;
 		return (EXIT_SUCCESS);
 	}
 	i = 1;
+	if (parse_export(args + 1))
+		return (export_error());
 	while (args[i] && i < n)
 	{
-		if (parse_export(args[i]))
-			return (export_error());
 		do_stuff(args[i], *envp);
 		i++;
 	}
 	return (EXIT_SUCCESS);
 }
 
-//might segfault and leak massively (or not)
+
