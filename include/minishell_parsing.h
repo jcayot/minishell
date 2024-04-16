@@ -21,5 +21,6 @@ void	free_duck(void *void_duck);
 void	*free_lst(t_list **lst, void (*del)(void*));
 char	**split_input(char const *s, char c);
 int		check_duck_again(char *cmd_str, int *len);
+char	*add_env(char *str, t_list *env, int r_val);
 
 #endif //MINISHELL_PARSING_H

@@ -50,22 +50,27 @@ t_shell_cmd	null_terminate(void)
 
 t_shell_cmd	make_cmd(char *cmd_str, t_list *env, int r_val)
 {
+	char		*env_str;
 	t_shell_cmd	cmd;
 
 	cmd = null_terminate();
-	if (!get_cmd_inout(&cmd, cmd_str))
+	env_str = add_env(cmd_str, env, r_val);
+	if (!env_str)
 		return (cmd);
-	cmd.splitted_command = split_input(cmd_str, ' ');
+	if (!get_cmd_inout(&cmd, env_str))
+		return (free(env_str), cmd);
+	cmd.splitted_command = split_input(env_str, ' ');
 	if (!cmd.splitted_command)
 	{
 		free_lst(cmd.ins, &free_duck);
 		free_lst(cmd.outs, &free_duck);
 		cmd.ins = NULL;
 		cmd.outs = NULL;
+		free(env_str);
 		return (cmd);
 	}
-	parse_env(cmd.splitted_command, env, r_val);
 	cmd.error = 0;
+	free(env_str);
 	return (cmd);
 }
 
