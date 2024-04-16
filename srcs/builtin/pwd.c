@@ -14,9 +14,9 @@
 
 int	pwd(void)
 {
-	char	buffer[1000];
+	char	buffer[10000];
 
-	if (getcwd(buffer, 1000) == NULL)
+	if (getcwd(buffer, 10000) == NULL)
 		return (EXIT_SAKU);
 	printf("%s\n", buffer);
 	return (EXIT_SUCCESS);

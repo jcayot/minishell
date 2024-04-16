@@ -90,6 +90,7 @@ t_pid_launched	run_cmds(t_shell_cmd *cmds, t_list **env_lst)
 	t_run_context	context;
 
 	context.inout[0] = 0;
+	context.inout[1] = 1;
 	context.cmd_n = ft_cmdsnum(cmds);
 	context.env_lst = env_lst;
 	context.cmd_i = 0;

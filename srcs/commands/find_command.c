@@ -97,6 +97,7 @@ t_shell_runnable	make_runnable(char **splitted_cmd, int *inout, int *error,
 	runnable.args = splitted_cmd;
 	runnable.path = NULL;
 	runnable.builtin = find_builtin(splitted_cmd[0]);
+	*error = 0;
 	if (!splitted_cmd[0])
 		return (runnable);
 	*error = 1;

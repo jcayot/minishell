@@ -68,6 +68,26 @@ char	*get_full_path(char *relative)
 	return (full_path);
 }
 
+int relative_home(t_list *envp, char *region)
+{
+	int 	result;
+	char	*target_path;
+	char 	*el_patho;
+
+	target_path = get_env("HOME", envp);
+	if (!target_path)
+	{
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(region, 2);
+		ft_putstr_fd(" not set you retard\n", 2);
+		return (EXIT_SAKU);
+	}
+	el_patho = ft_strjoin(target_path, region + 1);
+	result = go_to_path(el_patho);
+	free(el_patho);
+	return (result);
+}
+
 int	cd(int n, char *args[], t_list **envp)
 {
 	int		result;
@@ -78,7 +98,7 @@ int	cd(int n, char *args[], t_list **envp)
 		ft_putstr_fd("cd: too many arguments\n", 2);
 		return (EXIT_SAKU);
 	}
-	else if (n == 1 || ft_strncmp(args[1], "~", 2) == 0)
+	else if (n == 1)
 		return (go_target(*envp, "HOME"));
 	else
 	{
@@ -86,6 +106,8 @@ int	cd(int n, char *args[], t_list **envp)
 			return (go_to_path(args[1]));
 		else if (ft_strncmp(args[1], "-", 2) == 0)
 			return (go_target(*envp, "OLDPWD"));
+		else if (ft_strncmp(args[1], "~", 1) == 0)
+			return (relative_home(*envp ,args[1]));
 		path = get_full_path(args[1]);
 		if (!path)
 			return (EXIT_SAKU);
