@@ -12,6 +12,20 @@
 
 #include <minishell_env.h>
 
+int	var_len(char *var)
+{
+	int	i;
+
+	i = 0;
+	while (var[i])
+	{
+		if (var[i] == ' ' || var[i] == '\"' || var[i] == '\'')
+			break ;
+		i++;
+	}
+	return (i);
+}
+
 static char	*no_match(char *split_cmd, int r_val)
 {
 	if (split_cmd[1] == '?' && !split_cmd[2])
@@ -46,34 +60,15 @@ static char	*make_variable(char *arg, t_list *env, int r_val)
 	return (arg);
 }
 
-int	parse_env(char **split_cmd, t_list *env, int r_val)
-{
-	int		i;
-
-	i = 0;
-	while (split_cmd[i])
-	{
-		if (ft_strchr(split_cmd[i], '$'))
-		{
-			split_cmd[i] = make_variable(split_cmd[i], env, r_val);
-			if (!split_cmd[i])
-				return (EXIT_FAILURE);
-		}
-		i++;
-	}
-	return (EXIT_SUCCESS);
-}
-
 char	*put_env(char *dst, char *src, t_list *env, int r_val)
 {
 	char	*result;
 	char	*var_name;
 	char	*replacement;
 
-	var_name = ft_substr(src, 0, sub_strlen(src, ' '));
+	var_name = ft_substr(src, 0, var_len(src));
 	if (!var_name)
 		return (NULL);
-	printf("%s\n", var_name);
 	replacement = make_variable(var_name, env, r_val);
 	if (!replacement)
 		return (NULL);
@@ -111,12 +106,14 @@ char	*add_env(char *str, t_list *env, int r_val)
 		{
 			while (str[i + j] && str[i + j] != '\'')
 				j++;
+			if (str[i + j])
+				j++;
 			temp_str = joinsub(env_str, str, i, j);
 		}
 		else if (str[i] == '$')
 		{
 			temp_str = put_env(env_str, str + i + 1, env, r_val);
-			j = sub_strlen(str + i + j, ' ') + 1;
+			j = var_len(str + i + j) + 1;
 		}
 		else
 		{
@@ -131,6 +128,5 @@ char	*add_env(char *str, t_list *env, int r_val)
 		env_str = temp_str;
 		i += j;
 	}
-	printf("%s\n", env_str);
 	return (env_str);
 }
