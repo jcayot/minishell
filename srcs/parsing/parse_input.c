@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:57:56 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/03 17:23:42 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/17 20:01:37 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,6 @@ void	*free_cmds_content(t_shell_cmd *cmds)
 		i++;
 	}
 	return (NULL);
-}
-
-int broken_pipe(char *str)
-{
-	int i;
-	int pipe;
-
-	i = 0;
-	pipe = 0;
-	while (str[i])
-	{
-		if (str[i] == '|')
-			pipe = 1;
-		else if (!ft_isspace(str[i]))
-			pipe = 0;
-		i++;
-	}
-	if (pipe)
-		bad_duck(str[i]);
-	return (pipe);
 }
 
 t_shell_cmd	null_terminate(void)
