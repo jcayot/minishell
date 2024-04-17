@@ -14,6 +14,7 @@ COMMANDS_DIR	:= $(SRCS_DIR)/commands
 BUILTIN_DIR		:= $(SRCS_DIR)/builtin
 UTILS_DIR		:= $(SRCS_DIR)/utils
 ENV_DIR			:= $(SRCS_DIR)/env
+SIGS_DIR		:= $(SRCS_DIR)/sigs
 TESTS_DIR		:= tests
 
 SRCS			:= $(SRCS_DIR)/minishell.c \
@@ -41,7 +42,8 @@ SRCS			:= $(SRCS_DIR)/minishell.c \
 					$(ENV_DIR)/env_utils.c \
 					$(ENV_DIR)/env_parsing.c \
 					$(TESTS_DIR)/tools.c  \
-					$(SRCS_DIR)/sigs/sigs.c
+					$(SIGS_DIR)/sigs.c \
+					$(SIGS_DIR)/sigs_et_termios.c
 
 OBJS			:= ${SRCS:.c=.o}
 

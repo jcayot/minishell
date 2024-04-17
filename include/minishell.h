@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:24:24 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/15 18:46:54 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/17 17:32:15 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <libft.h>
 # include <get_next_line.h>
 # include <signal.h>
+# include <termios.h>
 
 typedef struct sigaction t_sigact;
 
@@ -77,5 +78,8 @@ int				save_inout(int *save_dest);
 //Signals
 void    		signals_default(void);
 void			signals_running(void);
+void			signals_hdoc(void);
+void			after_input_termios();
+void			waiting_input_termios();
 
 #endif //MINISHELL_H

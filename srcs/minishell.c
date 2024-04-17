@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:24:05 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/15 18:37:06 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/17 17:37:01 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	miniloop(t_list **env)
 		}
 		free_cmds_content(commands);
 		free(commands);
+		after_input_termios();
 	}
 	return (EXIT_SUCCESS);
 }

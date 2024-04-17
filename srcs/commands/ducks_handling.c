@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ducks_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 16:52:29 by jcayot            #+#    #+#             */
-/*   Updated: 2024/03/16 16:52:30 by jcayot           ###   ########.fr       */
+/*   Updated: 2024/04/17 16:21:35 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	read_coin_coin(char *delimiter)
 	char	*line;
 	int		pipe_fd[2];
 
+	signals_hdoc();
 	if (pipe(pipe_fd) == -1)
 		return (-1);
 	line = get_next_line(0);

@@ -1,58 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sigs.c                                             :+:      :+:    :+:   */
+/*   sigs_et_termios.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/12 13:07:36 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/17 17:44:30 by svesa            ###   ########.fr       */
+/*   Created: 2024/04/17 15:26:51 by svesa             #+#    #+#             */
+/*   Updated: 2024/04/17 17:45:14 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	r_handler(int signum)
+void	waiting_input_termios(void)
 {
-	if (signum == SIGINT)
-		ft_putchar_fd('\n', 1);
-	if (signum == SIGQUIT)
-	{
-		ft_putstr_fd("Quit: 3", 1);
-		ft_putchar_fd('\n', 1);
-	}
+	struct termios	term;
+
+	ft_memset(&term, 0, sizeof(struct termios));
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~(ECHOCTL);
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 
-void	signals_running(void)
+void	after_input_termios(void)
 {
-	t_sigact	sa;
+	struct termios	term;
 
-	after_input_termios();
-	ft_memset(&sa, 0, sizeof(t_sigact));
-	sa.sa_handler = r_handler;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
+	ft_memset(&term, 0, sizeof(struct termios));
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag |= ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 
-void	d_handler(int signum)
+void	h_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
 		ft_putchar_fd('\n', 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
 
-void	signals_default(void)
+void	signals_hdoc(void)
 {
 	t_sigact	sa;
 
 	waiting_input_termios();
 	ft_memset(&sa, 0, sizeof(t_sigact));
-	sa.sa_handler = d_handler;
+	sa.sa_handler = h_handler;
 	sigemptyset(&sa.sa_mask);
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
