@@ -30,7 +30,7 @@ int	miniloop(t_list **env)
 		commands = parse_input(input, *env, r_value);
 		free(input);
 		if (!commands)
-			break ;
+			continue ;
 		if (commands -> splitted_command)
 		{
 			pid_launched = run_cmds(commands, env);

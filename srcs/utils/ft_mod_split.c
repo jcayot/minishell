@@ -13,121 +13,104 @@
 #include <minishell.h>
 #include <minishell_parsing.h>
 
-static int	count_word(char const *s, char separator)
+int	word_len(const char *cmd, char separator, char *exceptions)
+{
+	int		len;
+
+	len = 0;
+	while (cmd[len])
+	{
+		if (cmd[len] == separator)
+			break ;
+		if (ft_strchr(exceptions, cmd[len]))
+		{
+			if (!ft_strchr(cmd + len + 1, cmd[len]))
+				return (-1);
+			len += (int) (ft_strchr(cmd + len + 1, cmd[len]) - (cmd + len));
+		}
+		len++;
+	}
+	return (len);
+}
+
+int	count_words(const char *cmd, char separator, char *exceptions)
 {
 	int	n;
-	int	l;
+	int	w_len;
 
 	n = 0;
-	while (*s)
+	while (*cmd)
 	{
-		l = sub_strlen(s, separator);
-		if (l != 0)
+		w_len = word_len(cmd, separator, exceptions);
+		if (w_len == -1)
+			return (-1);
+		else if (w_len > 0)
 		{
 			n++;
-			s += l;
+			cmd += w_len;
 		}
 		else
-			s++;
+			cmd++;
 	}
 	return (n);
 }
 
-static int	check_pipes(char **s)
+char	*cleaned_substr(const char *str, int len, char *to_clean)
 {
-	int		flag;
-	char	*start;
+	char	*cleaned;
+	char	cleaning;
+	int 	i;
+	int		j;
 
-	start = *s;
-	flag = 0;
-	while (ft_isspace(**s))
-		(*s)++;
-	if (**s == '|')
-		return (1);
-	while (**s)
-	{
-		if (**s == '|' && *(*s + 1) == '|')
-			(*s)++;
-		else if (**s == '|' && flag == 1)
-			return (1);
-		else if (**s == '|' || **s == '>' || **s == '<')
-			flag = 1;
-		else if (!ft_isspace(**s) && **s != '|')
-			flag = 0;
-		(*s)++;
-	}
-	*s = start;
-	return (0);
-}
-
-static int	check_kavychki(char **s)
-{
-	int		flag;
-	char	*start;
-
-	start = *s;
-	flag = -1;
-	while (ft_isspace(**s))
-		(*s)++;
-	while (**s)
-	{
-		if ((**s == 39 || **s == 34) && flag == -1)
-			flag = (int)(*s - start);
-		else if ((**s == 39 || **s == 34) && flag != -1)
-			flag = -1;
-		(*s)++;
-	}
-	if (flag != -1)
-	{
-		*s = start + flag;
-		return (1);
-	}
-	*s = start;
-	return (0);
-}
-
-static int	make_split(char **array, char const *s, char c, int n)
-{
-	int	i;
-	int	l;
-
+	cleaned = malloc((ft_strlen(str) + 1) * sizeof (char));
+	if (!cleaned)
+		return (NULL);
 	i = 0;
-	while (i < n)
+	j = 0;
+	while (i < len)
 	{
-		l = sub_strlen(s, c);
-		if (l != 0)
+		if (ft_strchr(to_clean, str[i]))
 		{
-			if ((*s == '"' || *s == '\'')
-				&& (s[l - 1] == '\'' || s[l - 1] == '"'))
-				array[i] = ft_substr(s + 1, 0, l - 2);
+			cleaning = str[i++];
+			while (i < len && str[i] != cleaning)
+				cleaned[j++] = str[i++];
+		}
+		else
+			cleaned[j++] = str[i++];
+	}
+	cleaned[j] = 0;
+	return (cleaned);
+}
+
+char	**split_input(const char *cmd, char separator, char *exceptions, int clean)
+{
+	char	**splitted_cmd;
+	int 	n_word;
+	int		i;
+	int		len;
+
+	n_word = count_words(cmd, separator, exceptions);
+	if (n_word == -1)
+		return (bad_duck(cmd[ft_strlen(cmd)]));
+	splitted_cmd = malloc((n_word + 1) * sizeof (char *));
+	if (!splitted_cmd)
+		return (NULL);
+	i = 0;
+	while (i < n_word)
+	{
+		len = word_len(cmd, separator, exceptions);
+		if (len != 0)
+		{
+			if (clean)
+				splitted_cmd[i] = cleaned_substr(cmd, len, exceptions);
 			else
-				array[i] = ft_substr(s, 0, l);
-			if (array[i] == NULL)
-				return (1);
+				splitted_cmd[i] = ft_substr(cmd, 0, len);
+			if (!splitted_cmd[i])
+				return (ft_strarray_free(splitted_cmd));
 			i++;
 		}
-		s += (l + 1);
+		cmd += (len + 1);
 	}
-	array[i] = NULL;
-	return (0);
-}
-
-char	**split_input(char const *s, char c)
-{
-	char	**array;
-	int		n;
-
-	n = count_word(s, c);
-	array = (char **) malloc((n + 1) * sizeof (char *));
-	if (!array)
-		return (NULL);
-	if (check_pipes((char **)&s) || check_kavychki((char **)&s))
-	{
-		bad_duck((char) *s);
-		*array = NULL;
-		return (array);
-	}
-	if (make_split(array, s, c, n))
-		return ((char **) ft_strarray_free(array));
-	return (array);
+	splitted_cmd[i] = NULL;
+	return (splitted_cmd);
 }

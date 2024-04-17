@@ -37,6 +37,26 @@ void	*free_cmds_content(t_shell_cmd *cmds)
 	return (NULL);
 }
 
+int broken_pipe(char *str)
+{
+	int i;
+	int pipe;
+
+	i = 0;
+	pipe = 0;
+	while (str[i])
+	{
+		if (str[i] == '|')
+			pipe = 1;
+		else if (!ft_isspace(str[i]))
+			pipe = 0;
+		i++;
+	}
+	if (pipe)
+		bad_duck(str[i]);
+	return (pipe);
+}
+
 t_shell_cmd	null_terminate(void)
 {
 	t_shell_cmd	null;
@@ -59,7 +79,7 @@ t_shell_cmd	make_cmd(char *cmd_str, t_list *env, int r_val)
 		return (cmd);
 	if (!get_cmd_inout(&cmd, env_str))
 		return (free(env_str), cmd);
-	cmd.splitted_command = split_input(env_str, ' ');
+	cmd.splitted_command = split_input(env_str, ' ', "\'\"", 1);
 	if (!cmd.splitted_command)
 	{
 		free_lst(cmd.ins, &free_duck);
@@ -81,7 +101,9 @@ t_shell_cmd	*parse_input(char *input, t_list *env, int r_val)
 	int			n_cmd;
 	int			i;
 
-	splitted_input = split_input(input, '|');
+	if (broken_pipe(input))
+		return (NULL);
+	splitted_input = split_input(input, '|', "\'\"", 0);
 	if (!splitted_input)
 		return (NULL);
 	n_cmd = (int) ft_strarray_len(splitted_input);
