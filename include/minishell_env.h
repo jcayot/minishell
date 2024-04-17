@@ -16,5 +16,8 @@
 # include <minishell.h>
 
 char	*i_hate_this(char *arg);
+char	*joinsub(char *s1, char *s2, int start, int len);
+int		var_len(char *var);
+
 
 #endif //MINISHELL_ENV_H
