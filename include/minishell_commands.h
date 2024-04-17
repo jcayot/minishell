@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:25:59 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/16 18:51:25 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/17 14:37:21 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,7 @@ int					unset(int n, char *args[], t_list **envp);
 
 //Utils
 int					update_env_node(char *arg, t_list *envp);
+int					update_env_paths(char *path, t_list **envp);
+t_list				*check_duplicate_nodes(char *arg, t_list *envp);
 
 #endif //MINISHELL_COMMANDS_H

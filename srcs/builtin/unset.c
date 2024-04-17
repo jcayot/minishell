@@ -6,39 +6,22 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 12:32:40 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/03 14:57:41 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/17 14:35:25 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+#include <minishell_commands.h>
 
-static t_list	*check_dups(char *arg, t_list *envp)
-{
-	char	*var;
-	int		len;
-
-	len = 0;
-	while (arg[len] && arg[len] != '=')
-		len++;
-	while (envp)
-	{
-		var = envp -> content;
-		if (!ft_strncmp(arg, var, len) && var[len] == '=')
-			return (envp);
-		envp = envp -> next;
-	}
-	return (NULL);
-}
-
-static void	iterate_macac(char *arg, t_list **envp)
+static void	iterate_list(char *arg, t_list **envp)
 {
 	t_list	*node;
 	t_list	*start;
 
 	start = *envp;
-	node = check_dups(arg, start);
+	node = check_duplicate_nodes(arg, start);
 	if (!node)
-		return ;//bash seems to not care if var doesnt exist
+		return ;
 	while (*envp)
 	{
 		if (node == (*envp)->next || node == start)
@@ -65,7 +48,7 @@ int	unset(int n, char **args, t_list **envp)
 	i = 1;
 	while (args[i])
 	{
-		iterate_macac(args[i], envp);
+		iterate_list(args[i], envp);
 		i++;
 	}
 	return (EXIT_SUCCESS);

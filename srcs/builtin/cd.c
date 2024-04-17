@@ -6,38 +6,12 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 20:37:40 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/16 18:46:36 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/17 14:35:27 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 #include <minishell_commands.h>
-
-int	update_env_paths(char *path, t_list **envp)
-{
-	char	*ptr;
-	char	buffer[10000];
-
-	ptr = "OLDPWD=";
-	ptr = ft_strjoin(ptr, get_env("PWD", *envp));
-	if (!ptr)
-		return (EXIT_FAILURE);
-	update_env_node(ptr, *envp);
-	if (ft_strchr(path, '.'))
-	{
-		if (getcwd(buffer, 10000) == NULL)
-			return (EXIT_FAILURE);
-		path = buffer;
-	}
-	free(ptr);
-	ptr = "PWD=";
-	ptr = ft_strjoin(ptr, path);
-	if (!ptr)
-		return (EXIT_FAILURE);
-	update_env_node(ptr, *envp);
-	free(ptr);
-	return (EXIT_SUCCESS);
-}
 
 int	go_to_path(char *path, t_list **envp)
 {
@@ -58,7 +32,8 @@ int	go_to_path(char *path, t_list **envp)
 	}
 	if (chdir(path) == -1)
 		return (EXIT_FAILURE);
-	update_env_paths(path, envp);
+	if (update_env_paths(path, envp))
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
@@ -98,11 +73,11 @@ char	*get_full_path(char *relative)
 	return (full_path);
 }
 
-int relative_home(t_list **envp, char *region)
+int	relative_home(t_list **envp, char *region)
 {
-	int 	result;
+	int		result;
 	char	*target_path;
-	char 	*el_patho;
+	char	*el_patho;
 
 	target_path = get_env("HOME", *envp);
 	if (!target_path)
@@ -137,7 +112,7 @@ int	cd(int n, char *args[], t_list **envp)
 		else if (ft_strncmp(args[1], "-", 2) == 0)
 			return (go_target(envp, "OLDPWD"));
 		else if (ft_strncmp(args[1], "~", 1) == 0)
-			return (relative_home(envp ,args[1]));
+			return (relative_home(envp, args[1]));
 		path = get_full_path(args[1]);
 		if (!path)
 			return (EXIT_SAKU);

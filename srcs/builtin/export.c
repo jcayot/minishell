@@ -6,11 +6,12 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 13:52:55 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/16 18:50:56 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/17 14:35:26 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+#include <minishell_commands.h>
 
 static int	export_error(void)
 {
@@ -19,7 +20,7 @@ static int	export_error(void)
 	return (EXIT_FAILURE);
 }
 
-static int	parse_export(char *args[]) // not exact bash behavior with spaces between inputs or included chars
+static int	parse_export(char *args[]) //problems
 {
 	int	i;
 	int	j;
@@ -39,44 +40,6 @@ static int	parse_export(char *args[]) // not exact bash behavior with spaces bet
 		else
 			return (EXIT_FAILURE);
 	}
-	return(EXIT_SUCCESS);
-}
-
-static t_list	*check_dups(char *arg, t_list *envp)
-{
-	char	*var;
-	int		len;
-
-	len = 0;
-	while (arg[len] && arg[len] != '=')
-		len++;
-	while (envp)
-	{
-		var = envp -> content;
-		if (!ft_strncmp(arg, var, len) && var[len] == '=')
-			return (envp);
-		envp = envp -> next;
-	}
-	return (NULL);
-}
-
-int	update_env_node(char *arg, t_list *envp)
-{
-	char	*data;
-	t_list	*asd;
-
-	data = malloc(sizeof(char) * ft_strlen(arg) + 1);
-	if (!data)
-		return (EXIT_FAILURE);
-	ft_strlcpy(data, arg, ft_strlen(arg) + 1);
-	if (check_dups(arg, envp))
-	{
-		asd = check_dups(arg, envp);
-		free(asd->content);
-		asd->content = data;
-	}
-	else
-		ft_lstadd_back(&envp, ft_lstnew(data));
 	return (EXIT_SUCCESS);
 }
 
@@ -92,7 +55,7 @@ int	export(int n, char *args[], t_list **envp)
 	{
 		while (*envp)
 		{
-			printf("declare -x %s\n", (char *) (*envp)->content);
+			printf("declare -x %s\n", (char *)(*envp)->content);
 			(*envp) = (*envp)->next;
 		}
 		*envp = start;
@@ -108,5 +71,3 @@ int	export(int n, char *args[], t_list **envp)
 	}
 	return (EXIT_SUCCESS);
 }
-
-
