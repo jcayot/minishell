@@ -6,16 +6,15 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:42:44 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/15 18:25:58 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/17 19:31:23 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell_env.h>
 
-
 static char	*no_match(char *split_cmd, int r_val)
 {
-	if (split_cmd[1] == '?' && !split_cmd[2])
+	if (split_cmd[0] == '?' && !split_cmd[1])
 	{
 		free (split_cmd);
 		split_cmd = ft_itoa(r_val);
