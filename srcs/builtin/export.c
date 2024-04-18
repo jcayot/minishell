@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 13:52:55 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/18 16:13:48 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/18 18:44:44 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	parse_export(char *arg)
 		return (EXIT_FAILURE);
 	while (ft_isprint(arg[i]) && arg[i])
 		i++;
-	if (!arg[i])
+	if (!arg[i] && arg[i - 1] != '=')
 		return (EXIT_SUCCESS);
 	else
 		return (EXIT_FAILURE);
