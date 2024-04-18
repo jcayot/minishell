@@ -23,6 +23,15 @@ char	*find_error(char *one, char *two)
 
 char	*check_access(char *cmd, int *error)
 {
+	int	fd;
+
+	fd = open(cmd, O_DIRECTORY);
+	if (fd != -1)
+	{
+		close(fd);
+		*error = 126;
+		return (find_error(cmd, " : is a directory"));
+	}
 	if (access(cmd, X_OK) == 0)
 		return (ft_strdup(cmd));
 	else if (access(cmd, F_OK) == 0)
