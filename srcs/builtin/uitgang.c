@@ -52,9 +52,7 @@ static unsigned char	retardedtoi(char *str)
 int	uitgang(int n, char *args[])
 {
 	ft_putstr_fd("exit\n", 2);
-	if (n > 2)
-		return (127);
-	else if (n == 1)
+	if (n == 1)
 		exit(EXIT_SUCCESS);
 	exit(retardedtoi(args[1]));
 }
