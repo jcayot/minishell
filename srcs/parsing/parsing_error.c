@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 17:42:26 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/18 14:58:13 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/18 15:39:26 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int broken_pipe(char *str)
 
 	i = 0;
 	pipe = 0;
-	if (str[0])
-		pipe = 1;
 	while (ft_isspace(str[i]))
 		i++;
+	if (str[i])
+		pipe = 1;
 	while (str[i])
 	{
 		if (str[i] == '|' && pipe == 1)

@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:51:44 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/10 18:55:56 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/18 14:42:56 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	word_len(const char *cmd, char separator, char *exceptions)
 		{
 			if (!ft_strchr(cmd + len + 1, cmd[len]))
 				return (-1);
-			len += (int) (ft_strchr(cmd + len + 1, cmd[len]) - (cmd + len));
+			len += (int)(ft_strchr(cmd + len + 1, cmd[len]) - (cmd + len));
 		}
 		len++;
 	}
@@ -59,7 +59,7 @@ char	*cleaned_substr(const char *str, int len, char *to_clean)
 {
 	char	*cleaned;
 	char	cleaning;
-	int 	i;
+	int		i;
 	int		j;
 
 	cleaned = malloc((ft_strlen(str) + 1) * sizeof (char));
@@ -82,10 +82,11 @@ char	*cleaned_substr(const char *str, int len, char *to_clean)
 	return (cleaned);
 }
 
-char	**split_input(const char *cmd, char separator, char *exceptions, int clean)
+char	**split_input(const char *cmd, char separator,
+						char *exceptions, int clean)
 {
 	char	**splitted_cmd;
-	int 	n_word;
+	int		n_word;
 	int		i;
 	int		len;
 
