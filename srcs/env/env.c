@@ -6,11 +6,59 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 13:46:37 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/18 16:28:17 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/18 18:05:00 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell_env.h>
+#include <minishell_commands.h>
+
+static int	make_shell_exec(t_list **env)
+{
+	char	*ptr;
+	char	*another_ptr;
+
+	ptr = ft_strjoin(get_env("PWD", *env), "/minishell");
+	if (!ptr)
+		return (EXIT_FAILURE);
+	another_ptr = ft_strjoin("SHELL=", ptr);
+	if (!another_ptr)
+	{
+		free(ptr);
+		return (EXIT_FAILURE);
+	}
+	free(ptr);
+	if (update_env_node(another_ptr, *env))
+	{
+		free(another_ptr);
+		return (EXIT_FAILURE);
+	}
+	free(another_ptr);
+	return (EXIT_SUCCESS);
+}
+
+static int	update_shell(t_list **env)
+{
+	char	*ptr;
+	char	*leak;
+	int		lvl;
+
+	if (make_shell_exec(env))
+		return (EXIT_FAILURE);
+	lvl = ft_atoi(get_env("SHLVL", *env)) + 1;
+	leak = ft_itoa(lvl);
+	ptr = ft_strjoin("SHLVL=", leak);
+	free(leak);
+	if (!ptr)
+		return (EXIT_FAILURE);
+	if (update_env_node(ptr, *env))
+	{
+		free(ptr);
+		return (EXIT_FAILURE);
+	}
+	free(ptr);
+	return (EXIT_SUCCESS);
+}
 
 t_list	**init_env(char **envp)
 {
@@ -34,6 +82,7 @@ t_list	**init_env(char **envp)
 		ft_lstadd_back(env_lst, ft_lstnew(data));
 		i++;
 	}
+	update_shell(env_lst);
 	return (env_lst);
 }
 
