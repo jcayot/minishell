@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 13:52:55 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/18 18:44:44 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/18 19:34:00 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,19 @@ static int	parse_export(char *arg)
 	i = 0;
 	if (arg[0] == '=')
 		return (EXIT_FAILURE);
+	while (ft_isdigit(arg[i]) && arg[i])
+		i++;
+	if (!arg[i])
+		return (EXIT_FAILURE);
 	while (ft_isalnum(arg[i]) && arg[i])
 		i++;
+	if (!arg[i])
+		return (2);
 	if (arg[i++] != '=')
 		return (EXIT_FAILURE);
 	while (ft_isprint(arg[i]) && arg[i])
 		i++;
-	if (!arg[i] && arg[i - 1] != '=')
+	if (!arg[i])
 		return (EXIT_SUCCESS);
 	else
 		return (EXIT_FAILURE);
@@ -49,9 +55,11 @@ static int	export_strings(char **args, t_list **envp, int n)
 	{
 		if (parse_export(args[i]))
 		{
-			if (!error_flag)
+			if (parse_export(args[i]) != 2 && !error_flag)
+			{
 				export_error();
-			error_flag = 1;
+				error_flag = 1;
+			}
 		}
 		else if (update_env_node(args[i], *envp))
 			return (EXIT_FAILURE);
