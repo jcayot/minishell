@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:24:24 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/17 14:36:21 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/18 17:30:52 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ int	update_env_paths(char *path, t_list **envp)
 	char	*ptr;
 	char	buffer[10000];
 
-	ptr = "OLDPWD=";
-	ptr = ft_strjoin(ptr, get_env("PWD", *envp));
+	ptr = ft_strjoin("OLDPWD", get_env("PWD", *envp));
 	if (!ptr)
 		return (EXIT_FAILURE);
-	update_env_node(ptr, *envp);
+	if (update_env_node(ptr, *envp))
+		return (EXIT_FAILURE);
 	if (ft_strchr(path, '.'))
 	{
 		if (getcwd(buffer, 10000) == NULL)
@@ -48,11 +48,11 @@ int	update_env_paths(char *path, t_list **envp)
 		path = buffer;
 	}
 	free(ptr);
-	ptr = "PWD=";
-	ptr = ft_strjoin(ptr, path);
+	ptr = ft_strjoin("PWD", path);
 	if (!ptr)
 		return (EXIT_FAILURE);
-	update_env_node(ptr, *envp);
+	if (update_env_node(ptr, *envp))
+		return (EXIT_FAILURE);
 	free(ptr);
 	return (EXIT_SUCCESS);
 }
