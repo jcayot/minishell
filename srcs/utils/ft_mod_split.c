@@ -82,6 +82,14 @@ char	*cleaned_substr(const char *str, int len, char *to_clean)
 	return (cleaned);
 }
 
+char	*get_split(const char *cmd, int len, char *exceptions, int clean)
+{
+	if (clean)
+		return (cleaned_substr(cmd, len, exceptions));
+	else
+		return (ft_substr(cmd, 0, len));
+}
+
 char	**split_input(const char *cmd, char separator,
 						char *exceptions, int clean)
 {
@@ -102,13 +110,9 @@ char	**split_input(const char *cmd, char separator,
 		len = word_len(cmd, separator, exceptions);
 		if (len != 0)
 		{
-			if (clean)
-				splitted_cmd[i] = cleaned_substr(cmd, len, exceptions);
-			else
-				splitted_cmd[i] = ft_substr(cmd, 0, len);
-			if (!splitted_cmd[i])
+			splitted_cmd[i] = get_split(cmd, len, exceptions, clean);
+			if (!splitted_cmd[i++])
 				return (ft_strarray_free(splitted_cmd));
-			i++;
 		}
 		cmd += (len + 1);
 	}
