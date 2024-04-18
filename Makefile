@@ -15,7 +15,6 @@ BUILTIN_DIR		:= $(SRCS_DIR)/builtin
 UTILS_DIR		:= $(SRCS_DIR)/utils
 ENV_DIR			:= $(SRCS_DIR)/env
 SIGS_DIR		:= $(SRCS_DIR)/sigs
-TESTS_DIR		:= tests
 
 SRCS			:= $(SRCS_DIR)/minishell.c \
 					$(PARSING_DIR)/parse_input.c \
@@ -42,7 +41,6 @@ SRCS			:= $(SRCS_DIR)/minishell.c \
 					$(ENV_DIR)/env.c \
 					$(ENV_DIR)/env_utils.c \
 					$(ENV_DIR)/env_parsing.c \
-					$(TESTS_DIR)/tools.c  \
 					$(SIGS_DIR)/sigs.c \
 					$(SIGS_DIR)/sigs_et_termios.c
 

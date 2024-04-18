@@ -14,7 +14,7 @@
 
 static int	exit_error(char *str)
 {
-	ft_putstr_fd("exit : %s", 2);
+	ft_putstr_fd("exit : ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
 	exit(2);

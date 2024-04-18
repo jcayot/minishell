@@ -12,9 +12,28 @@
 
 #include <minishell.h>
 
-int	miniloop(t_list **env)
+void	commands_handling(t_shell_cmd *commands, t_list **env, int *r_value)
 {
 	t_pid_launched	pid_launched;
+
+	if (commands)
+	{
+		if (commands -> splitted_command)
+		{
+			pid_launched = run_cmds(commands, env);
+			if (pid_launched.pids)
+			{
+				*r_value = wait_pids(pid_launched.pids, pid_launched.n);
+				free(pid_launched.pids);
+			}
+		}
+		free_cmds_content(commands);
+		free(commands);
+	}
+}
+
+int	miniloop(t_list **env)
+{
 	char			*input;
 	t_shell_cmd		*commands;
 	int				r_value;
@@ -28,23 +47,8 @@ int	miniloop(t_list **env)
 			break ;
 		add_history(input);
 		commands = parse_input(input, *env, r_value);
+		commands_handling(commands, env, &r_value);
 		free(input);
-		if (!commands)
-			continue ;
-		if (commands -> splitted_command)
-		{
-			pid_launched = run_cmds(commands, env);
-			if (!pid_launched.pids)
-			{
-				free_cmds_content(commands);
-				free(commands);
-				break ;
-			}
-			r_value = wait_pids(pid_launched.pids, pid_launched.n);
-			free(pid_launched.pids);
-		}
-		free_cmds_content(commands);
-		free(commands);
 		after_input_termios();
 	}
 	return (EXIT_SUCCESS);
