@@ -12,7 +12,7 @@
 
 #include <minishell.h>
 
-int broken_pipe(char *str)
+int	broken_pipe(char *str)
 {
 	int	i;
 	int	pipe;

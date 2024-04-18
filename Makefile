@@ -21,6 +21,7 @@ SRCS			:= $(SRCS_DIR)/minishell.c \
 					$(PARSING_DIR)/parse_input.c \
 					$(PARSING_DIR)/get_command_inout.c \
 					$(PARSING_DIR)/parsing_error.c \
+					$(PARSING_DIR)/free_cmd.c \
 					$(COMMANDS_DIR)/run_cmds.c \
 					$(COMMANDS_DIR)/find_command.c \
 					$(COMMANDS_DIR)/ducks_handling.c \

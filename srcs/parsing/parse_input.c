@@ -12,31 +12,6 @@
 
 #include <minishell_parsing.h>
 
-void	*free_lst(t_list **lst, void (*del)(void*))
-{
-	ft_lstclear(lst, del);
-	free(lst);
-	return (NULL);
-}
-
-void	*free_cmds_content(t_shell_cmd *cmds)
-{
-	int	i;
-
-	i = 0;
-	while (!cmds[i].error)
-	{
-		free_lst(cmds[i].ins, &free_duck);
-		free_lst(cmds[i].outs, &free_duck);
-		ft_strarray_free(cmds[i].splitted_command);
-		cmds[i].ins = NULL;
-		cmds[i].outs = NULL;
-		cmds[i].splitted_command = NULL;
-		i++;
-	}
-	return (NULL);
-}
-
 t_shell_cmd	null_terminate(void)
 {
 	t_shell_cmd	null;
@@ -74,12 +49,35 @@ t_shell_cmd	make_cmd(char *cmd_str, t_list *env, int r_val)
 	return (cmd);
 }
 
+t_shell_cmd	*make_cmds(char **splitted_in, int n_cmd, t_list *env, int r_val)
+{
+	t_shell_cmd	*cmds;
+	int			i;
+
+	cmds = malloc((n_cmd + 1) * sizeof (t_shell_cmd));
+	if (!cmds)
+		return (NULL);
+	i = 0;
+	while (i < n_cmd)
+	{
+		cmds[i] = make_cmd(splitted_in[i], env, r_val);
+		if (cmds[i].error != 0)
+		{
+			free_cmds_content(cmds);
+			free(cmds);
+			return (NULL);
+		}
+		i++;
+	}
+	cmds[i] = null_terminate();
+	return (cmds);
+}
+
 t_shell_cmd	*parse_input(char *input, t_list *env, int r_val)
 {
 	t_shell_cmd	*cmds;
 	char		**splitted_input;
 	int			n_cmd;
-	int			i;
 
 	if (broken_pipe(input))
 		return (NULL);
@@ -87,24 +85,7 @@ t_shell_cmd	*parse_input(char *input, t_list *env, int r_val)
 	if (!splitted_input)
 		return (NULL);
 	n_cmd = (int) ft_strarray_len(splitted_input);
-	cmds = malloc((n_cmd + 1) * sizeof (t_shell_cmd));
-	if (!cmds)
-		return (ft_strarray_free(splitted_input));
-	i = 0;
-	while (i < n_cmd)
-	{
-		cmds[i] = make_cmd(splitted_input[i], env, r_val);
-		if (cmds[i].error != 0)
-		{
-			ft_strarray_free(splitted_input);
-			free_cmds_content(cmds);
-			if (cmds[i].error == 1)
-				return (free(cmds), NULL);
-			return (cmds);
-		}
-		i++;
-	}
-	cmds[i] = null_terminate();
+	cmds = make_cmds(splitted_input, n_cmd, env, r_val);
 	ft_strarray_free(splitted_input);
 	return (cmds);
 }

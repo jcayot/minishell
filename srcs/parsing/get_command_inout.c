@@ -76,10 +76,9 @@ t_list	*get_symbol(char *cmd_str, char *symbol, int *error)
 	return (item);
 }
 
-t_list **get_symbols(char *cmd_str, char **symbols, int len, int *error)
+t_list	**get_symbols(char *cmd_str, char **symbols, int len, int *error)
 {
 	t_list	**extracted;
-	t_list	*item;
 	int		i;
 
 	extracted = malloc(sizeof (t_list *));
@@ -93,10 +92,10 @@ t_list **get_symbols(char *cmd_str, char **symbols, int len, int *error)
 		{
 			if (ft_strncmp(cmd_str, symbols[i], ft_strlen(symbols[i])) == 0)
 			{
-				item = get_symbol(cmd_str, symbols[i], error);
-				if (!item)
+				ft_lstadd_back(extracted, get_symbol(cmd_str,
+						symbols[i], error));
+				if (!ft_lstlast(*extracted))
 					return (free_lst(extracted, &free_duck));
-				ft_lstadd_back(extracted, item);
 			}
 			i++;
 		}
