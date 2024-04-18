@@ -20,5 +20,4 @@ int		var_len(char *var);
 char	*no_match(char *split_cmd, int r_val);
 char	*make_variable(char *arg, t_list *env, int r_val);
 
-
 #endif //MINISHELL_ENV_H

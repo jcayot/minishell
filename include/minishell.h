@@ -31,7 +31,7 @@
 # include <signal.h>
 # include <termios.h>
 
-typedef struct sigaction t_sigact;
+typedef struct sigaction	t_sigact;
 
 typedef struct s_duck
 {
@@ -75,10 +75,10 @@ int				sub_strlen(const char *s, char separator);
 int				save_inout(int *save_dest);
 
 //Signals
-void    		signals_default(void);
+void			signals_default(void);
 void			signals_running(void);
 void			signals_hdoc(void);
-void			after_input_termios();
-void			waiting_input_termios();
+void			after_input_termios(void);
+void			waiting_input_termios(void);
 
 #endif //MINISHELL_H
