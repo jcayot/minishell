@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 17:42:26 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/17 20:20:38 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/18 14:39:26 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,24 @@
 int broken_pipe(char *str)
 {
 	int	i;
-	int	flag;
+	int	pipe;
 
 	i = 0;
-	flag = 1;
+	pipe = 1;
 	while (ft_isspace(str[i]))
 		i++;
 	while (str[i])
 	{
-		if (str[i] == '|' && flag == 1)
-		{
-			bad_duck(str[i]);
-			return (EXIT_FAILURE);
-		}
+		if (str[i] == '|' && pipe == 1)
+			return (bad_duck(str[i]), EXIT_FAILURE);
 		else if (str[i] == '|' || str[i] == '>' || str[i] == '<')
-			flag = 1;
+			pipe = 1;
 		else if (!ft_isspace(str[i]) && str[i] != '|')
-			flag = 0;
+			pipe = 0;
 		i++;
 	}
+	if (pipe == 1)
+		return (bad_duck(str[i]), EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
