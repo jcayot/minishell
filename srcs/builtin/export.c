@@ -37,12 +37,13 @@ static int	parse_export(char *arg)
 	else
 		return (EXIT_FAILURE);
 }
-static	int export_strings(char **args, t_list **envp, int n)
+
+static int	export_strings(char **args, t_list **envp, int n)
 {
-	int i;
+	int	i;
 	int	error_flag;
-	
-	i = 1;	
+
+	i = 1;
 	error_flag = 0;
 	while (args[i] && i < n)
 	{
@@ -58,7 +59,6 @@ static	int export_strings(char **args, t_list **envp, int n)
 	}
 	return (EXIT_SUCCESS);
 }
-
 
 int	export(int n, char *args[], t_list **envp)
 {
