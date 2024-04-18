@@ -38,3 +38,37 @@ char	*joinsub(char *s1, char *s2, int start, int len)
 	free(sub);
 	return (result);
 }
+
+char	*no_match(char *split_cmd, int r_val)
+{
+	if (split_cmd[0] == '?' && !split_cmd[1])
+	{
+		free (split_cmd);
+		split_cmd = ft_itoa(r_val);
+	}
+	else
+	{
+		free(split_cmd);
+		split_cmd = malloc(sizeof(char) * 1);
+		if (!split_cmd)
+			return (NULL);
+		split_cmd[0] = '\0';
+	}
+	return (split_cmd);
+}
+
+char	*make_variable(char *arg, t_list *env, int r_val)
+{
+	char	*temp;
+
+	temp = get_env(arg, env);
+	if (!temp)
+		arg = no_match(arg, r_val);
+	else
+	{
+		free(arg);
+		arg = malloc(sizeof(char) * ft_strlen(temp) + 1);
+		ft_strlcpy(arg, temp, ft_strlen(temp) + 1);
+	}
+	return (arg);
+}

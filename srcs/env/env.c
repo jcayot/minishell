@@ -78,14 +78,3 @@ char	**get_envp(t_list *env)
 	envp[i] = NULL;
 	return (envp);
 }
-
-char	*i_hate_this(char *arg)
-{
-	char		*temp;
-	static char	set[4] = "$\'\"";
-
-	temp = arg;
-	arg = ft_strtrim(arg, set);
-	free(temp);
-	return (arg);
-}

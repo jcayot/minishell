@@ -12,40 +12,6 @@
 
 #include <minishell_env.h>
 
-static char	*no_match(char *split_cmd, int r_val)
-{
-	if (split_cmd[0] == '?' && !split_cmd[1])
-	{
-		free (split_cmd);
-		split_cmd = ft_itoa(r_val);
-	}
-	else
-	{
-		free(split_cmd);
-		split_cmd = malloc(sizeof(char) * 1);
-		if (!split_cmd)
-			return (NULL);
-		split_cmd[0] = '\0';
-	}
-	return (split_cmd);
-}
-
-static char	*make_variable(char *arg, t_list *env, int r_val)
-{
-	char	*temp;
-
-	temp = get_env(arg, env);
-	if (!temp)
-		arg = no_match(arg, r_val);
-	else
-	{
-		free(arg);
-		arg = malloc(sizeof(char) * ft_strlen(temp) + 1);
-		ft_strlcpy(arg, temp, ft_strlen(temp) + 1);
-	}
-	return (arg);
-}
-
 char	*put_env(char *dst, char *src, t_list *env, int r_val)
 {
 	char	*result;
@@ -60,53 +26,72 @@ char	*put_env(char *dst, char *src, t_list *env, int r_val)
 		return (NULL);
 	result = ft_strjoin(dst, replacement);
 	free(replacement);
+	if (dst)
+		free(dst);
+	return (result);
+}
+
+char	*simple_quote(char *str, char *env_str, int *i)
+{
+	char	*result;
+	int		j;
+
+	j = 1;
+	while (str[*i + j] && str[*i + j] != '\'')
+		j++;
+	if (str[*i + j])
+		j++;
+	result = joinsub(env_str, str, *i, j);
+	*i += j;
+	if (env_str)
+		free(env_str);
+	return (result);
+}
+
+char	*double_quotes(char *str, char *env_str, int *i, int *in_quote)
+{
+	char	*result;
+	int		j;
+
+	j = 1;
+	if (str[*i] == '\"')
+		*in_quote = !(*in_quote);
+	while (str[*i + j] && (*in_quote || str[*i + j] != '\'')
+		&& str[*i + j] != '$')
+	{
+		if (str[*i + j] == '\"')
+			*in_quote = !(*in_quote);
+		j++;
+	}
+	result = joinsub(env_str, str, *i, j);
+	*i += j;
+	if (env_str)
+		free(env_str);
 	return (result);
 }
 
 char	*add_env(char *str, t_list *env, int r_val)
 {
 	char	*env_str;
-	char	*temp_str;
-	int		in_quote;
 	int		i;
-	int		j;
+	int		in_quote;
 
 	env_str = NULL;
 	i = 0;
 	in_quote = 0;
 	while (str[i])
 	{
-		j = 1;
 		if (!in_quote && str[i] == '\'')
-		{
-			while (str[i + j] && str[i + j] != '\'')
-				j++;
-			if (str[i + j])
-				j++;
-			temp_str = joinsub(env_str, str, i, j);
-		}
+			env_str = simple_quote(str, env_str, &i);
 		else if (str[i] == '$')
 		{
-			temp_str = put_env(env_str, str + i + 1, env, r_val);
-			j = var_len(str + i + j) + 1;
+			env_str = put_env(env_str, str + i + 1, env, r_val);
+			i += var_len(str + i + 1) + 1;
 		}
 		else
-		{
-			if (str[i] == '\"')
-				in_quote = !in_quote;
-			while (str[i + j] && (in_quote || str[i + j] != '\'') && str[i + j] != '$') {
-				if (str[i + j] == '\"')
-					in_quote = !in_quote;
-				j++;
-			}
-			temp_str = joinsub(env_str, str, i, j);
-		}
-		if (env_str)
-			free(env_str);
-		if (!temp_str)
+			env_str = double_quotes(str, env_str, &i, &in_quote);
+		if (!env_str)
 			return (NULL);
-		env_str = temp_str;
-		i += j;
 	}
 	return (env_str);
 }

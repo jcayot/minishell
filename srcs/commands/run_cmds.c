@@ -46,6 +46,8 @@ pid_t	run(char **splitted_cmd, t_run_context context, int *inout)
 	pid_t				pid;
 	int					err;
 
+	if (!splitted_cmd[0])
+		return (0);
 	run = make_runnable(splitted_cmd, inout, &err, *context.env_lst);
 	signals_running();
 	if (run.builtin)
