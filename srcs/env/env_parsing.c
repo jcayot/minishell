@@ -67,15 +67,17 @@ char	*add_env(char *str, t_list *env, int r_val)
 {
 	char	*env_str;
 	char	*temp_str;
+	int		in_quote;
 	int		i;
 	int		j;
 
 	env_str = NULL;
 	i = 0;
+	in_quote = 0;
 	while (str[i])
 	{
 		j = 1;
-		if (str[i] == '\'')
+		if (!in_quote && str[i] == '\'')
 		{
 			while (str[i + j] && str[i + j] != '\'')
 				j++;
@@ -90,8 +92,13 @@ char	*add_env(char *str, t_list *env, int r_val)
 		}
 		else
 		{
-			while (str[i + j] && str[i + j] != '\'' && str[i + j] != '$')
+			if (str[i] == '\"')
+				in_quote = !in_quote;
+			while (str[i + j] && (in_quote || str[i + j] != '\'') && str[i + j] != '$') {
+				if (str[i + j] == '\"')
+					in_quote = !in_quote;
 				j++;
+			}
 			temp_str = joinsub(env_str, str, i, j);
 		}
 		if (env_str)
