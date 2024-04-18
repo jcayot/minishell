@@ -23,7 +23,8 @@ void	commands_handling(t_shell_cmd *commands, t_list **env, int *r_value)
 			pid_launched = run_cmds(commands, env);
 			if (pid_launched.pids)
 			{
-				*r_value = wait_pids(pid_launched.pids, pid_launched.n);
+				if (*pid_launched.pids != -21)
+					*r_value = wait_pids(pid_launched.pids, pid_launched.n);
 				free(pid_launched.pids);
 			}
 		}
