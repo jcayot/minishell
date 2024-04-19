@@ -80,15 +80,21 @@ t_list	**get_symbols(char *cmd_str, char **symbols, int len, int *error)
 {
 	t_list	**extracted;
 	int		i;
+	char	quote;
 
 	extracted = malloc(sizeof (t_list *));
 	if (!extracted)
 		return (NULL);
 	*extracted = NULL;
+	quote = 0;
 	while (*cmd_str)
 	{
 		i = 0;
-		while (symbols[i] && i < len)
+		if (!quote && (*cmd_str == '\'' || *cmd_str == '\"'))
+			quote = *cmd_str;
+		else if (quote == *cmd_str)
+			quote = 0;
+		while (!quote && symbols[i] && i < len)
 		{
 			if (ft_strncmp(cmd_str, symbols[i], ft_strlen(symbols[i])) == 0)
 			{
