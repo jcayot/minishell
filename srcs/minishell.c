@@ -20,7 +20,7 @@ void	commands_handling(t_shell_cmd *commands, t_list **env, int *r_value)
 	{
 		if (commands -> splitted_command)
 		{
-			pid_launched = run_cmds(commands, env);
+			pid_launched = run_cmds(commands, env, *r_value);
 			if (pid_launched.pids)
 			{
 				if (*pid_launched.pids != -21)

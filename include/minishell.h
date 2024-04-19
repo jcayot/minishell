@@ -65,9 +65,10 @@ t_shell_cmd		*parse_input(char *input, t_list *env, int r_val);
 void			*free_cmds_content(t_shell_cmd *cmds);
 void			*free_lst(t_list **lst, void (*del)(void*));
 void			*bad_duck(char saku, int special);
+char			*add_env(char *str, t_list *env, int r_val);
 
 //Commands
-t_pid_launched	run_cmds(t_shell_cmd *cmds, t_list **env_lst);
+t_pid_launched	run_cmds(t_shell_cmd *cmds, t_list **env_lst, int r_val);
 int				wait_pids(pid_t *pids, int n);
 int				ft_cmdsnum(t_shell_cmd *cmds);
 

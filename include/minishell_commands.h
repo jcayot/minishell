@@ -35,7 +35,7 @@ typedef struct s_run_context
 t_shell_runnable	make_runnable(char **splitted_cmd, int *inout, int *error,
 						t_list *env_lst);
 int					open_inout(t_list **in_ducks, t_list **out_ducks,
-						int *inout);
+						t_run_context *context, int r);
 int					change_fd(int old_fd, int new_fd);
 int					might_close(int fd);
 pid_t				run_builtin(t_shell_runnable run, t_list **env_lst,
@@ -54,5 +54,6 @@ int					unset(int n, char *args[], t_list **envp);
 int					update_env_node(char *arg, t_list *envp);
 int					update_env_paths(char *path, t_list **envp);
 t_list				*check_duplicate_nodes(char *arg, t_list *envp);
+int					open_put_error(char *file, int oflag);
 
 #endif //MINISHELL_COMMANDS_H

@@ -24,6 +24,7 @@ SRCS			:= $(SRCS_DIR)/minishell.c \
 					$(COMMANDS_DIR)/run_cmds.c \
 					$(COMMANDS_DIR)/find_command.c \
 					$(COMMANDS_DIR)/ducks_handling.c \
+					$(COMMANDS_DIR)/ducks_error.c \
 					$(COMMANDS_DIR)/run_builtin.c \
 					$(BUILTIN_DIR)/echo.c \
 					$(BUILTIN_DIR)/pwd.c \

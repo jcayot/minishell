@@ -59,13 +59,13 @@ pid_t	run(char **splitted_cmd, t_run_context context, int *inout)
 	return (pid);
 }
 
-pid_t	run_loop(t_shell_cmd cmd, t_run_context *context)
+pid_t	run_loop(t_shell_cmd cmd, t_run_context *context, int r_val)
 {
 	pid_t	pid;
 	int		local_fd[2];
 	int		pipe_fd[2];
 
-	open_inout(cmd.ins, cmd.outs, context -> inout);
+	open_inout(cmd.ins, cmd.outs, context, r_val);
 	local_fd[0] = context -> inout[0];
 	local_fd[1] = context -> inout[1];
 	if (context -> cmd_i < context -> cmd_n - 1)
@@ -86,7 +86,7 @@ pid_t	run_loop(t_shell_cmd cmd, t_run_context *context)
 	return (pid);
 }
 
-t_pid_launched	run_cmds(t_shell_cmd *cmds, t_list **env_lst)
+t_pid_launched	run_cmds(t_shell_cmd *cmds, t_list **env_lst, int r_val)
 {
 	t_pid_launched	pids_run;
 	t_run_context	context;
@@ -102,7 +102,8 @@ t_pid_launched	run_cmds(t_shell_cmd *cmds, t_list **env_lst)
 		return (pids_run);
 	while (context.cmd_i < context.cmd_n)
 	{
-		pids_run.pids[context.cmd_i] = run_loop(cmds[context.cmd_i], &context);
+		pids_run.pids[context.cmd_i] = run_loop(cmds[context.cmd_i],
+				&context, r_val);
 		context.cmd_i++;
 	}
 	might_close(context.inout[0]);

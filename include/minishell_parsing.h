@@ -21,7 +21,6 @@ void	free_duck(void *void_duck);
 char	**split_input(const char *cmd, char separator, char *exceptions,
 			int clean);
 int		check_duck_again(char *cmd_str, int *len);
-char	*add_env(char *str, t_list *env, int r_val);
 int		broken_pipe(char *str);
 int		check_quotes(const char *cmd);
 
