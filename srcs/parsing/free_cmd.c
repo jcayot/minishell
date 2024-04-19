@@ -12,6 +12,16 @@
 
 #include <minishell_parsing.h>
 
+void	free_duck(void *void_duck)
+{
+	t_duck	*duck;
+
+	duck = (t_duck *) void_duck;
+	if (duck -> duck_name)
+		free(duck -> duck_name);
+	free(void_duck);
+}
+
 void	*free_lst(t_list **lst, void (*del)(void*))
 {
 	ft_lstclear(lst, del);

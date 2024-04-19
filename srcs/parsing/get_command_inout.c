@@ -12,16 +12,6 @@
 
 #include <minishell_parsing.h>
 
-void	free_duck(void *void_duck)
-{
-	t_duck	*duck;
-
-	duck = (t_duck *) void_duck;
-	if (duck -> duck_name)
-		free(duck -> duck_name);
-	free(void_duck);
-}
-
 t_list	*make_duck(char *file, char *symbol)
 {
 	t_list	*item;
@@ -76,10 +66,27 @@ t_list	*get_symbol(char *cmd_str, char *symbol, int *error)
 	return (item);
 }
 
-t_list	**get_symbols(char *cmd_str, char **symbols, int len, int *error)
+int	symbols_loop(t_list	**extracted, char *cmd_str, char **symbols, int *error)
+{
+	int	i;
+
+	i = 0;
+	while (symbols[i] && i < 2)
+	{
+		if (ft_strncmp(cmd_str, symbols[i], ft_strlen(symbols[i])) == 0)
+		{
+			ft_lstadd_back(extracted, get_symbol(cmd_str, symbols[i], error));
+			if (!ft_lstlast(*extracted))
+				return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
+t_list	**get_symbols(char *cmd_str, char **symbols, int *error)
 {
 	t_list	**extracted;
-	int		i;
 	char	quote;
 
 	extracted = malloc(sizeof (t_list *));
@@ -89,22 +96,12 @@ t_list	**get_symbols(char *cmd_str, char **symbols, int len, int *error)
 	quote = 0;
 	while (*cmd_str)
 	{
-		i = 0;
 		if (!quote && (*cmd_str == '\'' || *cmd_str == '\"'))
 			quote = *cmd_str;
 		else if (quote == *cmd_str)
 			quote = 0;
-		while (!quote && symbols[i] && i < len)
-		{
-			if (ft_strncmp(cmd_str, symbols[i], ft_strlen(symbols[i])) == 0)
-			{
-				ft_lstadd_back(extracted, get_symbol(cmd_str,
-						symbols[i], error));
-				if (!ft_lstlast(*extracted))
-					return (free_lst(extracted, &free_duck));
-			}
-			i++;
-		}
+		if (!symbols_loop(extracted, cmd_str, symbols, error))
+			return (free_lst(extracted, &free_duck));
 		if (*cmd_str)
 			cmd_str++;
 	}
@@ -121,10 +118,10 @@ int	get_cmd_inout(t_shell_cmd *cmd, char *cmd_str)
 	symbols[3] = ">";
 	symbols[4] = NULL;
 	cmd -> outs = NULL;
-	cmd -> ins = get_symbols(cmd_str, symbols, 2, &cmd->error);
+	cmd -> ins = get_symbols(cmd_str, symbols, &cmd->error);
 	if (!cmd -> ins)
 		return (0);
-	cmd -> outs = get_symbols(cmd_str, symbols + 2, 2, &cmd->error);
+	cmd -> outs = get_symbols(cmd_str, symbols + 2, &cmd->error);
 	if (!cmd -> outs)
 	{
 		ft_lstclear(cmd -> ins, &free_duck);
