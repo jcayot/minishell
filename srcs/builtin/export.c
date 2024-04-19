@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 13:52:55 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/19 12:44:32 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/19 16:07:57 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	parse_export(char *arg)
 		i++;
 	if (!arg[i])
 		return (EXIT_FAILURE);
-	while (ft_isalnum(arg[i]) && arg[i])
+	while ((ft_isalnum(arg[i]) || arg[i] == '_') && arg[i])
 		i++;
 	if (!arg[i])
 		return (2);

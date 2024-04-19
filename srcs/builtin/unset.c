@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 12:32:40 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/19 12:45:05 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/19 16:07:25 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ void	check_unset_syntax(char *arg)
 	int	i;
 
 	i = 0;
-	if (arg[0] && !ft_isalpha(arg[0]))
+	if (arg[0] && !ft_isalpha(arg[0]) && arg[0] != '_')
 	{
 		ft_putstr_fd("Something about identifiers here :", 2);
 		ft_putendl_fd(arg, 2);
 		return ;
 	}
-	while (ft_isalnum(arg[i]))
+	while (ft_isalnum(arg[i]) || arg[i] == '_')
 		i++;
 	if (arg[i])
 	{
