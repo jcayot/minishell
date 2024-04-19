@@ -24,6 +24,8 @@ int	wait_pids(pid_t *pids, int n)
 			waitpid(pids[i], &code, 0);
 		i++;
 	}
+	if (g_signal_not_happy == 130 || g_signal_not_happy == 131)
+		return (g_signal_not_happy);
 	if (i == 0)
 		return (1);
 	else if (pids[i - 1] > 0)
