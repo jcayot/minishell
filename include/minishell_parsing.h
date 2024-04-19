@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:33:20 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/17 20:02:33 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/19 12:43:59 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,6 @@ char	**split_input(const char *cmd, char separator, char *exceptions,
 int		check_duck_again(char *cmd_str, int *len);
 char	*add_env(char *str, t_list *env, int r_val);
 int		broken_pipe(char *str);
+int		check_quotes(const char *cmd);
 
 #endif //MINISHELL_PARSING_H

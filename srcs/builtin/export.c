@@ -6,17 +6,18 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 13:52:55 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/18 19:34:00 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/19 12:44:32 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 #include <minishell_commands.h>
 
-static void	export_error(void)
+static void	export_error(char *arg)
 {
-	ft_putstr_fd("Nice try. We don't do exact bash copying. ", 2);
-	ft_putstr_fd("Try export var=val for proper functionality.\n", 2);
+	ft_putstr_fd("Failed input somewhere around here: ", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd("\nTry export var=val for proper functionality.\n", 2);
 }
 
 static int	parse_export(char *arg)
@@ -47,19 +48,14 @@ static int	parse_export(char *arg)
 static int	export_strings(char **args, t_list **envp, int n)
 {
 	int	i;
-	int	error_flag;
 
 	i = 1;
-	error_flag = 0;
 	while (args[i] && i < n)
 	{
 		if (parse_export(args[i]))
 		{
-			if (parse_export(args[i]) != 2 && !error_flag)
-			{
-				export_error();
-				error_flag = 1;
-			}
+			if (parse_export(args[i]) != 2)
+				export_error(args[i]);
 		}
 		else if (update_env_node(args[i], *envp))
 			return (EXIT_FAILURE);

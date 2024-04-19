@@ -64,7 +64,7 @@ t_list	*get_symbol(char *cmd_str, char *symbol, int *error)
 	if (l == 0 || check_duck_again(cmd_str + i, &l))
 	{
 		*error = 2;
-		return (bad_duck(cmd_str[i + l]));
+		return (bad_duck(cmd_str[i + l], -1));
 	}
 	data = ft_substr(cmd_str + i, 0, l);
 	if (!data)

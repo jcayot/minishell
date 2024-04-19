@@ -6,11 +6,32 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 17:42:26 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/18 15:39:26 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/19 12:44:47 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+int	check_quotes(const char *cmd)
+{
+	int	i;
+	int	quote;
+
+	i = 0;
+	quote = 0;
+	while (cmd[i])
+	{
+		if ((cmd[i] == '"' || cmd[i] == '\'') && !quote)
+			quote = cmd[i];
+		else if (cmd[i] == quote)
+			quote = 0;
+		i++;
+	}
+	if (quote)
+		return (1);
+	else
+		return (0);
+}
 
 int	broken_pipe(char *str)
 {
@@ -26,7 +47,7 @@ int	broken_pipe(char *str)
 	while (str[i])
 	{
 		if (str[i] == '|' && pipe == 1)
-			return (bad_duck(str[i]), EXIT_FAILURE);
+			return (bad_duck(str[i], -1), EXIT_FAILURE);
 		else if (str[i] == '|' || str[i] == '>' || str[i] == '<')
 			pipe = 1;
 		else if (!ft_isspace(str[i]) && str[i] != '|')
@@ -34,7 +55,7 @@ int	broken_pipe(char *str)
 		i++;
 	}
 	if (pipe == 1)
-		return (bad_duck(str[i]), EXIT_FAILURE);
+		return (bad_duck(str[i], -1), EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
@@ -72,14 +93,16 @@ static int	escape_chars(char *str, char c)
 	else
 		return (0);
 }
-//add more escape chars if needed, worked with all ins like bash xept command <>
 
-void	*bad_duck(char saku)
+void	*bad_duck(char saku, int special)
 {
 	char	str[8];
 
-	if (saku == '"' || saku == '\'')
-		ft_putstr_fd("minishell: syntax error: open '", 2);
+	if (special == -42)
+	{
+		ft_putstr_fd("minishell: syntax error: open quotes", 2);
+		return (NULL);
+	}
 	else
 		ft_putstr_fd("minishell: syntax error near token: '", 2);
 	if (escape_chars(str, saku))

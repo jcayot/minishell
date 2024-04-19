@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:51:44 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/18 14:42:56 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/19 12:42:57 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	count_words(const char *cmd, char separator, char *exceptions)
 	int	w_len;
 
 	n = 0;
+	if (check_quotes(cmd))
+		return (-42);
 	while (*cmd)
 	{
 		w_len = word_len(cmd, separator, exceptions);
@@ -99,8 +101,8 @@ char	**split_input(const char *cmd, char separator,
 	int		len;
 
 	n_word = count_words(cmd, separator, exceptions);
-	if (n_word == -1)
-		return (bad_duck(cmd[ft_strlen(cmd)]));
+	if (n_word == -1 || n_word == -42)
+		return (bad_duck(cmd[ft_strlen(cmd)], n_word));
 	splitted_cmd = malloc((n_word + 1) * sizeof (char *));
 	if (!splitted_cmd)
 		return (NULL);
