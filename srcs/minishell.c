@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:24:05 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/17 17:37:01 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/19 14:13:36 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	commands_handling(t_shell_cmd *commands, t_list **env, int *r_value)
 		free_cmds_content(commands);
 		free(commands);
 	}
+	else
+		*r_value = 258;
 }
 
 int	miniloop(t_list **env)
