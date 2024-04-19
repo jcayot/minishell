@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 13:07:36 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/17 17:44:30 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/19 18:27:49 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	d_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
+		g_signal_not_happy = 1;
 		ft_putchar_fd('\n', 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);

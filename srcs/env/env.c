@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 13:46:37 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/19 16:20:26 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/19 18:37:49 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	update_shell(t_list **env)
 		if (update_pwd(env))
 			return (EXIT_FAILURE);
 	lvl = ft_atoi(get_env("SHLVL", *env)) + 1;
-	if (lvl < 0 || lvl > 999)
+	if (lvl <= 0 || lvl > 999)
 		lvl = 1;
 	leak = ft_itoa(lvl);
 	ptr = ft_strjoin("SHLVL=", leak);

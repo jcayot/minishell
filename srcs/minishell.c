@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:24:05 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/19 14:13:36 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/19 18:28:52 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	commands_handling(t_shell_cmd *commands, t_list **env, int *r_value)
 	}
 	else
 		*r_value = 258;
+	if (g_signal_not_happy == 11)
+		*r_value = 1;
 }
 
 int	miniloop(t_list **env)
@@ -47,6 +49,8 @@ int	miniloop(t_list **env)
 		g_signal_not_happy = 0;
 		signals_default();
 		input = readline("minishell$> ");
+		if (g_signal_not_happy == 1)
+			r_value = 1;
 		if (!input)
 			break ;
 		if (*input)
