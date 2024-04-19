@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 17:42:26 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/19 12:44:47 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/19 12:48:11 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	*bad_duck(char saku, int special)
 
 	if (special == -42)
 	{
-		ft_putstr_fd("minishell: syntax error: open quotes", 2);
+		ft_putstr_fd("minishell: syntax error: open quotes\n", 2);
 		return (NULL);
 	}
 	else
