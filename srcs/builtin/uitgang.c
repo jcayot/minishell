@@ -54,5 +54,10 @@ int	uitgang(int n, char *args[])
 	ft_putstr_fd("exit\n", 2);
 	if (n == 1)
 		exit(EXIT_SUCCESS);
-	exit(retardedtoi(args[1]));
+	retardedtoi(args[1]);
+	if (n > 2)
+		ft_putendl_fd("exit: too many arguments", 2);
+	else
+		exit(retardedtoi(args[1]));
+	return (EXIT_FAILURE);
 }
