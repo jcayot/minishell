@@ -31,7 +31,7 @@
 # include <signal.h>
 # include <termios.h>
 
-int				g_signal_not_happy;
+int							g_signal_not_happy;
 
 typedef struct sigaction	t_sigact;
 
