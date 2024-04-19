@@ -15,9 +15,13 @@
 void	r_handler(int signum)
 {
 	if (signum == SIGINT)
+	{
+		g_signal_not_happy = 130;
 		ft_putchar_fd('\n', 1);
+	}
 	if (signum == SIGQUIT)
 	{
+		g_signal_not_happy = 131;
 		ft_putstr_fd("Quit: 3", 1);
 		ft_putchar_fd('\n', 1);
 	}

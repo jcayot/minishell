@@ -31,6 +31,8 @@
 # include <signal.h>
 # include <termios.h>
 
+int							g_signal_not_happy;
+
 typedef struct sigaction	t_sigact;
 
 typedef struct s_duck
@@ -70,7 +72,6 @@ int				wait_pids(pid_t *pids, int n);
 int				ft_cmdsnum(t_shell_cmd *cmds);
 
 //Utils
-void			print_all(t_shell_cmd *commands);
 int				sub_strlen(const char *s, char separator);
 int				save_inout(int *save_dest);
 

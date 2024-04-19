@@ -44,6 +44,7 @@ int	miniloop(t_list **env)
 	r_value = 0;
 	while (1)
 	{
+		g_signal_not_happy = 0;
 		signals_default();
 		input = readline("minishell$> ");
 		if (!input)
