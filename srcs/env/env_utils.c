@@ -36,7 +36,7 @@ int	var_len(char *var)
 	int	i;
 
 	i = 0;
-	while (var[i])
+	while (var[i] && (ft_isalnum(var[i]) || var[i] == '_'))
 	{
 		if (var[i] == ' ' || var[i] == '\"' || var[i] == '\'')
 			break ;
