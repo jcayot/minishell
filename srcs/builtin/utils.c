@@ -6,11 +6,10 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:24:24 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/20 13:34:32 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/20 14:06:07 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
 #include <minishell_commands.h>
 
 t_list	*check_duplicate_nodes(char *arg, t_list *envp)
@@ -88,4 +87,15 @@ int	update_env_node(char *arg, t_list *envp)
 	else
 		ft_lstadd_back(&envp, ft_lstnew(data));
 	return (EXIT_SUCCESS);
+}
+
+int	is_not_a_directory(char *path)
+{
+	int	fd;
+
+	fd = open(path, O_DIRECTORY);
+	if (fd == -1)
+		return (1);
+	close(fd);
+	return (0);
 }

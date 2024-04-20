@@ -6,11 +6,10 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 13:52:55 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/19 16:07:57 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/20 14:06:38 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
 #include <minishell_commands.h>
 
 static void	export_error(char *arg)

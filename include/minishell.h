@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:24:24 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/19 12:34:49 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/20 14:05:48 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int				ft_cmdsnum(t_shell_cmd *cmds);
 //Utils
 int				sub_strlen(const char *s, char separator);
 int				save_inout(int *save_dest);
+int				is_not_a_directory(char *path);
 
 //Signals
 void			signals_default(void);

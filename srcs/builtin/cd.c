@@ -6,11 +6,10 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 20:37:40 by jcayot            #+#    #+#             */
-/*   Updated: 2024/04/17 14:35:27 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/20 14:06:46 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
 #include <minishell_commands.h>
 
 int	go_to_path(char *path, t_list **envp)
@@ -30,11 +29,16 @@ int	go_to_path(char *path, t_list **envp)
 		ft_putstr_fd(" : Permission denied\n", 2);
 		return (EXIT_SAKU);
 	}
+	else if (is_not_a_directory(path))
+	{
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putstr_fd(" : Not a directory\n", 2);
+		return (EXIT_SAKU);
+	}
 	if (chdir(path) == -1)
 		return (EXIT_FAILURE);
-	if (update_env_paths(path, envp))
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	return (update_env_paths(path, envp));
 }
 
 int	go_target(t_list **envp, char *target)

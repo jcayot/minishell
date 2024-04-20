@@ -6,11 +6,10 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 12:32:40 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/19 16:07:25 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/20 14:06:11 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
 #include <minishell_commands.h>
 
 void	check_unset_syntax(char *arg)
