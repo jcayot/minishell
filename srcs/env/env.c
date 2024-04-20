@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 13:46:37 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/19 18:37:49 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/20 13:28:18 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,6 @@ t_list	**init_env(char **envp)
 	*env_lst = NULL;
 	while (envp[i])
 	{
-		if (!ft_strncmp(envp[i], "OLDPWD", 6))
-			i++;
 		data = malloc(sizeof(char) * ft_strlen(envp[i]) + 1);
 		if (!data)
 			return (free_lst(env_lst, &free));
