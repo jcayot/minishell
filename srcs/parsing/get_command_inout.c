@@ -56,7 +56,7 @@ t_list	*get_symbol(char *cmd_str, char *symbol, int *error)
 		*error = 2;
 		return (bad_duck(cmd_str[i + l], -1));
 	}
-	data = ft_substr(cmd_str + i, 0, l);
+	data = cleaned_substr(cmd_str + i, l, "\'\"");
 	if (!data)
 		return (NULL);
 	item = make_duck(data, symbol);
