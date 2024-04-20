@@ -6,7 +6,7 @@
 /*   By: svesa <svesa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:24:24 by svesa             #+#    #+#             */
-/*   Updated: 2024/04/18 18:40:57 by svesa            ###   ########.fr       */
+/*   Updated: 2024/04/20 13:04:04 by svesa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,21 @@ int	update_env_paths(char *path, t_list **envp)
 	if (!ptr)
 		return (EXIT_FAILURE);
 	if (update_env_node(ptr, *envp))
-		return (EXIT_FAILURE);
+		return (free(ptr), EXIT_FAILURE);
+	free(ptr);
+	if (!get_env("PWD", *envp))
+		return (EXIT_SUCCESS);
 	if (ft_strchr(path, '.'))
 	{
 		if (getcwd(buffer, 10000) == NULL)
 			return (EXIT_FAILURE);
 		path = buffer;
 	}
-	free(ptr);
 	ptr = ft_strjoin("PWD=", path);
 	if (!ptr)
 		return (EXIT_FAILURE);
 	if (update_env_node(ptr, *envp))
-		return (EXIT_FAILURE);
+		return (free(ptr), EXIT_FAILURE);
 	free(ptr);
 	return (EXIT_SUCCESS);
 }
