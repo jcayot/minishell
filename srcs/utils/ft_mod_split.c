@@ -76,6 +76,8 @@ char	*cleaned_substr(const char *str, int len, char *to_clean)
 			cleaning = str[i++];
 			while (i < len && str[i] != cleaning)
 				cleaned[j++] = str[i++];
+			if (i < len)
+				i++;
 		}
 		else
 			cleaned[j++] = str[i++];
