@@ -68,16 +68,18 @@ t_list	*get_symbol(char *cmd_str, char *symbol, int *error)
 
 int	symbols_loop(t_list	**extracted, char *cmd_str, char **symbols, int *error)
 {
-	int	i;
+	t_list	*new_node;
+	int		i;
 
 	i = 0;
 	while (symbols[i] && i < 2)
 	{
 		if (ft_strncmp(cmd_str, symbols[i], ft_strlen(symbols[i])) == 0)
 		{
-			ft_lstadd_back(extracted, get_symbol(cmd_str, symbols[i], error));
-			if (!ft_lstlast(*extracted))
+			new_node = get_symbol(cmd_str, symbols[i], error);
+			if (!new_node)
 				return (0);
+			ft_lstadd_back(extracted, new_node);
 		}
 		i++;
 	}
