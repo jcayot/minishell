@@ -102,7 +102,7 @@ t_list	**get_symbols(char *cmd_str, char **symbols, int *error)
 			quote = *cmd_str;
 		else if (quote == *cmd_str)
 			quote = 0;
-		if (!symbols_loop(extracted, cmd_str, symbols, error))
+		else if (!quote && !symbols_loop(extracted, cmd_str, symbols, error))
 			return (free_lst(extracted, &free_duck));
 		if (*cmd_str)
 			cmd_str++;
