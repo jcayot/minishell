@@ -12,6 +12,8 @@
 
 #include <minishell.h>
 
+int	g_signal_not_happy;
+
 void	commands_handling(t_shell_cmd *commands, t_list **env, int *r_value)
 {
 	t_pid_launched	pid_launched;
